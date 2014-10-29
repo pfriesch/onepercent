@@ -12,15 +12,16 @@ object App {
   
 	def main(args: Array[String]) {
     	
-    	//val logFile = "/opt/spark/README.md" // Should be some file on your system
-	    //val conf = new SparkConf().setAppName("Simple Application")
-	    //val sc = new SparkContext(conf)
-	    //val logData = sc.textFile(logFile, 2).cache()
-	    //val numAs = logData.filter(line => line.contains("a")).count()
-	    //val numBs = logData.filter(line => line.contains("b")).count()
-	    //println("Lines with a: %s, Lines with b: %s".format(numAs, numBs))
+		val conf = new SparkConf().setAppName("Simple Application")
+		val sc = new SparkContext(conf)
 
-	    println("HELLO WORLD!")
+    	val data = sc.textFile("/opt/spark/README.md", 2).cache()
+
+    	//val a = data.filter(line => line.contains("Spark")).count()
+
+
+    	//val count = textFile.count()
+		//println("Text file count: " + count)
 
   	}
 
