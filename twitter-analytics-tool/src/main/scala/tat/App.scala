@@ -60,6 +60,33 @@ object App {
  		//ArrayBuffer(StructField(indices,ArrayType(IntegerType,false),true), StructField(text,StringType,true))
 
 
+ 		StructType(
+
+ 			List(
+ 			
+ 				StructField(	hashtags,
+ 								ArrayType(
+ 									StructType(
+ 										ArrayBuffer(
+ 											StructField(	indices,
+ 															ArrayType(
+ 																IntegerType,false),true
+ 											), 
+
+ 											StructField(	text,
+ 															StringType,true)
+ 											)
+ 									),false
+ 							
+ 								),true
+
+ 							)
+
+ 			)
+
+ 		)
+
+
   	}
 
 }

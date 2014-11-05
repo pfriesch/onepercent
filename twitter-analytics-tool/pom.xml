@@ -82,6 +82,7 @@
   <artifactId>spark-core_2.10</artifactId>
   <version>1.0.0-cdh5.1.0</version>
   </dependency>
+  <!-- Version 1.1.0 is important for jsonFile etc. -->
   <dependency>
   <groupId>org.apache.spark</groupId>
   <artifactId>spark-sql_2.10</artifactId>
