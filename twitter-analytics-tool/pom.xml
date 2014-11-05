@@ -2,7 +2,7 @@
   
   <!-- PROJECT INFORMATION -->
   <modelVersion>4.0.0</modelVersion>
-  <groupId>tat</groupId>
+  <groupId>tat.b</groupId>
   <artifactId>twitter-analytics-tool</artifactId>
   <version>0.0.1</version>
   <name>${project.artifactId}</name>

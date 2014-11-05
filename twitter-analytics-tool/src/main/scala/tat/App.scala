@@ -6,6 +6,9 @@ import org.apache.spark.SparkContext._
 import org.apache.spark.SparkConf
 import org.apache.spark._
 
+case class UniqueHashtag(indices: scala.collection.mutable.ArrayBuffer[Int], hashtag: String)
+case class Hashtags(hashtags: scala.collection.mutable.ArrayBuffer[UniqueHashtag])
+
 /**
  * @author ${user.name}
  */
@@ -35,7 +38,7 @@ object App {
 		// Register this SchemaRDD as a table.
 		jsonTweets.registerTempTable("jsonTweets")
 
-		// SQL statements can be run by using the sql methods provided by sqlContext.
+	// SQL statements can be run by using the sql methods provided by sqlContext.
 		val hashtags = sqlContext.sql("SELECT entities.hashtags FROM jsonTweets")
 
 		// Alternatively, a SchemaRDD can be created for a JSON dataset represented by
@@ -59,32 +62,10 @@ object App {
 
  		//ArrayBuffer(StructField(indices,ArrayType(IntegerType,false),true), StructField(text,StringType,true))
 
+ 		//in die Richtung
+ 		//hashtags.first.apply(0).asInstanceOf[scala.collection.mutable.ArrayBuffer[Hashtags]]
 
- 		StructType(
-
- 			List(
- 			
- 				StructField(	hashtags,
- 								ArrayType(
- 									StructType(
- 										ArrayBuffer(
- 											StructField(	indices,
- 															ArrayType(
- 																IntegerType,false),true
- 											), 
-
- 											StructField(	text,
- 															StringType,true)
- 											)
- 									),false
- 							
- 								),true
-
- 							)
-
- 			)
-
- 		)
+ 		val hashtagsArray = hashtags.collect()
 
 
   	}
