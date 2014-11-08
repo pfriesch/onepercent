@@ -7,7 +7,7 @@
   <version>0.0.1</version>
   <name>${project.artifactId}</name>
   <description>My wonderfull scala app</description>
-  <inceptionYear>2010</inceptionYear>
+  <inceptionYear>2014</inceptionYear>
   <licenses>
     <license>
       <name>My License</name>
