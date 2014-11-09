@@ -8,6 +8,7 @@
   <name>${project.artifactId}</name>
   <description>My wonderfull scala app</description>
   <inceptionYear>2014</inceptionYear>
+  
   <licenses>
     <license>
       <name>My License</name>
@@ -71,22 +72,34 @@
     </plugin>
   </plugins>
 </build>
-<dependencies>
-  <dependency>
-  <groupId>org.scala-lang</groupId>
-  <artifactId>scala-library</artifactId>
-  <version>2.10.4</version>
-  </dependency>
-  <dependency>
-  <groupId>org.apache.spark</groupId>
-  <artifactId>spark-core_2.10</artifactId>
-  <version>1.0.0-cdh5.1.0</version>
-  </dependency>
-  <!-- Version 1.1.0 is important for jsonFile etc. -->
-  <dependency>
-  <groupId>org.apache.spark</groupId>
-  <artifactId>spark-sql_2.10</artifactId>
-  <version>1.1.0</version>
-  </dependency>
-</dependencies>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.10.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.10</artifactId>
+      <version>1.0.0-cdh5.1.0</version>
+    </dependency>
+
+    <!-- Version 1.1.0 is important for jsonFile etc. -->
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.10</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <!-- Hive -->
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-hive_2.10</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+  </dependencies>
+
 </project>
