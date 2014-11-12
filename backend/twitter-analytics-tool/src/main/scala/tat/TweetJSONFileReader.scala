@@ -17,17 +17,12 @@ import org.apache.spark.sql.hive._
 *
 * @author Patrick Mariot, Florian Willich
 **/
-class JSONFileReader(sc: SparkContext, pathToJSONFile: String, tempTableName: String) {
+class TweetJSONFileReader(sc: SparkContext) {
 	
 	val hiveContext: HiveContext = new HiveContext(sc)
-	var data = (hiveContext.jsonFile(pathToJSONFile)).registerTempTable(tempTableName)
 
 	def readFile(pathToJSONFile: String, tempTableName: String) {
-		data = hiveContext.jsonFile(pathToJSONFile).registerTempTable(tempTableName)
-	}
-
-	def createTable(select: String, entities: String, tableName: String) : SchemaRDD = {
-		return hiveContext.sql("SELECT " + select + " FROM " + tempTableName + " LATERAL VIEW EXPLODE(" + entities + ") t1 AS " + tableName)
+		return hiveContext.jsonFile(pathToJSONFile).registerTempTable(tempTableName)
 	}
 
 }
