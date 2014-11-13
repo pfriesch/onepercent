@@ -18,9 +18,10 @@
 # during Flume startup.
 
 # Enviroment variables can be set here.
-
+export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/jre
 #JAVA_HOME=/usr/lib/jvm/java-6-sun
-JAVA=/usr/lib/jvm/java-6-openjdk-amd64/jre
+JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/jre
+JAVA_OPTS="-Xms256m -Xmx2048m"
 # Give Flume more memory and pre-allocate, enable remote monitoring via JMX
 #JAVA_OPTS="-Xms100m -Xmx200m -Dcom.sun.management.jmxremote"
 
