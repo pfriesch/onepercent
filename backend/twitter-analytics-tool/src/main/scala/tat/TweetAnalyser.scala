@@ -4,6 +4,9 @@ import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.SparkConf
 import org.apache.spark.sql._
+import org.apache.spark.sql.hive._
+import org.apache.spark.rdd._
+
 
 /**
 * This class shall be the the analyser which does the job of mapping and 
@@ -11,17 +14,20 @@ import org.apache.spark.sql._
 *
 * @author Patrick Mariot, Florian Willich
 **/
-class TweetAnalyser(sc: SparkContext) {
+class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 	
-	val hiveContext: HiveContext = new HiveContext(sc)
-	val fileReader: TweetJSONFileReader = new TweetJSONFileReader(sc)
+	val fileReader: TweetJSONFileReader = new TweetJSONFileReader(sc, hiveContext)
 
-	def jobHandler(job: Job, params: Map) : Array[(Int, String)] {
+	/**
+	* This Jobhandler 
+	*
+	* 
+	def jobHandler(job: Job, prefixPath: String, params: Map) : Any {
 
 		match job {
 
 			case hashtagsTopOfThePops:
-				return hashtagsTopOfThePops(params.get(topX), params.get(timestamp))
+				return hashtagsTopOfThePops(prefixPath, params.get(topX), params.get(timestamp), true)
 
 			case _:
 				println("ERROR: Undefined Job!")
@@ -30,25 +36,48 @@ class TweetAnalyser(sc: SparkContext) {
 		}
 
 	}
+	**/
 
-	def hashtagsTopOfThePops(timestamp: String, topX: Int) : Array[(Int, String)] = {
+	def hashtagsTopOfThePops(prefixPath: String, timestamp: String, topX: Int, useTimeStamp: Boolean) /**: T_TopHashtag =**/ {
 
 		//This was made with some RegEx: | is an or that means split with - or " " or :
+		val timeSplitted: Array[String] = timestamp.split("-| |:") 
+		var path: String = "";
 
-		val prefixPath: String = "hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/"
+		if (useTimeStamp) {
 
-		val time = timestamp.split("-| |:") 
+			//Concatenate the prefix path with the given timestamp for the Folders
+			path = prefixPath + timeSplitted(0) + "/" + timeSplitted(1) + "/" + timeSplitted(2) + "/" + timeSplitted(3) + "/*.data"
+			
+		} else {
+			path = prefixPath
+		}
 
-		val path: String = prefixPath + time[0] + "/" + time[1] + "/" + time[2] + "/" + time[3] + "/*.data"
+		val scheme: SchemaRDD = fileReader.readFile(path)
+		
+		//Amount of all Tweets
+		val countAllTweets: Long = scheme.count()
 
-		val tempTable = fileReader.readFile(path, "tweets")
+		scheme.registerTempTable("tweets") 
 
-		val table = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
-		val mappedTable = table.map(word => (word.apply(0).toString,1))
-		val reducedTable = mappedTable.reduceByKey(_ + _)
-		val sortedTable = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false) 
+		//Process Map->Reduce all hashtags
+		val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
+		val mappedTable /**: RDD **/ = table.map(word => (word.apply(0).toString, 1))
+		val reducedTable /**: RDD **/ = mappedTable.reduceByKey(_ + _)
+		val sortedTable /**: RDD **/ = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false) 
 
-		return sortedTable.top(topX).toArray
+		val resultA: Array[(Int, String)] = sortedTable.top(topX)
+
+		/**
+		for(i <- 0 until resultA.length){
+		    println("i is: " + i);
+		    println("i'th element is: " + myArray(i));
+		}
+
+		result.foreach()
+		**/
+
+		resultA.foreach(println) 
 	}
 
 }

@@ -17,12 +17,13 @@ import org.apache.spark.sql.hive._
 *
 * @author Patrick Mariot, Florian Willich
 **/
-class TweetJSONFileReader(sc: SparkContext) {
-	
-	val hiveContext: HiveContext = new HiveContext(sc)
+class TweetJSONFileReader(sc: SparkContext, hiveContext: HiveContext) {
 
-	def readFile(pathToJSONFile: String, tempTableName: String) {
-		return hiveContext.jsonFile(pathToJSONFile).registerTempTable(tempTableName)
+	/**
+	* Reads the JSON File and returns a SchemaRDD.
+	**/
+	def readFile(pathToJSONFile: String) : SchemaRDD = {
+		return hiveContext.jsonFile(pathToJSONFile)
 	}
 
 }
