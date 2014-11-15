@@ -29,7 +29,7 @@ object App {
 
 		val ta = new TweetAnalyser(sc, hc)	
 		
-		val hashtagsTop10 = ta.hashtagsTopOfThePops(args(0), "no timestamp", 10, false)
+		val hashtagsTop10 = ta.hashtagsTopOfThePops(new T_Path(args(0)), 10)
 		
   	}
 

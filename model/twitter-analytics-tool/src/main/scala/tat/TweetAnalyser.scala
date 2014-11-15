@@ -38,22 +38,9 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 	}
 	**/
 
-	def hashtagsTopOfThePops(prefixPath: String, timestamp: String, topX: Int, useTimeStamp: Boolean) /**: T_TopHashtag =**/ {
+	def hashtagsTopOfThePops(path: T_Path, topX: Int) /**: T_TopHashtag =**/ {
 
-		//This was made with some RegEx: | is an or that means split with - or " " or :
-		val timeSplitted: Array[String] = timestamp.split("-| |:") 
-		var path: String = "";
-
-		if (useTimeStamp) {
-
-			//Concatenate the prefix path with the given timestamp for the Folders
-			path = prefixPath + timeSplitted(0) + "/" + timeSplitted(1) + "/" + timeSplitted(2) + "/" + timeSplitted(3) + "/*.data"
-			
-		} else {
-			path = prefixPath
-		}
-
-		val scheme: SchemaRDD = fileReader.readFile(path)
+		val scheme: SchemaRDD = fileReader.readFile(path.toString())
 		
 		//Amount of all Tweets
 		val countAllTweets: Long = scheme.count()
