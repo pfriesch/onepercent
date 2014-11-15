@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0, ">
+	<!--meta name="viewport" content="width=device-width,initial-scale=1.0, "-->
 	<title>Startseite &minus; Twitter Analytics Tool</title>
 	<meta name="description" content="Analyse von Twitternachrichten">
 	
@@ -12,18 +12,10 @@
     <link href="bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="bootstrap-3.1.1-dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
 
-    <link href="tat_Stylesheet.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="css/tat_Stylesheet.css" rel="stylesheet" type="text/css" media="screen">
 
     <!--Datetimepicker (http://xdsoft.net/jqplugins/datetimepicker/)-->
    	<link rel="stylesheet" type="text/css" href="datetimepicker/jquery.datetimepicker.css"/ >
-	<script src="datetimepicker/jquery.js"></script>
-	<script src="datetimepicker/jquery.datetimepicker.js"></script>
-
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-    <script src="tat_javascript.js"></script>
-    <script src="jquery-2.1.1.min.js"></script>
-
 
 </head>
 
@@ -40,10 +32,10 @@
 						</a>
 						<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu1">
 							<li role="presentation">
-								<a role="menuitem" tabindex="-1" href="index.html">Home</a>
+								<a role="menuitem" tabindex="-1" href="#">Home</a>
 							</li>
 							<li role="presentation">
-								<a role="menuitem" tabindex="-1" href="#">10 Top Hashtags</a>
+								<a role="menuitem" tabindex="-1" href="#/hourly/toptentags">10 Top Hashtags</a>
 							</li> 
 							<li class="dropdown-submenu">
 								<a role="menuitem" tabindex="-1" href="#">Hashtagverlauf</a>
@@ -70,20 +62,12 @@
 			</div>
 		</header>
 
-		<div id="chart_content">
-			<div class="row">
-				<div id="chart_title" class="col col-md-8" style="padding-left: 40px; vertical-align:middle;">
-					<h2>10 Top Hashtags</h2>
-				</div>
-				<div id="day" class="col col-md-3" >
-					<input type="text" id="datetimepicker"/>
-				</div>
-				<div id="load" class="col col-md-1" >
-					<button type="submit" class="btn btn-default">show</button>
-				</div>
-			</div>
-			<div id="chart_div" style="width:auto; height: 350px;"></div><!-- Ende chart_div -->
-		</div> <!-- Ende chart_content -->
+		
+		
+		
+		<div id="main-content"></div> <!-- Ende chart_content -->
+		
+		
 
 		<ul class="pager">
 			<li class="top">
@@ -107,26 +91,55 @@
 				</li>
 			<ol>
 		</footer>
-
 	</div> <!-- Ende Seiten-Container -->
+	
+	<script type="text/template" id="chart_template">
+		<div class="row">
+			<div id="chart_title" class="col col-md-8" style="padding-left: 40px; vertical-align:middle;">
+				<h2>10 Top Hashtags</h2>
+			</div>
+			<div id="day" class="col col-md-3" >
+				<input type="text" id="datetimepicker"/>
+			</div>
+			<div id="load" class="col col-md-1" >
+				<button type="submit" class="btn btn-default">show</button>
+			</div>
+		</div>
+		<div id="chart_div" style="width:auto; height: 350px;"></div><!-- Ende chart_div -->
+	</script>
+	
+	<script type="text/template" id="home_template">
+		<div class="row">
+			<div id="chart_title" class="col col-md-8" style="padding-left: 40px; vertical-align:middle;">
+				<h2>Home</h2>
+			</div>
+		</div>
+		Das ist der Homebereich der Twitter-Analytics-Tool Seite.
+	</script>
 
 	<!-- jQuery für Bootstrap's JavaScrip plugins
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
 
   	<!--Datetimepicker-->
-   	<link rel="stylesheet" type="text/css" href="datetimepicker/jquery.datetimepicker.css"/ >
-	<script src="datetimepicker/jquery.js"></script>
 	<script src="datetimepicker/jquery.datetimepicker.js"></script>
 
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-  	<script language="JavaScript" src="tat_javascript.js"></script>
-
-    
-
+  	<script language="JavaScript" src="js/tat_javascript.js"></script>
+	
+	
+	<script language="JavaScript" src="js/charts.js"></script>
+	<script language="JavaScript" src="js/views/tagcountview.js"></script>
+	<script language="JavaScript" src="js/views/homeview.js"></script>
+	<script language="JavaScript" src="js/models/timestampmodel.js"></script>
+	<script language="JavaScript" src="js/models/tagcountmodel.js"></script>
+	
+	
+	<script language="JavaScript" src="js/route.js"></script>
 
 </body>
 
