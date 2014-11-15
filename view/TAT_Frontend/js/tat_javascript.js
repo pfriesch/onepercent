@@ -35,7 +35,7 @@ $('#datetimepicker').datetimepicker({
 
 
 //erzeugt Balkendiagramm
-
+/*
     google.load("visualization", "1", {packages:["corechart"]});
     google.setOnLoadCallback(drawChart);
               function drawChart() {
@@ -56,5 +56,5 @@ $('#datetimepicker').datetimepicker({
                 chart.draw(data, options);
 
               }
-
+*/
 
