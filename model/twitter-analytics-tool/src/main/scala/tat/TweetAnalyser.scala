@@ -43,14 +43,17 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 		val scheme: SchemaRDD = fileReader.readFile(path.toString())
 		
 		//Amount of all Tweets
-		val countAllTweets: Long = scheme.count()
 
 		scheme.registerTempTable("tweets") 
 
 		//Process Map->Reduce all hashtags
 		val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
 		val mappedTable /**: RDD **/ = table.map(word => (word.apply(0).toString, 1))
+		
 		val reducedTable /**: RDD **/ = mappedTable.reduceByKey(_ + _)
+		
+		val countAllUniqueHashtags: Long = reducedTable.count()
+		
 		val sortedTable /**: RDD **/ = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false) 
 
 		val resultA: Array[(Int, String)] = sortedTable.top(topX)
@@ -64,6 +67,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 		result.foreach()
 		**/
 
+		println("All unique hashtags: " + countAllUniqueHashtags)
 		resultA.foreach(println) 
 	}
 

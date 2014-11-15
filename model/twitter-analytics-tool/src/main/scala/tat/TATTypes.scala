@@ -44,7 +44,6 @@ object TypeEvaluator {
 
 }
 
-
 class T_DateElementMinute(_value: Int) extends T_DateElement(_value) {
 	override def toString() : String = "minute"
 	val minValue = 0
@@ -84,12 +83,9 @@ class T_Date(val year: T_DateElementYear, val month: T_DateElementMonth, val day
 	override def toString() : String = new String(year.value + "-" + month.value + "-" + day.value + " " + hour.value + ":" + minute.value)
 }
 
-
-
 class T_Path(path: String) {
 	override def toString() : String = path
 }
-
 
 object TypeCreator {
 
@@ -114,6 +110,5 @@ object TypeCreator {
 
 		return new T_Date(tmpYear, tmpMonth, tmpDay, tmpHour, tmpMinute)
 	}
-
 
 }
