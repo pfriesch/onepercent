@@ -25,57 +25,62 @@ case class T_HashtagFrequency(hashtag: String, count: Long);
 **/
 case class T_TopHashtag(totalTweetCount: Long, topHashtags: List[T_HashtagFrequency]);
 
-abstract class T_DateElement(_value: Int) {
-	val value: Int = _value
-	override def toString() : String
-	def minValue: Int
-	def maxValue: Int
+trait T_ValueDelimiter[T] {
+	def getValue() : T
+	def minValue() : T
+	def maxValue(): T
+	def name() : String
+}
+
+abstract class T_DateElement(val value: Int) extends T_ValueDelimiter[Int] {
+	override def toString() : String = value.toString()
+	def getValue() = value
 }
 
 object TypeEvaluator {
 
 	def evaluateDateMember(member: T_DateElement) {
 		
-		if (member.value < member.minValue || member.value > member.maxValue) {
-			throw new IllegalArgumentException("ERROR: Parameter " + member.toString() + " is less " + member.minValue + " or bigger than " + member.maxValue)
+		if (member.getValue() < member.minValue() || member.getValue() > member.maxValue()) {
+			throw new IllegalArgumentException("ERROR: Parameter " + member.name() + " is less " + member.minValue() + " or bigger than " + member.maxValue())
 		}
 		
 	}
 
 }
 
-class T_DateElementMinute(_value: Int) extends T_DateElement(_value) {
-	override def toString() : String = "minute"
-	val minValue = 0
-	val maxValue = 59
+class T_DateElementMinute(value: Int) extends T_DateElement(value) { 
+	def minValue() = 0
+	def maxValue() = 59
+	def name() = "minute"
 	TypeEvaluator.evaluateDateMember(this)
 }
 
-class T_DateElementHour(_value: Int) extends T_DateElement(_value) {
-	override def toString() : String = "hour"
+class T_DateElementHour(value: Int) extends T_DateElement(value) {
 	val minValue = 0
 	val maxValue = 23
+	def name() = "hour"
 	TypeEvaluator.evaluateDateMember(this)
 }
 
-class T_DateElementDay(_value: Int) extends T_DateElement(_value) {
-	override def toString() : String = "day"
+class T_DateElementDay(value: Int) extends T_DateElement(value) {
 	val minValue = 1
 	val maxValue = 31
+	def name() = "day"
 	TypeEvaluator.evaluateDateMember(this)
 }
 
-class T_DateElementMonth(_value: Int) extends T_DateElement(_value) {
-	override def toString() : String = "month"
+class T_DateElementMonth(value: Int) extends T_DateElement(value) {
 	val minValue = 1
 	val maxValue = 12
+	def name() = "month"
 	TypeEvaluator.evaluateDateMember(this)
 }
 
-class T_DateElementYear(_value: Int) extends T_DateElement(_value) {
-	override def toString() : String = "year"
+class T_DateElementYear(value: Int) extends T_DateElement(value) {
 	val minValue = 1970
 	val maxValue = 3000
+	def name() = "year"
 	TypeEvaluator.evaluateDateMember(this)
 }
 
@@ -89,8 +94,8 @@ class T_Path(path: String) {
 
 object TypeCreator {
 
-	def createPathToClusterData(prefixPath: String, timestamp: T_Date)  : T_Path = {
-		return new T_Path(prefixPath + timestamp.year + "/" + timestamp.month + "/" + timestamp.day + "/" + timestamp.hour + "/*.data")
+	def createPathToClusterData(prefixPath: String, timestamp: T_Date, dataName: String)  : T_Path = {
+		return new T_Path(prefixPath + timestamp.year.toString() + "/" + timestamp.month.toString() + "/" + timestamp.day.toString() + "/" + timestamp.hour.toString() + "/" + dataName)
 	}
 
 	def timestampToDate(timestamp: String) : T_Date = {
