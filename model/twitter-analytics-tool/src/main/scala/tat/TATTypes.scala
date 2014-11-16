@@ -18,12 +18,11 @@ case class T_HashtagFrequency(hashtag: String, count: Long);
 /**
 * This class is a Type for the Top hashtags.
 *
-* \param totalTweetCount 		Amount of all tweets. 
-* 								(Or just all tweets with Hashtags?
+* \param uniqueHashtagsCount 	Amount of all unique Hashtags.
 *								opening Issue for that!)
 * \param topHashtags 			The Top Hashtags!
 **/
-case class T_TopHashtag(totalTweetCount: Long, topHashtags: List[T_HashtagFrequency]);
+case class T_TopHashtag(uniqueHashtagsCount: Long, topHashtags: List[T_HashtagFrequency]);
 
 trait T_ValueDelimiter[T] {
 	def getValue() : T
