@@ -13,7 +13,11 @@ object T_Job extends Enumeration {
 * This class is a Type of one hashtag and its frequency being
 * posted.
 **/
-case class T_HashtagFrequency(hashtag: String, count: Long);
+case class T_HashtagFrequency(hashtag: String, count: Long) {
+	override def toString() : String = {
+		new String("Hashtag: " + hashtag + " => Frequency: " + count)
+	}
+}
 
 /**
 * This class is a Type for the Top hashtags.
@@ -22,7 +26,22 @@ case class T_HashtagFrequency(hashtag: String, count: Long);
 *								opening Issue for that!)
 * \param topHashtags 			The Top Hashtags!
 **/
-case class T_TopHashtag(uniqueHashtagsCount: Long, topHashtags: List[T_HashtagFrequency]);
+class T_TopHashtag(val uniqueHashtagsCount: Long, val topHashtags: Array[T_HashtagFrequency]) {
+	override def toString() : String = {
+		var result: String = new String("Unique Hashtags: " + uniqueHashtagsCount + "\n")
+
+		for (i <- 0 to (topHashtags.length - 1)) {
+
+	    	result = result + topHashtags(i).toString()
+			
+			if (i != topHashtags.length - 1) {
+				result = result + "\n"
+			}
+	    }
+
+	    return result;
+	}
+}
 
 trait T_ValueDelimiter[T] {
 	def getValue() : T

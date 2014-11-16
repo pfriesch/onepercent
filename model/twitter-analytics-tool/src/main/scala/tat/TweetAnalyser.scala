@@ -38,37 +38,40 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 	}
 	**/
 
-	def hashtagsTopOfThePops(path: T_Path, topX: Int) /**: T_TopHashtag =**/ {
+	def hashtagsTopOfThePops(path: T_Path, topX: Int) : T_TopHashtag = {
 
 		val scheme: SchemaRDD = fileReader.readFile(path.toString())
 		
-		//Amount of all Tweets
 
 		scheme.registerTempTable("tweets") 
 
 		//Process Map->Reduce all hashtags
 		val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
-		val mappedTable /**: RDD **/ = table.map(word => (word.apply(0).toString().toLowerCase() , 1))
+		val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString().toLowerCase() , 1))
 		
-		val reducedTable /**: RDD **/ = mappedTable.reduceByKey(_ + _)
+
+		val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
 		
+		//All unique hashtags
 		val countAllUniqueHashtags: Long = reducedTable.count()
 		
-		val sortedTable /**: RDD **/ = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false) 
-
-		val resultA: Array[(Int, String)] = sortedTable.top(topX)
-
-		/**
-		for(i <- 0 until resultA.length){
-		    println("i is: " + i);
-		    println("i'th element is: " + myArray(i));
-		}
-
-		result.foreach()
+		/** 
+		* Old code:
+		* val sortedTable = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false) 
+		* val resultA: Array[(Int, String)] = reducedTable.map((hashtag, count) => (count, hashtag)).top(topX) 
 		**/
+		val topHashtags: Array[(String, Int)] = reducedTable.map{ case (a, b) => (b, a) }.top(topX).map{ case (a, b) => (b, a)}
 
-		println("All unique hashtags: " + countAllUniqueHashtags)
-		resultA.foreach(println) 
+		val arrayOfAllHashtags: Array[T_HashtagFrequency] = new Array[T_HashtagFrequency](topHashtags.length)
+
+
+	    for (i <- 0 to (topHashtags.length - 1)) {
+	    	arrayOfAllHashtags(i) = new T_HashtagFrequency(topHashtags(i)._1, topHashtags(i)._2)
+	    }
+
+	    val topOfThePops: T_TopHashtag = new T_TopHashtag(countAllUniqueHashtags, arrayOfAllHashtags)
+
+		return topOfThePops		
 	}
 
 }

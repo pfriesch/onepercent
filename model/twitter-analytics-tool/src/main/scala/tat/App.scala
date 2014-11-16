@@ -29,7 +29,9 @@ object App {
 
 		val ta = new TweetAnalyser(sc, hc)	
 		
-		val hashtagsTop10 = ta.hashtagsTopOfThePops(new T_Path(args(0)), 10)
+		val hashtagsTop10: T_TopHashtag = ta.hashtagsTopOfThePops(new T_Path(args(0)), 10)
+
+		println(hashtagsTop10.toString())
 
 		println(TypeCreator.createPathToClusterData("hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/", TypeCreator.timestampToDate("2014-11-16 15:33"), "*.data"))
 		
