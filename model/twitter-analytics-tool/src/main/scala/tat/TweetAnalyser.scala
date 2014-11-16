@@ -48,7 +48,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 
 		//Process Map->Reduce all hashtags
 		val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
-		val mappedTable /**: RDD **/ = table.map(word => (word.apply(0).toString, 1))
+		val mappedTable /**: RDD **/ = table.map(word => (word.apply(0).toString().toLowerCase() , 1))
 		
 		val reducedTable /**: RDD **/ = mappedTable.reduceByKey(_ + _)
 		
