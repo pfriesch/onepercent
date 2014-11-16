@@ -29,7 +29,7 @@ object App {
 
 		val ta = new TweetAnalyser(sc, hc)	
 		
-		val hashtagsTop10: T_TopHashtag = ta.hashtagsTopOfThePops(new T_Path(args(0)), 10)
+		val hashtagsTop10: T_TopHashtag = ta.hashtagsTopOfThePops(new T_Path(args(0)), args(1).toInt)
 
 		println(hashtagsTop10.toString())
 
