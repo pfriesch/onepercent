@@ -50,12 +50,12 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 		hashtagsScheme.registerTempTable("hashtags")
 		val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
 
-		val mappedTable: RDD[(String, Int)] = table.filter(word => !(word.isEmpty)).map(word => (word.apply(0).toString().toLowerCase() , 1))
+		val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString().toLowerCase() , 1))
 
 		val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
 
 		//All unique hashtags
-		val countAllUniqueHashtags: Long = reducedTable.count()
+		val countAllHashtags: Long = table.count()
 		
 		/** 
 		* Old code:
@@ -70,7 +70,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 	    	arrayOfAllHashtags(i) = new T_HashtagFrequency(topHashtags(i)._2, topHashtags(i)._1)
 	    }
 
-	    val topOfThePops: T_TopHashtag = new T_TopHashtag(countAllUniqueHashtags, arrayOfAllHashtags)
+	    val topOfThePops: T_TopHashtag = new T_TopHashtag(countAllHashtags, arrayOfAllHashtags)
 
 		return topOfThePops		
 	}

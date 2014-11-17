@@ -22,13 +22,13 @@ case class T_HashtagFrequency(hashtag: String, count: Long) {
 /**
 * This class is a Type for the Top hashtags.
 *
-* \param uniqueHashtagsCount 	Amount of all unique Hashtags.
+* \param hashtagsCount 	Amount of all unique Hashtags.
 *								opening Issue for that!)
 * \param topHashtags 			The Top Hashtags!
 **/
-class T_TopHashtag(val uniqueHashtagsCount: Long, val topHashtags: Array[T_HashtagFrequency]) {
+class T_TopHashtag(val hashtagsCount: Long, val topHashtags: Array[T_HashtagFrequency]) {
 	override def toString() : String = {
-		var result: String = new String("Unique Hashtags: " + uniqueHashtagsCount + "\n")
+		var result: String = new String("Unique Hashtags: " + hashtagsCount + "\n")
 
 		for (i <- 0 to (topHashtags.length - 1)) {
 
