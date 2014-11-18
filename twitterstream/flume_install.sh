@@ -39,6 +39,13 @@ mvn package
 
 ### Copy TwitterAgent into Flume directory
 cp $SCRIPT_DIR/agent/target/flume-sources-1.0-SNAPSHOT.jar ~/apache-flume-$FLUME_VERSION-bin/lib/
+cd  ~/apache-flume-$FLUME_VERSION-bin/lib/
+
+### Get new Twitter libarys
+wget http://central.maven.org/maven2/org/twitter4j/twitter4j-stream/3.0.6/twitter4j-stream-3.0.6.jar
+wget http://central.maven.org/maven2/org/twitter4j/twitter4j-core/3.0.6/twitter4j-core-3.0.6.jar
+wget http://central.maven.org/maven2/org/twitter4j/twitter4j-media-support/3.0.6/twitter4j-media-support-3.0.6.jar
+rm -r twitter4j-*
 
 ### Show command to run Flume
 echo "To start Flume use the following command";

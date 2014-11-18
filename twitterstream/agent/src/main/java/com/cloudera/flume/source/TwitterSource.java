@@ -60,6 +60,7 @@ public class TwitterSource extends AbstractSource
   private String accessTokenSecret;
 
   private String[] keywords;
+  private String[] languages;
 
   /** The actual Twitter stream. It's set up to collect raw JSON data */
   private  TwitterStream twitterStream;
@@ -84,6 +85,16 @@ public class TwitterSource extends AbstractSource
       for (int i = 0; i < keywords.length; i++) {
         keywords[i] = keywords[i].trim();
       }
+    }
+
+    String languageString = context.getString(TwitterSourceConstants.LANGUAGE_KEY, "");
+    if (languageString.trim().length() == 0) {
+       languages = new String[0];
+    } else {
+       languages = languageString.split(",");
+       for (int i = 0; i < languages.length; i++) {
+         languages[i] = languages[i].trim();
+       }
     }
 
     ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -143,12 +154,22 @@ public class TwitterSource extends AbstractSource
     if (keywords.length == 0) {
       logger.debug("Starting up Twitter sampling...");
       twitterStream.sample();
-    } else {
-      logger.debug("Starting up Twitter filtering...");
+    } else if (keywords.length > 0) {
+	if(languages.length == 0) {
+          logger.debug("Starting up Twitter Keyword filtering...");
 
-      FilterQuery query = new FilterQuery().track(keywords);
-      twitterStream.filter(query);
+          FilterQuery query = new FilterQuery().track(keywords);
+          twitterStream.filter(query);
+	} else {
+	  logger.debug("Starting up Twitter Keyword and Language filtering...");
+
+	  FilterQuery query = new FilterQuery();
+	  query.track(keywords);
+      	  query.language(languages);
+      	  twitterStream.filter(query);
+	}
     }
+
     super.start();
   }
 
