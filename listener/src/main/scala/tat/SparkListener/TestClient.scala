@@ -14,7 +14,7 @@ object TestClient {
     val in = new BufferedReader(new InputStreamReader(socket.getInputStream))
     val out = new PrintWriter(socket.getOutputStream, true)
 
-    out.println("{\"id\":1,\"name\":\"A green door\"}")
+    out.println("{\"job\": \"hashtagtop10\", \"params\":[\"Value1\",\"Value2\"], \"time\":\"0000-00-00 00:00:00\", \"ip\":\"<host-name>\", \"port\":5555}")
 
     while(true){
       println(in.readLine())
