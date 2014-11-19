@@ -19,7 +19,7 @@
 		$dbhost="db.f4.htw-berlin.de";
 		$dbuser="s0540031";
 		$dbpass="webtech14";
-		$dbname="_s0540071__Twitter_Analytics";
+		$dbname="_s0540031__Twitter";
 		$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname;charset=UTF8", $dbuser, $dbpass);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		return $dbh;
