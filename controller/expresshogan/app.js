@@ -7,8 +7,8 @@ var request = require('request'); // requesthandler
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'db.f4.htw-berlin.de:3306',
-  user     : 's0536746',
-  password : 'hNyC4Bip',
+  user     : '',
+  password : '',
   database : '_s0536746__TwitterDB'
 });
 
