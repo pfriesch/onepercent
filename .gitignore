@@ -32,3 +32,7 @@ project/plugins/project/
 # Maven
 log/
 target/
+
+# Nodejs
+node_modules
+routes
