@@ -25,19 +25,15 @@ class JobHandler extends Actor {
     case Received(data) =>
       val jobSignature: JobSignature = evaluateJob(data.decodeString("UTF-8"))
 
-      match {
-
-        case jobSignature.job == "hashtagtop10" =>
+      jobSignature match {
+        case j@JobSignature("hashtagtop10", _, _, _, _) =>
           val jobActor = context.actorOf(Props[Jobs.Top10HashtagsJobExecutor], name = jobSignature.job)
-          jobActor ! ExecuteJob(jobSignature.params)
-
-        case jobSignature.job == "realTopOfThePops" =>
+          jobActor ! ExecuteJob(j.params)
+        case j@JobSignature("realTopOfThePops", _, _, _, _) =>
           val jobActor = context.actorOf(Props[Jobs.RealTopOfThePops], name = jobSignature.job)
-          jobActor ! ExecuteJob(jobSignature.params)
-
+          jobActor ! ExecuteJob(j.params)
         case _ =>
           println("ERROR: Job is not known!")
-
       }
 
 
@@ -45,16 +41,20 @@ class JobHandler extends Actor {
       //TODO a "\n" is bad, alternative?
       connection ! Write(ByteString.apply(text + "\n"))
     case PeerClosed => context stop self
-    case Register(connection: ActorRef) => this.connection => connection
-    case Connected() =>
-      connection = sender
+    case Register(connection: ActorRef, _, _) => this.connection = connection
+    //    case Connected(c: Tcp.Connected) =>
+    //      connection = sender
     case _ => println("JobHanlder default case triggered")
 
   }
 
-  def evaluateJob(jsonString: String) : JobSignature = {
+  def evaluateJob(jsonString: String): JobSignature = {
+    import org.json4s.native.JsonMethods._
     implicit val formats = DefaultFormats
-    return parse(jsonString).extract[JobSignature]
+    println("HERE 1 ----------: " + jsonString)
+    val parsed : JValue = org.json4s.native.JsonMethods.parse(jsonString)
+    println("HERE 1 ----------")
+    parsed.extract[JobSignature]
   }
 
 }

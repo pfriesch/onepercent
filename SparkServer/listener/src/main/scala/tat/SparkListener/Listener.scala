@@ -20,13 +20,11 @@ class Listener extends Actor {
   def receive = {
     case Bound(localAddress) => //setup
     case CommandFailed(_: Bind) => context stop self
-
-    //c = connection object
-    case c @ Connected(remote, local) =>
+    case Connected(remote, local) =>
       val handler = context.actorOf(Props[JobHandler], name = "JobHandler")
       val connection = sender
       connection ! Register(handler)
-      handler ! Register(c)
+      handler ! Register(connection)
 
   }
 

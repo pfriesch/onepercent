@@ -1,13 +1,4 @@
-package tat.SparkListener.Types
-
-/**
-* This object represents the Type of a Job you can see
-* for example in the TweetAnalyser Class.
-**/
-object T_Job extends Enumeration {
-    type T_Job = Value
-    val hashtagsTopOfThePops, otherJob = Value
-}
+package tat.SparkListener.Jobs.Types
 
 /**
 * This class is a Type of one hashtag and its frequency being

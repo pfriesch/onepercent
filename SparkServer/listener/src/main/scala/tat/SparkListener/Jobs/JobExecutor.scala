@@ -5,7 +5,7 @@ import org.json4s.JsonAST.JObject
 
 
 //case class Do(params: Array[String])
-case class ExecuteJob(params: List[String])
+case class ExecuteJob(params: Array[String])
 case class Result(result: String)
 
 /**
@@ -21,6 +21,6 @@ trait JobExecutor extends Actor {
       sender ! result
   }
 
-  def executeJob(params: List[String]): Result
+  def executeJob(params: Array[String]): Result
 
 }
