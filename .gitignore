@@ -6,7 +6,7 @@
 .history/
 .lib/
 dist/*
-target/
+metastore_db/
 lib_managed/
 src_managed/
 project/boot/
@@ -32,3 +32,7 @@ project/plugins/project/
 # Maven
 log/
 target/
+
+# Nodejs
+node_modules
+routes
