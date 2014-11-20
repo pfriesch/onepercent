@@ -15,11 +15,11 @@ object TestClient {
     val out = new PrintWriter(socket.getOutputStream, true)
 
     out.println("{\"job\": \"hashtagtop10\", \"params\":[\"Value1\",\"Value2\"], \"time\":\"0000-00-00 00:00:00\", \"ip\":\"<host-name>\", \"port\":5555}")
+    out.println("{\"job\": \"realTopOfThePops\", \"params\":[\"" + args(0) + "\",\"" + args(1) + "\"], \"time\":\"0000-00-00 00:00:00\", \"ip\":\"<host-name>\", \"port\":5555}")
 
     while(true){
       println(in.readLine())
     }
-
 
 }
 

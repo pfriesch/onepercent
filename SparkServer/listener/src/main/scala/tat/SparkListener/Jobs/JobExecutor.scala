@@ -13,9 +13,10 @@ case class Result(result: String)
  */
 trait JobExecutor extends Actor {
 
-
   def receive = {
+    
     case ExecuteJob(params) =>
+
       val result: Result = executeJob(params)
       sender ! result
   }
