@@ -1,16 +1,22 @@
 ## Javascript Twitter-Analytics-Tool Frontend
 #### Installation
-In *TAT_Frontend/api/.htaccess* den Basedir an das entsprechende Verzeichnis anpassen
-Da die REST API aktuell noch in PHP gehalten ist, muss dafür gesorgt werden das die entsprechenden Dateien **Ausführungsrechte** haben.
+Node.js installieren.
+Dann in den Ordner WebServer/view navigieren und im Terminal folgenden Befehl eingeben:
+>npm install
+Um den Server zu starten folgenden Befehl eingeben:
+>node server.js
+
+Die Seite ist dann über http://localhost:8080 erreichbar
 
 #### ToDo
-* REST API nach Node.js portieren
 * Datetimepicker automatisch mit Daten füllen
 * Datetimepicker wechselt nach Auswahl automatisch zu der passenden Grafik
 * Template anpassen
+* Ordnerstruktur an Express.js anpassen
+* MySQL Variablen escapen
 
 ###### Optional
 * Templates in externe Dateien auslagern
 
 
-*Stand: 15.11.2014*
+*Stand: 25.11.2014*
