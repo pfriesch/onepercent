@@ -3,6 +3,7 @@
 Node.js installieren.
 Dann in den Ordner WebServer/view navigieren und im Terminal folgenden Befehl eingeben:
 >npm install
+
 Um den Server zu starten folgenden Befehl eingeben:
 >node server.js
 
