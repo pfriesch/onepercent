@@ -5,22 +5,39 @@ var TimestampModel = Backbone.Model.extend({
 		this.url = this.url + "/" + table;
 	},
 
+	getYear: function() {
+		return this.getJavascriptDate().getUTCFullYear();
+	},
+
+	getMonth: function() {
+		var month = this.getJavascriptDate().getUTCMonth() + 1;
+		if(month < 10){
+			month = '0' + month;
+		}
+		return month;
+	},
+
+	getDay: function() {
+		var day = this.getJavascriptDate().getUTCDate();
+		if(day < 10){
+			day = '0' + day;
+		}
+		return day;
+	},
+
 	getDate: function() {
-		var t = this.get('timestamp').split(/[- :]/);
-		return (t[0] + "-" + t[1] + "-" + t[2]);
+		return (this.getYear() + "-" + this.getMonth() + "-" + this.getDay());
 	},
 	
 	getHour: function() {
-		var t = this.get('timestamp').split(/[- :]/);
-		return (t[3]);
+		return this.getJavascriptDate().getUTCHours();
 	},
 
 	getJavascriptDate: function() {
-		var t = this.get('timestamp').split(/[- :]/);
-		var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-		return d;
+		return new Date(this.get('timestamp'));
 	},
 });
+
 
 var TimestampCollection = Backbone.Collection.extend({
 	model: TimestampModel,

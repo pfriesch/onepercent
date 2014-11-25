@@ -16,8 +16,6 @@ var Router = Backbone.Router.extend({
 			var latest = timestamps.getLatest();
 			appRouter.navigate("hourly/" + table + "/" + latest.getDate() + "/" + latest.getHour(), true);
 		}, this);
-
-		//new TagCountView({collection: new TimestampCollection(table)});
 	},
 
 	tagcount: function(table, date, hour) {
