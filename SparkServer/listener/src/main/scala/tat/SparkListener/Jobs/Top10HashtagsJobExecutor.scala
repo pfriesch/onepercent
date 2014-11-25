@@ -1,9 +1,6 @@
 package tat.SparkListener.Jobs
 
 
-case class TopHashtags(hashtags: List[(String, Int)])
-
-
 /**
  * Created by plinux on 18/11/14.
  */
@@ -31,65 +28,42 @@ import org.apache.spark.rdd._
 import tat.SparkListener.Jobs.Types.T_HashtagFrequency
 import tat.SparkListener.Jobs.Types.T_Path
 import tat.SparkListener.Jobs.Types.T_TopHashtag
+import tat.SparkListener.Jobs.Types.T_TopHashtags
+import tat.SparkListener.Jobs.Types.T_TopHashtagsResult
 
 class RealTopOfThePops extends JobExecutor {
 
   override def executeJob(params: Array[String]): Result = {
     //TODO: return real results
+
+
+    import Types.T_Path
+
+    val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
+    val sc = new SparkContext(conf)
+    val hc = new HiveContext(sc)
+
+    val ta = new TweetAnalyser(sc, hc)
+
+    val topHashtags: T_TopHashtags = ta.hashtagsTopOfThePops(new T_Path(params(0)), params(1).toInt)
+
+    val result: T_TopHashtagsResult = T_TopHashtagsResult("**jobidhash*", topHashtags)
+
+   // Result(compact(render(result)))
+
+    //    val result: T_TopHashtag = hashtagsTopOfThePops(new T_Path(params(0)), params(1).toInt)
+    //	    val topHashtags: String = compact(render(result))
+
+    Result(renderResult(result))
+  }
+
+  def renderResult(jobResult: T_TopHashtagsResult) : String = {
     import org.json4s._
     import org.json4s.JsonDSL._
     import org.json4s.native.JsonMethods._
 
-    import Types.T_Path
-
-    val result: T_TopHashtag = hashtagsTopOfThePops(new T_Path(params(0)), params(1).toInt)
-    println(result.toString())
-    //	    val topHashtags: String = compact(render(result))
-
-    Result("leer")
-  }
-
-  def hashtagsTopOfThePops(path: T_Path, topX: Int): T_TopHashtag = {
-
-    val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
-    val sc = new SparkContext(conf)
-    val hiveContext = new HiveContext(sc)
-
-    val fileReader: TweetJSONFileReader = new TweetJSONFileReader(sc, hiveContext)
-
-    val scheme: SchemaRDD = fileReader.readFile(path.toString())
-    scheme.registerTempTable("tweets")
-
-    //Process Map->Reduce all hashtags
-    //val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
-
-    val hashtagsScheme: SchemaRDD = hiveContext.sql("SELECT entities.hashtags FROM tweets")
-    hashtagsScheme.registerTempTable("hashtags")
-    val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
-
-    val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString().toLowerCase(), 1))
-
-    val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
-
-    //All unique hashtags
-    val countAllHashtags: Long = table.count()
-
-    /**
-     * Old code:
-     * val sortedTable = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false)
-     * val resultA: Array[(Int, String)] = reducedTable.map((hashtag, count) => (count, hashtag)).top(topX)
-     **/
-    val topHashtags: Array[(Int, String)] = reducedTable.map { case (a, b) => (b, a)}.top(topX) //.map{ case (a, b) => (b, a)}
-
-    val arrayOfAllHashtags: Array[T_HashtagFrequency] = new Array[T_HashtagFrequency](topHashtags.length)
-
-    for (i <- 0 to (topHashtags.length - 1)) {
-      arrayOfAllHashtags(i) = new T_HashtagFrequency(topHashtags(i)._2, topHashtags(i)._1)
-    }
-
-    val topOfThePops: T_TopHashtag = new T_TopHashtag(countAllHashtags, arrayOfAllHashtags)
-
-    return topOfThePops
+    val json = (("jobID" -> jobResult.jobID) ~ ("topHashtags" -> (jobResult.jobResult.hashtags.)) ~ ("countAllHashtags" -> jobResult.jobResult.countAllHashtags))
+    write(json)
   }
 
 }

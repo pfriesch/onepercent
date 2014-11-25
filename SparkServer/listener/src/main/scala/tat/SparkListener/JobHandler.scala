@@ -26,11 +26,13 @@ class JobHandler extends Actor {
       val jobSignature: JobSignature = evaluateJob(data.decodeString("UTF-8"))
 
       jobSignature match {
-        case j@JobSignature("hashtagtop10", _, _, _, _) =>
-          val jobActor = context.actorOf(Props[Jobs.Top10HashtagsJobExecutor], name = jobSignature.job)
+          //TODO implement refelction
+          //TODO check params
+        case j@JobSignature("hashtagtop10" , _, _, _, _) =>
+          val jobActor = context.actorOf(Props[Jobs.Top10HashtagsJobExecutor])
           jobActor ! ExecuteJob(j.params)
         case j@JobSignature("realTopOfThePops", _, _, _, _) =>
-          val jobActor = context.actorOf(Props[Jobs.RealTopOfThePops], name = jobSignature.job)
+          val jobActor = context.actorOf(Props[Jobs.RealTopOfThePops])
           jobActor ! ExecuteJob(j.params)
         case _ =>
           println("ERROR: Job is not known!")

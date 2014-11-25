@@ -10,6 +10,8 @@ case class T_HashtagFrequency(hashtag: String, count: Long) {
 	}
 }
 
+//type T_HashtagFrequency = (String, Long)
+
 /**
 * This class is a Type for the Top hashtags.
 *
@@ -17,22 +19,28 @@ case class T_HashtagFrequency(hashtag: String, count: Long) {
 *								opening Issue for that!)
 * \param topHashtags 			The Top Hashtags!
 **/
-class T_TopHashtag(val hashtagsCount: Long, val topHashtags: Array[T_HashtagFrequency]) {
-	override def toString() : String = {
-		var result: String = new String("Unique Hashtags: " + hashtagsCount + "\n")
 
-		for (i <- 0 to (topHashtags.length - 1)) {
 
-	    	result = result + topHashtags(i).toString()
-			
-			if (i != topHashtags.length - 1) {
-				result = result + "\n"
-			}
-	    }
 
-	    return result;
-	}
-}
+case class T_TopHashtags(hashtags: Array[T_HashtagFrequency], countAllHashtags: Long)
+case class T_TopHashtagsResult(jobID: String, jobResult: T_TopHashtags)
+
+//class T_TopHashtag(val hashtagsCount: Long, val topHashtags: Array[T_HashtagFrequency]) {
+//	override def toString() : String = {
+//		var result: String = new String("Unique Hashtags: " + hashtagsCount + "\n")
+//
+//		for (i <- 0 to (topHashtags.length - 1)) {
+//
+//	    	result = result + topHashtags(i).toString()
+//
+//			if (i != topHashtags.length - 1) {
+//				result = result + "\n"
+//			}
+//	    }
+//
+//	    return result;
+//	}
+//}
 
 trait T_ValueDelimiter[T] {
 	def getValue() : T
