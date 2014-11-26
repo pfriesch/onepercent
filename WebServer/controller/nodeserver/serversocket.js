@@ -16,8 +16,8 @@ var connectionPool = mysql.createPool (
 // ---------------------------- Mysql DB config ---------------------------------------
 
 //----------------------------------- Clientconfig ------------------------------------
-var HOST = '127.0.0.1';
-var PORT = 9090;
+var HOST = 'hadoop03.f4.htw-berlin.de';
+var PORT = 5555;
 
 var client = new net.Socket();
 
@@ -56,12 +56,12 @@ client.on('close', function() {
 client.on('data', function(data) {
 
     var json = JSON.parse(data);
-    //console.log(json.job); 
+    console.log(json); 
     
     switch(json.job) {
 
       case 'hashtagtop10':
-        writeHashtagsIntoDatabase(data);
+        //writeHashtagsIntoDatabase(data);
         break;
 
       case 'timezone':
@@ -83,7 +83,8 @@ function sendHashtagRequestToServer() {
     var timeString = time.format('YYYY-MM-DD HH-mm-ss');
 
     var hashtagtopten = {
-        job: 'HastTagTop10',
+        job: 'hashtagtop10',
+	params: ['test','10'],
         time: timeString,
         ip: client.address().address,
         port: client.address().port
@@ -114,7 +115,7 @@ function writeHashtagsIntoDatabase(hashTagData) {
   });
 }
 
-readHashtagsFromDatabase();
+//readHashtagsFromDatabase();
 
 function readHashtagsFromDatabase() {
 
