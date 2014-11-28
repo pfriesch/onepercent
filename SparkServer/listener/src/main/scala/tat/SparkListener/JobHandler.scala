@@ -1,6 +1,7 @@
 package tat.SparkListener
 
 
+import akka.actor.Status.Success
 import akka.actor.{ActorRef, Props, Actor}
 import akka.io.Tcp
 import akka.io.Tcp.{Register, Write, PeerClosed, Received}
@@ -8,10 +9,17 @@ import akka.util.ByteString
 import org.apache.tools.ant.taskdefs.Execute
 import org.json4s._
 import org.json4s.native.JsonMethods._
+import tat.SparkListener.Jobs.Types._
 import tat.SparkListener.Jobs._
+import org.json4s._
+import org.json4s.native.JsonMethods._
+import native.Serialization.write
+import scala.util
+import scala.util.{Failure, Try}
+import tat.SparkListener.Jobs.TopOfThePops
 
-//JobSignature JSON representation
-case class JobSignature(job: String, params: Array[String], time: String, ip: String, port: Int)
+
+case class Error(error: String)
 
 /**
  * Created by plinux on 12/11/14.
@@ -20,43 +28,37 @@ class JobHandler extends Actor {
 
   var connection: ActorRef = null
 
+  def evaluateJob(jsonString: String): Try[JobSignature] = {
+    //TODO check params
+    JsonConverter.parseJobJson(jsonString)
+  }
+
   def receive = {
-
-    case Received(data) =>
-      val jobSignature: JobSignature = evaluateJob(data.decodeString("UTF-8"))
-
-      jobSignature match {
-          //TODO implement refelction
-          //TODO check params
-        case j@JobSignature("hashtagtop10" , _, _, _, _) =>
-          val jobActor = context.actorOf(Props[Jobs.Top10HashtagsJobExecutor])
-          jobActor ! ExecuteJob(j.params)
-        case j@JobSignature("realTopOfThePops", _, _, _, _) =>
-          val jobActor = context.actorOf(Props[Jobs.RealTopOfThePops])
-          jobActor ! ExecuteJob(j.params)
-        case _ =>
-          println("ERROR: Job is not known!")
+    case Received(data) => {
+      evaluateJob(data.decodeString("UTF-8")) match {
+        case util.Success(job) =>
+          val fullJobName = "tat.SparkListener.Jobs." + job.name
+          Try(context.actorOf(Props(Class.forName(fullJobName).asInstanceOf[Class[JobExecutor]]))) match {
+            case util.Success(jobActor) => jobActor ! ExecuteJob(job.jobID, job.params)
+            case util.Failure(ex) =>
+              self ! Result(job.jobID, JsonConverter.jobResultToJson(
+                Error("Job not known! Job name: " + job.name)))
+          }
+        case util.Failure(ex) =>
+          //TODO What to do if json read failed?
+          self ! Result("", JsonConverter.jobResultToJson(
+            Error("Unable to resolve request! Parse exception: " + ex.getMessage)))
       }
-
-
-    case Result(text) =>
+    }
+    case r@Result(_, jobResult: String) =>
+      implicit val formats = native.Serialization.formats(NoTypeHints)
       //TODO a "\n" is bad, alternative?
-      connection ! Write(ByteString.apply(text + "\n"))
+      connection ! Write(ByteString.apply(write(r) + "\n"))
     case PeerClosed => context stop self
     case Register(connection: ActorRef, _, _) => this.connection = connection
-    //    case Connected(c: Tcp.Connected) =>
-    //      connection = sender
-    case _ => println("JobHanlder default case triggered")
+    case _ => println("DEBUGG: JobHanlder default case triggered")
 
   }
 
-  def evaluateJob(jsonString: String): JobSignature = {
-    import org.json4s.native.JsonMethods._
-    implicit val formats = DefaultFormats
-    println("HERE 1 ----------: " + jsonString)
-    val parsed : JValue = org.json4s.native.JsonMethods.parse(jsonString)
-    println("HERE 1 ----------")
-    parsed.extract[JobSignature]
-  }
 
 }

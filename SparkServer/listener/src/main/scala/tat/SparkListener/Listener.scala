@@ -1,11 +1,9 @@
 package tat.SparkListener
 
-
 import akka.actor.{ActorSystem, Actor, Props}
 import akka.io.{IO, Tcp}
 import akka.io.Tcp._
 import java.net.InetSocketAddress
-
 
 /**
  * This class listens to a port for job requests and passes the requests to the RequestHandler
@@ -14,7 +12,6 @@ import java.net.InetSocketAddress
 class Listener extends Actor {
 
   import context.system
-
   IO(Tcp) ! Bind(self, new InetSocketAddress("localhost", 5555))
 
   def receive = {
@@ -25,9 +22,7 @@ class Listener extends Actor {
       val connection = sender
       connection ! Register(handler)
       handler ! Register(connection)
-
   }
-
 }
 
 object App {
