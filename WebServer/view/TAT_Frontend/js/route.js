@@ -19,7 +19,7 @@ var Router = Backbone.Router.extend({
 	},
 
 	tagcount: function(table, date, hour) {
-		new TagCountView({collection: new TagCountCollection(table, date, hour), el: '#main-content'});
+		new TagCountView(table, date, hour,{el: '#main-content', template: '#chart_template'});
 	},
 
 
