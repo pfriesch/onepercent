@@ -13,7 +13,7 @@ var connection = mysql.createConnection({
 
 app.get('/api/hourly/:table', function(req, res){
 
-	var query = "SELECT timestamp FROM " + req.params.table +" ORDER BY timestamp DESC LIMIT 1";
+	var query = "SELECT timestamp FROM " + req.params.table +" GROUP BY timestamp";
 	
 	connection.query(query, function(err, rows){
 		if(err) throw err;
