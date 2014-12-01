@@ -1,7 +1,8 @@
-package tat.SparkListener
+package tat.SparkListener.utils
 
 import org.json4s.native.Serialization._
 import org.json4s.{DefaultFormats, NoTypeHints, native}
+import tat.SparkListener.JobSignature
 
 import scala.util.Try
 

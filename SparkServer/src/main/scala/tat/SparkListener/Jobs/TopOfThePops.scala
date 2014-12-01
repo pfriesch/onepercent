@@ -1,19 +1,15 @@
 package tat.SparkListener.Jobs
 
-import tat.SparkListener.{JsonConverter, JobExecutor}
-import tat.SparkListener.Jobs.Types.{T_HashtagFrequency, T_TopHashtags}
-
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.hive._
+import tat.SparkListener.JobExecutor
+import tat.SparkListener.utils.{T_Path, JsonConverter, TweetAnalyser}
 
 class TopOfThePops extends JobExecutor {
 
   override def executeJob(params: Array[String]): String= {
     //TODO: return real results
-
-
-    import tat.SparkListener.Jobs.Types.T_Path
 
     val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
     val sc = new SparkContext(conf)

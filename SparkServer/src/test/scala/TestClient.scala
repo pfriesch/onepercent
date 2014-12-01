@@ -6,6 +6,7 @@ import java.net.Socket
 
 /**
  * Created by plinux on 17/11/14.
+ * params: "/home/plinux/workspace/Twitter-Analytics-Tool/SparkServer/model/twitter-analytics-tool/sample_data/test.json" "10"
  */
 object TestClient {
 

@@ -1,11 +1,11 @@
-package tat.SparkListener.Jobs
+package tat.SparkListener.utils
 
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.rdd._
 import org.apache.spark.sql._
 import org.apache.spark.sql.hive._
-import tat.SparkListener.Jobs.Types._
+
 
 
 /**

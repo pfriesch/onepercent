@@ -1,4 +1,4 @@
-package tat.SparkListener.Jobs
+package tat.SparkListener.utils
 
 import org.apache.spark.SparkContext
 import org.apache.spark.sql._

@@ -9,14 +9,13 @@ import akka.util.ByteString
 import org.apache.tools.ant.taskdefs.Execute
 import org.json4s._
 import org.json4s.native.JsonMethods._
-import tat.SparkListener.Jobs.Types._
-import tat.SparkListener.Jobs._
 import org.json4s._
 import org.json4s.native.JsonMethods._
 import native.Serialization.write
+import tat.SparkListener.utils.JsonConverter
 import scala.util
 import scala.util.{Failure, Try}
-import tat.SparkListener.Jobs.TopOfThePops
+
 
 
 case class Error(error: String)
