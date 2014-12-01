@@ -16,7 +16,7 @@ import org.json4s.native.JsonMethods._
 import native.Serialization.write
 import scala.util
 import scala.util.{Failure, Try}
-import tat.SparkListener.Jobs.TopOfThePops
+import tat.SparkListener.Jobs.TopHashtagJob
 
 
 case class Error(error: String)
@@ -52,7 +52,7 @@ class JobHandler extends Actor {
     }
     case r@Result(_, jobResult: String) =>
       implicit val formats = native.Serialization.formats(NoTypeHints)
-      //TODO a "\n" is bad, alternative?
+      //TODO a "\n" is bad, alternative? (why you need \n?)
       connection ! Write(ByteString.apply(write(r) + "\n"))
     case PeerClosed => context stop self
     case Register(connection: ActorRef, _, _) => this.connection = connection

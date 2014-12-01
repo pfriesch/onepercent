@@ -6,7 +6,12 @@ import org.json4s.native.JsonMethods._
 import native.Serialization.write
 
 
-
+/**
+ * Result of any Job including a unique jobID and the Result als a String.
+ *
+ * @param jobID         A unique jobID.
+ * @param jobResult     The Result of the Job.
+ */
 case class Result(jobID: String, jobResult: String)
 
 case class JobSignature(jobID: String, name: String, params: Array[String], time: String)
