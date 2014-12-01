@@ -20,8 +20,17 @@ object TestClient {
 
     out.println("{\"jobID\":\"superJobID123\",\"name\":\"TopOfThePops\",\"params\":[\""+args(0)+"\",\""+args(1)+"\"],\"time\":\"0000-00-00 00:00:00\"}")
 
-    while(true){
-      println(in.readLine())
+    Thread.sleep(1)
+    out.println("{\"jobID\":\"superJobID1234\",\"name\":\"TestyJob\",\"params\":[\"TestInput\"],\"time\":\"0000-00-00 00:00:00\"}")
+
+    var exit = false
+    while (!exit){
+      var string = in.readLine()
+      if (string == null){
+        exit = true
+      }
+      println(string)
+
     }
 
   }

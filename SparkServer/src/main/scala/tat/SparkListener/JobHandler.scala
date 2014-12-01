@@ -49,10 +49,9 @@ class JobHandler extends Actor {
             Error("Unable to resolve request! Parse exception: " + ex.getMessage)))
       }
     }
-    case r@Result(_, jobResult: String) =>
-      implicit val formats = native.Serialization.formats(NoTypeHints)
+    case r@Result(_, jobResult: AnyRef) =>
       //TODO a "\n" is bad, alternative?
-      connection ! Write(ByteString.apply(write(r) + "\n"))
+      connection ! Write(ByteString.apply(JsonConverter.jobResultToJson(r) + "\n"))
     case PeerClosed => context stop self
     case Register(connection: ActorRef, _, _) => this.connection = connection
     case _ => println("DEBUGG: JobHanlder default case triggered")

@@ -8,7 +8,7 @@ import tat.SparkListener.utils.{T_Path, JsonConverter, TweetAnalyser}
 
 class TopOfThePops extends JobExecutor {
 
-  override def executeJob(params: Array[String]): String= {
+  override def executeJob(params: Array[String]): AnyRef= {
     //TODO: return real results
 
     val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
@@ -19,7 +19,7 @@ class TopOfThePops extends JobExecutor {
 
     //    val topHashtags: T_TopHashtags =
 
-    JsonConverter.jobResultToJson(ta.hashtagsTopOfThePops(new T_Path(params(0)), params(1).toInt))
+    ta.hashtagsTopOfThePops(new T_Path(params(0)), params(1).toInt)
 
 
     // Result(compact(render(result)))
