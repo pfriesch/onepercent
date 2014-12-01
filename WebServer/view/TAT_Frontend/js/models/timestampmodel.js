@@ -56,4 +56,24 @@ var TimestampCollection = Backbone.Collection.extend({
 		});
 		return latestTimestamp;
 	},
+
+	getDates: function(){
+		var dates = new Array();
+		this.each(function(timestamp){
+			dates.push(timestamp.getDate());
+		}, this);
+		dates = _.uniq(dates);
+		return dates;
+	},
+
+	getHoursForDate: function(date){
+		var hours = new Array();
+		this.each(function(timestamp){
+			if(date == timestamp.getDate()){
+				hours.push(timestamp.getHour());
+			}
+		}, this);
+		hours = _.uniq(hours);
+		return hours;
+	},
 });
