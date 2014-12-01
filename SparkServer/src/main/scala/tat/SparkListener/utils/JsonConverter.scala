@@ -28,8 +28,13 @@ object JsonConverter {
    * @return
    */
   def jobResultToJson(jobResult: AnyRef) : String = {
+    if (!isCaseClass(jobResult)) throw IllegalArgumentException
     implicit val formats = native.Serialization.formats(NoTypeHints)
     //TODO a "\n" is bad, alternative?
     write(jobResult)
   }
+
+
+  def isCaseClass(o: AnyRef) = o.getClass.getInterfaces.find(_ == classOf[scala.Product]) != None
+
 }
