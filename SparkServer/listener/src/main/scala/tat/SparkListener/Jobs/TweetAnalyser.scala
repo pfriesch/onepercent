@@ -21,13 +21,13 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 
   /**
    * This method returns the top X hashtags of the transfered tweetFile
-   * @param tweetFile
+   * @param path
    * @param topX
    * @return
    */
-  def topHashtagAnalyser(tweetFile: File, topX: Int): T_TopHashtags = {
+  def topHashtagAnalyser(path: T_Path, topX: Int): T_TopHashtags = {
 
-    val scheme: SchemaRDD = fileReader.readFile(tweetFile.getPath())
+    val scheme: SchemaRDD = fileReader.readFile(path.path)
 
     scheme.registerTempTable("tweets")
 
@@ -46,3 +46,22 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
   }
 
 }
+
+/**
+ * Type representing one Twitter hashtag and its related counts.
+ *
+ * @param hashtag   The twitter hashtag.
+ * @param count     The count of this twitter hashtag.
+ */
+case class T_HashtagFrequency(hashtag: String, count: Long)
+
+/**
+ * Type representing The Top twitter hashtags as an analysis result including
+ * all hashtags and its frequency and the count of all hashtags counted whyle
+ * analysing the twitter tweets.
+ *
+ * @param topHashtags       All hashtags and its related frequency.
+ * @param countAllHashtags  The count of all hashtags counted whyle analysing the
+ *                          twitter tweets.
+ */
+case class T_TopHashtags(topHashtags: Array[T_HashtagFrequency], countAllHashtags: Long)

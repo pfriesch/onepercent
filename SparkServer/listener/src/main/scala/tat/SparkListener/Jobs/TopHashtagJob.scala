@@ -1,26 +1,53 @@
 package tat.SparkListener.Jobs
 
-import tat.SparkListener.{JsonConverter, JobExecutor}
-import tat.SparkListener.Jobs.Types.{T_HashtagFrequency, T_TopHashtags}
+import java.text.SimpleDateFormat;
 
+import tat.SparkListener.Jobs.Types.{TypeCreator, TypeValidatorOP, T_Path}
+import tat.SparkListener.{JsonConverter, JobExecutor}
+
+import scala.util.{Try, Failure, Success}
+
+import org.json4s.native.Serialization._
+import org.json4s.{DefaultFormats, NoTypeHints, native}
 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.hive._
 
 class TopHashtagJob extends JobExecutor {
 
-  override def executeJob(params: Array[String]): String= {
-    //TODO: return real results
+  //TODO: Returns should all be an JSON object right?
+  override def executeJob(params: Array[String]): Unit = {
 
-    import tat.SparkListener.Jobs.Types.T_Path
+    TypeValidatorOP.validateTime(params(0), new SimpleDateFormat("yyyy-mm-dd hh")) match {
+      case Success(gregCalendar) =>
 
-    val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
-    val sc = new SparkContext(conf)
-    val hc = new HiveContext(sc)
-    val ta = new TweetAnalyser(sc, hc)
+        TypeCreator.createClusterFile(params(1), gregCalendar, "*.data") match {
+          case Success(path) =>
 
-    JsonConverter.jobResultToJson(ta.topHashtagAnalyser(new T_Path(params(0)), params(1).toInt))
+            Try[Int] = Try(params(2).toInt) match {
+              case Success(topX) =>
+                val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
+                val sc = new SparkContext(conf)
+                val hc = new HiveContext(sc)
+                val ta = new TweetAnalyser(sc, hc)
+                JsonConverter.jobResultToJson(ta.topHashtagAnalyser(path, topX))
+
+              case Failure(wrongTopX) =>
+                return "ERROR: Parameter [" + wrongTopX + "] is not an Integer!"
+
+            }
+
+          case Failure(wrongPath) =>
+            //Not the right way i suppose
+            return "ERROR: Parameter [" + wrongPath + "] is not a valid Path!"
+
+        }
+
+      case Failure(wrongParam) =>
+        return "ERROR: Parameter [" + wrongParam + "] is not a valid date!"
+
+    }
+
   }
-
 
 }
