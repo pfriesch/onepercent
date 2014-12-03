@@ -12,7 +12,7 @@ import java.net.InetSocketAddress
 class Listener extends Actor {
 
   import context.system
-  IO(Tcp) ! Bind(self, new InetSocketAddress("localhost", 5555))
+  IO(Tcp) ! Bind(self, new InetSocketAddress("hadoop03.f4.htw-berlin.de", 5555))
 
   def receive = {
     case Bound(localAddress) => //setup
