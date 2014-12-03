@@ -23,13 +23,23 @@ object JsonConverter {
   }
 
   /**
+   * Trys to parse a json String to a Settings object
+   * @param jsonString
+   * @return
+   */
+  def parseSettings(jsonString: String) : Try[Settings] = {
+    import org.json4s.native.JsonMethods._
+    implicit val formats = DefaultFormats
+    Try(org.json4s.native.JsonMethods.parse(jsonString).extract[Settings])
+  }
+
+  /**
    * Builds a json String of the given instance of a case Class
    * @param jobResult
    * @return
    */
-  def jobResultToJson(jobResult: AnyRef) : String = {
+  def caseClassToJson(jobResult: AnyRef) : String = {
     implicit val formats = native.Serialization.formats(NoTypeHints)
-    //TODO a "\n" is bad, alternative?
     write(jobResult)
   }
 

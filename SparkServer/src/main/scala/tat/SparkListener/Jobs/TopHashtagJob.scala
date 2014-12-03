@@ -8,15 +8,16 @@ import org.apache.spark.{SparkConf, SparkContext}
 import scala.util.{Failure, Success, Try}
 
 /**
-  * Own imports
+ * Own imports
  */
-import tat.SparkListener.utils.{TypeValidator, Error, TypeCreator}
+
+import tat.SparkListener.utils.{TypeValidator, ErrorMessage, TypeCreator}
 import tat.SparkListener.JobExecutor
 import tat.SparkListener.utils.TweetAnalyser
 
 class TopHashtagJob extends JobExecutor {
 
-  override def executeJob(params: Array[String]): AnyRef = {
+  override def executeJob(params: List[String]): AnyRef = {
 
     TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(Success(gregCalendar)) =>
@@ -33,18 +34,17 @@ class TopHashtagJob extends JobExecutor {
                 ta.topHashtagAnalyser(path, topX)
 
               case Failure(wrongTopX) =>
-                Error("Parameter [" + wrongTopX + "] is not an Integer!", 100)
+                ErrorMessage("Parameter [" + wrongTopX + "] is not an Integer!", 100)
 
             }
 
           case Failure(wrongPath) =>
-            Error("Parameter [" + wrongPath + "] i not a valid path!", 100)
+            ErrorMessage("Parameter [" + wrongPath + "] i not a valid path!", 100)
 
         }
-//TODO Success(Failure(WTF??))
-      case Success(f@Failure(_)) => f
+      //TODO Success(Failure(WTF??))
       case Failure(wrongDate) =>
-        Error("Parameter [" + wrongDate + "] is not a valid date!", 100)
+        ErrorMessage("Parameter [" + wrongDate + "] is not a valid date!", 100)
 
     }
 

@@ -7,7 +7,7 @@ import akka.util.ByteString
 
 import org.json4s._
 
-import tat.SparkListener.utils.{Error, JsonConverter}
+import tat.SparkListener.utils.{Config, ErrorMessage, JsonConverter}
 
 import scala.util.{Try}
 
@@ -23,27 +23,29 @@ class JobHandler extends Actor {
     JsonConverter.parseJobJson(jsonString)
   }
 
+
   def receive = {
     case Received(data) => {
       evaluateJob(data.decodeString("UTF-8")) match {
         case util.Success(job) =>
-          val fullJobName = "tat.SparkListener.Jobs." + job.name
+          println("New Job: " + job)
+          val fullJobName = Config.get.JobsPackageString + job.name
           Try(context.actorOf(Props(Class.forName(fullJobName).asInstanceOf[Class[JobExecutor]]))) match {
             case util.Success(jobActor) => jobActor ! ExecuteJob(job.jobID, job.params)
             case util.Failure(ex) =>
-              self ! Result(job.jobID, JsonConverter.jobResultToJson(
-                Error("Job not known! Job name: " + job.name, 400)))
+              self ! Result(job.jobID, JsonConverter.caseClassToJson(
+                ErrorMessage("Job not known! Job name: " + job.name, 400)))
           }
         case util.Failure(ex) =>
           //TODO What to do if json read failed?
-          self ! Result("", JsonConverter.jobResultToJson(
-            Error("Unable to resolve request! Parse exception: " + ex.getMessage, 404)))
+          self ! Result("", JsonConverter.caseClassToJson(
+            ErrorMessage("Unable to resolve request! Parse exception: " + ex.getMessage, 404)))
       }
     }
 
     case r@Result(_, jobResult: AnyRef) =>
       //TODO a "\n" is bad, alternative? (\n => end of Message)
-      connection ! Write(ByteString.apply(JsonConverter.jobResultToJson(r) + "\n"))
+      connection ! Write(ByteString.apply(JsonConverter.caseClassToJson(r) + "\n"))
     case PeerClosed => context stop self
     case Register(connection: ActorRef, _, _) => this.connection = connection
     case _ => println("DEBUGG: JobHanlder default case triggered")

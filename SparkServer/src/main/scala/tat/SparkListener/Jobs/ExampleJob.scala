@@ -9,7 +9,7 @@ case class ExampleResult(didItWork: String)
 
 class ExampleJob extends JobExecutor{
 
-  override def executeJob(params: Array[String]): AnyRef = {
+  override def executeJob(params: List[String]): AnyRef = {
 
     // Hier Spark Analyse Einfügen
 

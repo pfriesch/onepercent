@@ -18,7 +18,7 @@ case class T_Path(path: String)
 /**
  * Error Type
  */
-case class Error(errorMessage: String, errorCode: Int)
+case class ErrorMessage(errorMessage: String, errorCode: Int)
 
 //TODO add other JobResults
 

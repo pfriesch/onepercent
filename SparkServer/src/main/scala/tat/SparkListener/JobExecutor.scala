@@ -14,9 +14,9 @@ import native.Serialization.write
  */
 case class Result(jobID: String, jobResult: AnyRef)
 
-case class JobSignature(jobID: String, name: String, params: Array[String], time: String)
+case class JobSignature(jobID: String, name: String, params: List[String], time: String)
 
-case class ExecuteJob(jobID: String, params: Array[String])
+case class ExecuteJob(jobID: String, params: List[String])
 
 /**
  * Each Job needs to implement this trait and the executeJob method.
@@ -36,6 +36,6 @@ trait JobExecutor extends Actor {
    * @param params
    * @return formated json stirng
    */
-  def executeJob(params: Array[String]): AnyRef
+  def executeJob(params: List[String]): AnyRef
 
 }
