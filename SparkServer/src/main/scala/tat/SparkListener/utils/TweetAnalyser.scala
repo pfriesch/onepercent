@@ -7,6 +7,9 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.hive._
 
 
+import java.io.File;
+
+//Make a trait out of this class
 
 /**
  * This class shall be the the analyser which does the job of mapping and
@@ -18,36 +21,55 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 
   val fileReader: TweetJSONFileReader = new TweetJSONFileReader(sc, hiveContext)
 
+  /**
+   * This method returns the top X hashtags of the transfered tweetFile
+   * @param path
+   * @param topX
+   * @return
+   */
+  def topHashtagAnalyser(path: T_Path, topX: Int): T_TopHashtags = {
 
-  def hashtagsTopOfThePops(path: T_Path, topX: Int): T_TopHashtags = {
+    val scheme: SchemaRDD = fileReader.readFile(path.path)
 
-    val scheme: SchemaRDD = fileReader.readFile(path.toString())
     scheme.registerTempTable("tweets")
 
-    //Process Map->Reduce all hashtags
-    //val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM tweets LATERAL VIEW EXPLODE(entities.hashtags) t1 AS hashtags")
-
     val hashtagsScheme: SchemaRDD = hiveContext.sql("SELECT entities.hashtags FROM tweets")
+
+    //Temp Table exists as long as the Spark/Hive Context
     hashtagsScheme.registerTempTable("hashtags")
+    
     val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
-
     val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString().toLowerCase(), 1))
-
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
+    val topHashtags: Array[T_HashtagFrequency] = reducedTable.map { case (a, b) => (b, a)}.top(topX).map { case (a, b) => T_HashtagFrequency(b, a)}
 
-    //All unique hashtags
-    val countAllHashtags: Long = table.count()
-
-    /**
-     * Old code:
-     * val sortedTable = reducedTable.map{case (tag, count) => (count, tag)}.sortByKey(false)
-     * val resultA: Array[(Int, String)] = reducedTable.map((hashtag, count) => (count, hashtag)).top(topX)
-     **/
-    val topHashtags: Array[T_HashtagFrequency] = reducedTable.map { case (a, b) => (b, a)}.top(topX).map { case (a, b) => T_HashtagFrequency(b, a)} //.map{ case (a, b) => (b, a)}
-
-    val topOfThePops: T_TopHashtags = new T_TopHashtags(topHashtags, countAllHashtags)
-
-    return topOfThePops
+    //table.count() -> All unique hashtags
+    new T_TopHashtags(topHashtags, table.count())
   }
 
 }
+
+/**
+ * ==================================================================================
+ * TYPES RELATED TO JOB RESULTS
+ * ==================================================================================
+ */
+
+/**
+ * Type representing one Twitter hashtag and its related counts.
+ *
+ * @param hashtag   The twitter hashtag.
+ * @param count     The count of this twitter hashtag.
+ */
+case class T_HashtagFrequency(hashtag: String, count: Long)
+
+/**
+ * Type representing The Top twitter hashtags as an analysis result including
+ * all hashtags and its frequency and the count of all hashtags counted whyle
+ * analysing the twitter tweets.
+ *
+ * @param topHashtags       All hashtags and its related frequency.
+ * @param countAllHashtags  The count of all hashtags counted whyle analysing the
+ *                          twitter tweets.
+ */
+case class T_TopHashtags(topHashtags: Array[T_HashtagFrequency], countAllHashtags: Long)
