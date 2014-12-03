@@ -15,10 +15,9 @@ import java.text.SimpleDateFormat;
 case class T_Path(path: String)
 
 /**
- * ==================================================================================
- * TYPES RELATED TO JOB RESULTS
- * ==================================================================================
+ * Error Type
  */
+case class T_Error(errorMessage: String, errorCode: Int)
 
 //TODO add other JobResults
 
@@ -39,12 +38,15 @@ object TypeCreator {
 //OP because there is a naming conflict just with TypeValidator
 object TypeValidatorOP {
 
-  def validateTime(time: String, format: SimpleDateFormat) : Try[GregorianCalendar] = {
+  def validateTime(time: String, format: SimpleDateFormat) : Try[Try[GregorianCalendar]] = {
 
-    val calendar: GregorianCalendar = new GregorianCalendar()
-    calendar.setGregorianChange(format.parse(time))
+    val calendar: GregorianCalendar = {
+      new GregorianCalendar()
+    }
 
-    Try(calendar)
+    format.setLenient(false)
+
+    Try(calendar.setTime(format.parse(time))).map(c => Try(calendar))
   }
 
 }

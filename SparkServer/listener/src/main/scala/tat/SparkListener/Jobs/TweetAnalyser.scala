@@ -48,6 +48,12 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 }
 
 /**
+ * ==================================================================================
+ * TYPES RELATED TO JOB RESULTS
+ * ==================================================================================
+ */
+
+/**
  * Type representing one Twitter hashtag and its related counts.
  *
  * @param hashtag   The twitter hashtag.

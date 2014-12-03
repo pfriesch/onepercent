@@ -2,7 +2,7 @@ package tat.SparkListener.Jobs
 
 import java.text.SimpleDateFormat;
 
-import tat.SparkListener.Jobs.Types.{TypeCreator, TypeValidatorOP, T_Path}
+import tat.SparkListener.Jobs.Types.{TypeCreator, TypeValidatorOP, T_Path, T_Error}
 import tat.SparkListener.{JsonConverter, JobExecutor}
 
 import scala.util.{Try, Failure, Success}
@@ -19,7 +19,7 @@ class TopHashtagJob extends JobExecutor {
   override def executeJob(params: Array[String]): Unit = {
 
     TypeValidatorOP.validateTime(params(0), new SimpleDateFormat("yyyy-mm-dd hh")) match {
-      case Success(gregCalendar) =>
+      case Success(Success(gregCalendar)) =>
 
         TypeCreator.createClusterFile(params(1), gregCalendar, "*.data") match {
           case Success(path) =>
@@ -33,7 +33,8 @@ class TopHashtagJob extends JobExecutor {
                 JsonConverter.jobResultToJson(ta.topHashtagAnalyser(path, topX))
 
               case Failure(wrongTopX) =>
-                return "ERROR: Parameter [" + wrongTopX + "] is not an Integer!"
+                //thats just an example how it could work with error codes!
+                return T_Error("Parameter [" + wrongTopX + "] is not an Integer!", 11)
 
             }
 
