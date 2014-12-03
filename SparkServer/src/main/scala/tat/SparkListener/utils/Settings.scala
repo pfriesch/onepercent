@@ -1,7 +1,6 @@
 package tat.SparkListener.utils
 
 import java.io.{File, PrintWriter}
-import java.nio.file.{Paths, Files}
 
 import scala.io.Source
 import scala.util.{Failure, Success}
@@ -23,7 +22,8 @@ object Config {
 
   // Constructor
   {
-    if (Files.exists(Paths.get(settingsFileName))) {
+    val file = new File(settingsFileName)
+    if (file.exists() && !file.isDirectory()) {
       JsonConverter.parseSettings(Source.fromFile(settingsFileName).mkString) match {
         case Success(settings) => this.settings = settings
         case Failure(_) =>
@@ -34,15 +34,13 @@ object Config {
   }
 
   private def setDefaultSettings = {
-    val set = Settings(defaultHostname, defaultPort, defaultJobsPackage)
-    val file = new File(settingsFileName)
-    val writer = new PrintWriter(file)
-    writer.write(JsonConverter.caseClassToJson(set))
+    val writer = new PrintWriter(new File(settingsFileName))
+    writer.write(JsonConverter.caseClassToJson(Settings(defaultHostname, defaultPort, defaultJobsPackage)))
     writer.close()
   }
 
   def get: Settings = settings
 
-  def getAbsolutConfigFilePath : String = Paths.get(settingsFileName).toAbsolutePath.toString
+  def getAbsolutConfigFilePath : String = new File(settingsFileName).getAbsolutePath
 
 }
