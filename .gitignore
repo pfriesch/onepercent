@@ -4,7 +4,8 @@
 #Config
 config.cfg
 */config.cfg
-
+config.cfg*
+*/config.cfg*
 
 # sbt specific
 .cache/
