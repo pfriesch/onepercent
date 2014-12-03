@@ -3,6 +3,7 @@ var HomeView = Backbone.View.extend({
 		_.bindAll(this, 'render');
 		this.setElement(options.el);
 		this.template = _.template(tpl.get(options.template));
+		console.log(options.template);
 		this.render();
 	},
 	
