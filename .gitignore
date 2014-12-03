@@ -2,7 +2,9 @@
 *.log
 
 #Config
-*.cfg
+config.cfg
+*/config.cfg
+
 
 # sbt specific
 .cache/
