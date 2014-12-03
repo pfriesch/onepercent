@@ -1,11 +1,12 @@
 var HomeView = Backbone.View.extend({	
-	initialize: function() {
+	initialize: function(options) {
 		_.bindAll(this, 'render');
+		this.setElement(options.el);
+		this.template = _.template(tpl.get(options.template));
 		this.render();
 	},
 	
 	render: function() {
-		var template = _.template( $("#home_template").html(), {} );
-		this.$el.html( template );
+		this.$el.html( this.template );
 	},
 });

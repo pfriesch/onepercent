@@ -8,7 +8,7 @@ var TagCountView = Backbone.View.extend({
 	initialize: function(table, date, hour, options) {
 		_.bindAll(this, 'render', 'showChart', 'dateSelected', 'showNavigation', 'fetchData', 'getAvaibleDates');
 		this.setElement(options.el);
-		this.template = _.template($(options.template).html());
+		this.template = _.template(tpl.get(options.template));
 		this.path = {
 			table: table,
 			date: date,

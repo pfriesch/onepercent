@@ -6,7 +6,7 @@ var Router = Backbone.Router.extend({
 	},
 	
 	home: function() {
-		new HomeView({el: '#main-content'});
+		new HomeView({el: '#main-content', template: 'home_template'});
 	},
 	
 	selectLatest: function(table) {
@@ -19,11 +19,15 @@ var Router = Backbone.Router.extend({
 	},
 
 	tagcount: function(table, date, hour) {
-		new TagCountView(table, date, hour,{el: '#main-content', template: '#chart_template'});
+		new TagCountView(table, date, hour,{el: '#main-content', template: 'chart_template'});
 	},
 
 
 });
 
-var appRouter = new Router;
-Backbone.history.start();
+
+var appRouter;
+tpl.loadTemplates(['chart_template', 'home_template'], function () {
+	appRouter = new Router();
+	Backbone.history.start();
+});
