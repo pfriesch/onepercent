@@ -18,7 +18,7 @@ class TopHashtagJob extends JobExecutor {
 
   override def executeJob(params: Array[String]): AnyRef = {
 
-    TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-mm-dd hh")) match {
+    TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(Success(gregCalendar)) =>
 
         TypeCreator.createClusterPath(params(1), gregCalendar, "*.data") match {
@@ -41,7 +41,8 @@ class TopHashtagJob extends JobExecutor {
             Error("Parameter [" + wrongPath + "] i not a valid path!", 100)
 
         }
-
+//TODO Success(Failure(WTF??))
+      case Success(f@Failure(_)) => f
       case Failure(wrongDate) =>
         Error("Parameter [" + wrongDate + "] is not a valid date!", 100)
 
