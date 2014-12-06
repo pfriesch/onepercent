@@ -31,8 +31,10 @@ class TopHashtagJob extends JobExecutor {
                 val sc = new SparkContext(conf)
                 val hc = new HiveContext(sc)
                 val ta = new TweetAnalyser(sc, hc)
-                ta.topHashtagAnalyser(path, topX)
-
+                val result = ta.topHashtagAnalyser(path, topX)
+		
+		sc.stop()
+		return result
               case Failure(wrongTopX) =>
                 ErrorMessage("Parameter [" + wrongTopX + "] is not an Integer!", 100)
 
