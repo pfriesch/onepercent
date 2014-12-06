@@ -31,9 +31,8 @@ case class ErrorMessage(errorMessage: String, errorCode: Int)
 object TypeCreator {
 
   def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
-    Try(T_Path(prefixPath + time.get(Calendar.YEAR) + "/" + time.get(Calendar.MONTH) + "/" + time.get(Calendar.DAY_OF_MONTH) + "/" + time.get(Calendar.HOUR_OF_DAY) + "/" + dataName))
+    Try(T_Path(prefixPath + time.get(Calendar.YEAR) + "/" + String.format("%02d", time.get(Calendar.MONTH)+1: Integer) + "/" + String.format("%02d", time.get(Calendar.DAY_OF_MONTH): Integer) + "/" + String.format("%02d", time.get(Calendar.HOUR_OF_DAY): Integer) + "/" + dataName))
   }
-
 }
 
 //OP because there is a naming conflict just with TypeValidator
