@@ -27,7 +27,7 @@ class TopHashtagJob extends JobExecutor {
 
             Try(params(2).toInt) match {
               case Success(topX) =>
-                val conf = new SparkConf().setAppName("Twitter Hashtags Top 10")
+                val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
                 val sc = new SparkContext(conf)
                 val hc = new HiveContext(sc)
                 val ta = new TweetAnalyser(sc, hc)
