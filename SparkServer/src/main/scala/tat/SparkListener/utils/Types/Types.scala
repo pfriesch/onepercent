@@ -4,19 +4,29 @@ package tat.SparkListener.utils
 import scala.util.Try;
 
 //JAVA imports
+import java.io.File
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.text.SimpleDateFormat;
 
 /**
-  * We need to validate this path (if its a valid path on the running file system).
-  * Class File from Java is probably no solution because it cannot resolve the *.data ...
+ * This Type represents a path to the filesystem and
+ * @param path
  */
-//TODO: validate directory (/to/dir/*.data) validate -> /to/dir/
-case class T_Path(path: String)
+case class T_Path(path: String) {
+
+  if (!(new File(new File(path).getParent()).isDirectory())) {
+    throw new IllegalArgumentException("This path does not exist!")
+  }
+
+}
 
 /**
  * Error Type
+ * @param     errorMessage    The message of this error.
+ * @param     errorCode       The error Code.
+ *
+ * @author Florian Willich
  */
 case class ErrorMessage(errorMessage: String, errorCode: Int)
 
@@ -30,23 +40,46 @@ case class ErrorMessage(errorMessage: String, errorCode: Int)
 
 object TypeCreator {
 
+  /**
+   * This method creates a path out of the given parameters as follows:
+   * First the prefixpath within the last / concatenated with the given time
+   * 2014-12-04 14:00:00 will result to <prefixPath>/2014/12/4/14/ this means the hour
+   * is the last element in the path - finalized with the dataName ending.
+   *
+   * @param prefixPath      The path to put before the time.
+   * @param time            The time with which the path will be build.
+   * @param dataName        THe data/file.
+   * @return                A Path if successful.
+   *
+   * @author                Florian Willich, Puis Friesch
+   */
   def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
     Try(T_Path(prefixPath + time.get(Calendar.YEAR) + "/" + String.format("%02d", time.get(Calendar.MONTH)+1: Integer) + "/" + String.format("%02d", time.get(Calendar.DAY_OF_MONTH): Integer) + "/" + String.format("%02d", time.get(Calendar.HOUR_OF_DAY): Integer) + "/" + dataName))
   }
+
 }
 
-//OP because there is a naming conflict just with TypeValidator
 object TypeValidator {
 
-  def validateTime(time: String, format: SimpleDateFormat) : Try[Try[GregorianCalendar]] = {
+  /**
+   * This method returns a GregorianCalender set on the time and formatted with the
+   * format if successful.
+   *
+   * @param time      The time on which the GregorianCalender will be set this has to
+   *                  match the format.
+   * @param format    The time format.
+   *
+   * @return          the GregorianCalender set on the given time if successful.
+   *
+   * @author          Florian Willich
+   */
+  def validateTime(time: String, format: SimpleDateFormat) : Try[GregorianCalendar] = {
 
     val calendar: GregorianCalendar = {
       new GregorianCalendar()
     }
 
-    format.setLenient(false)
-
-    Try(calendar.setTime(format.parse(time))).map(c => Try(calendar))
+    Try(calendar.setTime(format.parse(time))).map(c => calendar)
   }
 
 }

@@ -7,7 +7,10 @@ import org.apache.spark.sql._
 import org.apache.spark.sql.hive._
 
 
-import java.io.File;
+import java.io.File
+
+import scala.util.Try
+;
 
 //Make a trait out of this class
 
@@ -27,7 +30,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param topX
    * @return
    */
-  def topHashtagAnalyser(path: T_Path, topX: Int): T_TopHashtags = {
+  def topHashtagAnalyser(path: T_Path, topX: Int): Try[T_TopHashtags] = {
 
     val scheme: SchemaRDD = fileReader.readFile(path.path)
 
@@ -44,7 +47,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     val topHashtags: Array[T_HashtagFrequency] = reducedTable.map { case (a, b) => (b, a)}.top(topX).map { case (a, b) => T_HashtagFrequency(b, a)}
 
     //table.count() -> All unique hashtags
-    new T_TopHashtags(topHashtags, table.count())
+    Try(new T_TopHashtags(topHashtags, table.count()))
   }
 
 }
