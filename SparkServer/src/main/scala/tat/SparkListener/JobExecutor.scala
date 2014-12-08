@@ -6,12 +6,6 @@ import org.json4s.native.JsonMethods._
 import native.Serialization.write
 
 
-/**
- * Result of any Job including a unique jobID and the Result als a String.
- *
- * @param jobID         A unique jobID.
- * @param jobResult     The Result of the Job.
- */
 case class Result(jobID: String, jobResult: AnyRef)
 
 case class JobSignature(jobID: String, name: String, params: List[String], time: String)
@@ -30,11 +24,11 @@ trait JobExecutor extends Actor {
       sender ! result
   }
 
+
   /**
-   * This method is called to run a Spark Job and expected to return a formated json as job result.
-   * @see JsonConverter.jobResultToJson
-   * @param params
-   * @return formated json stirng
+   * Runs a spark Job and returns the result in a case class structure
+   * @param params the params of the specified job
+   * @return the result as a case class
    */
   def executeJob(params: List[String]): AnyRef
 

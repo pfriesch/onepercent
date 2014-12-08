@@ -20,7 +20,7 @@ class Listener extends Actor {
     case Bound(localAddress) => //setup
     case CommandFailed(_: Bind) => context stop self
     case Connected(remote, local) =>
-      val handler = context.actorOf(Props[JobHandler])
+      val handler = context.actorOf(Props[JobHandler], name = "JobHandler")
       val connection = sender
       connection ! Register(handler)
       handler ! Register(connection)
@@ -31,6 +31,6 @@ class Listener extends Actor {
 object App {
   def main(args: Array[String]) {
     val system = ActorSystem()
-    val listener = system.actorOf(Props[Listener])
+    val listener = system.actorOf(Props[Listener], name = "Listener")
   }
 }
