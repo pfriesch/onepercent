@@ -14,17 +14,23 @@ import tat.SparkListener.utils.{Config, Settings}
 class Listener extends Actor {
 
   import context.system
+
   IO(Tcp) ! Bind(self, new InetSocketAddress(Config.get.hostname, Config.get.port))
 
   def receive = {
-    case Bound(localAddress) => //setup
-    case CommandFailed(_: Bind) => context stop self
+    case Bound(localAddress) =>
+      println("DEBUGG: Bound Port on: " + Config.get.hostname + ":" + Config.get.port)
+    //TODO setup???
+    case CommandFailed(_: Bind) =>
+      println("DEBUGG: Failed to bind Port on: " + Config.get.hostname + ":" + Config.get.port)
+      context stop self
+      System.exit(-1)
     case Connected(remote, local) =>
       val handler = context.actorOf(Props[JobHandler], name = "JobHandler")
       val connection = sender
       connection ! Register(handler)
       handler ! Register(connection)
-    case _ => println("DEBUGG: Listener defualt case")
+    case _ => println("DEBUGG: Listener default case triggered")
   }
 }
 
