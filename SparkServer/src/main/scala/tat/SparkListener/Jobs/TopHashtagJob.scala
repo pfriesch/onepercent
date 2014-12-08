@@ -22,7 +22,7 @@ class TopHashtagJob extends JobExecutor {
     TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(gregCalendar) =>
 
-        TypeCreator.createClusterPath(params(1), gregCalendar, "*.data") match {
+        TypeCreator.createT_Path(params(1), gregCalendar, "*.data") match {
           case Success(path) =>
 
             Try(params(2).toInt) match {
@@ -33,10 +33,10 @@ class TopHashtagJob extends JobExecutor {
                 val ta = new TweetAnalyser(sc, hc)
                 ta.topHashtagAnalyser(path, topX) match {
                   case Success(result) =>
-                    sc.stop();
-                    result;
+                    sc.stop()
+                    result
                   case Failure(_) =>
-                    ErrorMessage("TopHashtag analyses failed!", 101);
+                    ErrorMessage("TopHashtag analyses failed!", 101)
                 }
 
               case Failure(wrongTopX) =>
