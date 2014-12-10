@@ -5,7 +5,7 @@ import akka.io.{IO, Tcp}
 import akka.io.Tcp._
 import java.net.InetSocketAddress
 
-import tat.SparkListener.utils.{Config, Settings}
+import tat.SparkListener.utils.{Config, Settings, Debug}
 
 /**
  * This class listens to a port for job requests and passes the requests to the RequestHandler
@@ -19,10 +19,10 @@ class Listener extends Actor {
 
   def receive = {
     case Bound(localAddress) =>
-      println("DEBUGG: Bound Port on: " + Config.get.hostname + ":" + Config.get.port)
+      Debug.log("Listener", "receive", "Bound Port on: " + Config.get.hostname + ":" + Config.get.port)
     //TODO setup???
     case CommandFailed(_: Bind) =>
-      println("DEBUGG: Failed to bind Port on: " + Config.get.hostname + ":" + Config.get.port)
+      Debug.log("Listener", "receive", "Failed to bind Port on: " + Config.get.hostname + ":" + Config.get.port)
       context stop self
       System.exit(-1)
     case Connected(remote, local) =>
@@ -30,13 +30,16 @@ class Listener extends Actor {
       val connection = sender
       connection ! Register(handler)
       handler ! Register(connection)
-    case _ => println("DEBUGG: Listener default case triggered")
+    case _ => Debug.log("Listener", "receive", "Listener default case triggered")
   }
+
 }
 
 object App {
+
   def main(args: Array[String]) {
     val system = ActorSystem()
     val listener = system.actorOf(Props[Listener], name = "Listener")
   }
+
 }
