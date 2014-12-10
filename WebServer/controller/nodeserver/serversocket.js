@@ -20,18 +20,18 @@ var connectionPool = mysql.createPool (
 //----------------------------- http req res config -----------------------------------
 var app = express(); 
 
-app.use(express.static(__dirname + '/Client'));
+app.use(express.static('../../view/TAT_Frontend'));
 
 var server = app.listen(8080, function(){
   console.log("Server is up and running");
 });
 
 //----------------------------------- Clientconfig ------------------------------------
-var HOST = 'localhost';
-var PORT = 9090;
+//var HOST = 'localhost';
+//var PORT = 9000;
 
-//var HOST = 'hadoop03.f4.htw-berlin.de';
-//var PORT = 5555;
+var HOST = 'hadoop03.f4.htw-berlin.de';
+var PORT = 5555;
 
 var client = new net.Socket();
 
@@ -47,6 +47,29 @@ client.connect(PORT, HOST, function() {
 //var data = readHashTagTopTenFromDatabase('toptentags');
 //console.log(data);
 
+app.get('/api/hourly/:table', function(req, res){
+
+  console.log("reqParam: " + req.params.table);
+
+  connectionPool.getConnection(function(err, connection) {
+
+  var sqlQuery = "SELECT * FROM " + req.params.table + " ORDER BY count DESC";
+  console.log(sqlQuery);
+
+    connection.query(sqlQuery, function(err, rows, fields){
+      if(err) throw err;
+      
+      for (var i in rows) {
+            console.log("sqlRequestparams:" + rows[i].name);
+      }
+      //var data = 'fussball';
+      res.send(rows);
+    });
+  connection.release();
+  });
+});
+
+/*
 app.get('/hash/:table', function(req, res){
 
   console.log("reqParam: " + req.params.table);
@@ -76,7 +99,7 @@ function readHashTagTopTenFromDatabase(params) {
     connection.release();
   });
   return sqlResponseData;
-}
+}*/
 //------------------------------ http Request from Client end-------------------------
 
 //----------------------------- sending data to server -------------------------------
@@ -87,7 +110,7 @@ client.on('connect', function() {
     setInterval(function() {
         console.log('sending request every minute');
         sendHashtagRequestToServer();
-    }, 60 * 100);
+    }, 60 * 1000);
     //client.destroy(); // Close the client socket completely
 });
 
@@ -106,7 +129,7 @@ client.on('data', function(data) {
 
   //console.log(data);
   var dataResponse = JSON.parse(data);
-  console.log(dataResponse);
+  //console.log(dataResponse);
 
   if ('error' in dataResponse) {
     console.log('Error-Message: ' + dataResponse.errormsg[0].errorMessage);
@@ -115,11 +138,12 @@ client.on('data', function(data) {
 
   else {
 
-    switch(getValueFromCollectionArrayById(dataResponse, 'name')) {
+    switch(getNameFromCollectionArrayById(dataResponse)) {
 
       case 'topHashtags':
-        console.log('Hashtagjob');
-        //writeHashtagsIntoDatabase(dataResponse);
+        console.log('switch case Hashtagjob');
+        writeHashtagsIntoDatabase(dataResponse);
+        removeHashIdFromCollection(dataResponse); // warten bis daten in sql geschrieben wurden!!
         break;
 
       case 'timezone':
@@ -134,14 +158,14 @@ client.on('data', function(data) {
     //client.destroy(); // Close the client socket completely
 });
 
-function getValueFromCollectionArrayById (responseData, value) {
+function getNameFromCollectionArrayById (responseData) {
 
   if (checkIfElementIsInArray(responseData, hashTagTopTenCollection) == true) {
     var elementPos = hashTagTopTenCollection.map(function(hashTagTopTenCollection) {
     return hashTagTopTenCollection.id;
   }).indexOf(hashTagTopTenCollection.id);
 
-  var fieldValue = hashTagTopTenCollection[elementPos].value;
+  var fieldValue = hashTagTopTenCollection[elementPos].name;
   }
   return fieldValue;
 }
@@ -149,7 +173,7 @@ function getValueFromCollectionArrayById (responseData, value) {
 
 //----------------------------- hash collection --------------------------------------
 
-var hashTagTopTenCollection = new Array(); /// Datenbank auslagen oder in Filesystem schreiben
+var hashTagTopTenCollection = new Array(); 
 
 function addHashIdToCollection (hashTagTopTen) {
 
@@ -161,7 +185,8 @@ function addHashIdToCollection (hashTagTopTen) {
 
   else {
     hashTagTopTenCollection.push(hashTagTopTen);
-    console.log('Element added');
+    //console.log('Element added:' + hashTagTopTen);
+    //console.log(JSON.stringify(hashTagTopTen));
   }
 }
     
@@ -215,31 +240,29 @@ function sendHashtagRequestToServer() {
     var hashTagTopTen = {
       jobID: id,
       name: 'topHashtags',
-      params: [timeStringHour,'hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/2014/11/05/14',10],
+      params: [timeStringHour,'hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/',10],
       time: timeString,
     }
 
     addHashIdToCollection(hashTagTopTen);
-    //logHashIndex();
-    //console.log(JSON.stringify(hashtagtopten) +'\n');
+    //console.log('Element added:', hashTagTopTen);
+
     client.write(JSON.stringify(hashTagTopTen) +'\n');
 }
 //----------------------------- DB Query ---------------------------------------------
-function writeHashtagsIntoDatabase(hashTagData) {
+function writeHashtagsIntoDatabase(dataResponse) {
   
-  var dataResponse = JSON.parse(hashTagData);
-  /*
-  //removeHashIdFromCollection(hashTagTopTenResponse);
-  //logHashIndex();
-  //console.log(json);
+  console.log(dataResponse);
+  var timestamp = getDateFromCollectionArrayById(dataResponse);
+  
   connectionPool.getConnection(function(err, connection) {
   
     for (var i=0; i<dataResponse.jobResult.topHashtags.length; i++) {
 
       var sqlQuery = 'INSERT INTO `toptentags` (name, timestamp, count) VALUES ('
                   + connection.escape(dataResponse.jobResult.topHashtags[i].hashtag) + ','
-                  + connection.escape(dataResponse.jobResult.) + ', '
-                  + connection.escape(json.time) + ');' 
+                  + connection.escape(timestamp) + ', '
+                  + connection.escape(dataResponse.jobResult.topHashtags[i].anzahl) + ');' 
       
       console.log(sqlQuery);    
       
@@ -248,7 +271,20 @@ function writeHashtagsIntoDatabase(hashTagData) {
       });    
     }
   connection.release();
-  });*/
+  });
+}
+
+function getDateFromCollectionArrayById (responseData) {
+
+  logHashIndex();
+  if (checkIfElementIsInArray(responseData, hashTagTopTenCollection) == true) {
+    var elementPos = hashTagTopTenCollection.map(function(hashTagTopTenCollection) {
+    return hashTagTopTenCollection.id;
+  }).indexOf(hashTagTopTenCollection.id);
+
+  var fieldValue = hashTagTopTenCollection[elementPos].time;
+  }
+  return fieldValue;
 }
 //----------------------------- DB Query end -----------------------------------------
 //readHashtagsFromDatabase();

@@ -107,9 +107,10 @@ public class JavaServer {
         private String hashtagTopTen (String data) {
         	
         	System.out.println(data);      	
-        	String responseData = "{\"job\":\"hasttagtop10\",\"time\":\"2014-11-22 09-41-17\",\"hashtags\":[{\"hashtag\":\"ebola\",\"anzahl\":200}, {\"hashtag\":\"tennis\",\"anzahl\":100},{\"hashtag\":\"fussball\",\"anzahl\":130}],\"allposts\":500}";
-        	
-        	return responseData;
+        	String responseData = "{\"job\":\"hashtagtop10\",\"time\":\"2014-11-22 09-41-17\",\"hashtags\":[{\"hashtag\":\"ebola\",\"anzahl\":200}, {\"hashtag\":\"tennis\",\"anzahl\":100},{\"hashtag\":\"fussball\",\"anzahl\":130}],\"allposts\":500}";
+        	String responseDataHash = "{\"jobID\":\"2000\",\"jobResult\":{\"topHashtags\":[{\"hashtag\":\"ebola\",\"anzahl\":200}, {\"hashtag\":\"tennis\",\"anzahl\":100},{\"hashtag\":\"fussball\",\"anzahl\":130}],\"countAllHashtags\":500}}";
+        	String responseDataError = "{\"jobID\":\"2000\",\"error\":[{\"errorMessage\":\"haha Fehler\", \"errorCode\":404}]}";
+        	return responseDataHash;
         }
     }
 }
