@@ -58,13 +58,18 @@ object TypeCreator {
    *
    * @author                Florian Willich, Puis Friesch
    */
-def createT_Path(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
+  def createT_Path(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
     Try(T_Path(prefixPath + time.get(Calendar.YEAR) + "/" + String.format("%02d", time.get(Calendar.MONTH)+1: Integer) + "/" + String.format("%02d", time.get(Calendar.DAY_OF_MONTH): Integer) + "/" + String.format("%02d", time.get(Calendar.HOUR_OF_DAY): Integer) + "/" + dataName))
   }
 
   def createT_Path(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): Try[T_Path] = {
     //calculate hours between the dates
     val hours: Long = (timeEnd.getTimeInMillis - timeBegin.getTimeInMillis) / 3600000
+
+    //TODO: Problem when the user wants to much data
+    if (hours > 24 * 7) {
+      throw new Exception()
+    }
 
     val pathList: List[T_Path] = List()
 
