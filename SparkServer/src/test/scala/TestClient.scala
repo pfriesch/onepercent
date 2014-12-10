@@ -15,7 +15,7 @@ object TestClient {
 
   def main (args: Array[String]) {
 
-    val socket = new Socket("hadoop03.f4.htw-berlin.de",5555)
+    val socket = new Socket("localhost",5555)
     println("test1")
     val in = new BufferedReader(new InputStreamReader(socket.getInputStream))
     println("test2")

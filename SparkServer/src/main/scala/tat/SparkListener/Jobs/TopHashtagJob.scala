@@ -11,9 +11,8 @@ import scala.util.{Failure, Success, Try}
  * Own imports
  */
 
-import tat.SparkListener.utils.{TypeValidator, ErrorMessage, TypeCreator}
+import tat.SparkListener.utils._
 import tat.SparkListener.JobExecutor
-import tat.SparkListener.utils.TweetAnalyser
 
 class TopHashtagJob extends JobExecutor {
 
@@ -31,10 +30,12 @@ class TopHashtagJob extends JobExecutor {
                 val sc = new SparkContext(conf)
                 val hc = new HiveContext(sc)
                 val ta = new TweetAnalyser(sc, hc)
+                Debug.log("TopHashtagJob", "executeJob", "Starting Anaylsis with path: " + path.path + " and topX: " + topX)
                 ta.topHashtagAnalyser(path, topX) match {
                   case Success(result) =>
                     sc.stop()
-                    result
+                    Debug.log("TopHashtagJob", "executeJob", "End Anaylsis with path: " + path.path + " and topX: " + topX)
+                    result;
                   case Failure(_) =>
                     ErrorMessage("TopHashtag analyses failed!", 101)
                 }

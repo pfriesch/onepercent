@@ -19,9 +19,10 @@ import java.util.GregorianCalendar;
  */
 case class T_Path(path: String) {
 
+  /**
   if (!(new File(new File(path).getParent()).isDirectory())) {
     throw new IllegalArgumentException("This path does not exist!")
-  }
+  }**/
 
 }
 
