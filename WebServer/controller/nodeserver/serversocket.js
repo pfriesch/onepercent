@@ -31,7 +31,7 @@ var server = app.listen(8080, function(){
 //var PORT = 9000;
 
 var HOST = 'hadoop03.f4.htw-berlin.de';
-var PORT = 5555;
+var PORT = 5556;
 
 var client = new net.Socket();
 
@@ -106,11 +106,13 @@ function readHashTagTopTenFromDatabase(params) {
 client.on('connect', function() { 
 
     console.log('Connected');
-
+/*
     setInterval(function() {
         console.log('sending request every minute');
         sendHashtagRequestToServer();
     }, 60 * 1000);
+*/
+sendHashtagRequestToServer();
     //client.destroy(); // Close the client socket completely
 });
 
@@ -140,7 +142,7 @@ client.on('data', function(data) {
 
     switch(getNameFromCollectionArrayById(dataResponse)) {
 
-      case 'topHashtags':
+      case 'TopHashtagJob':
         console.log('switch case Hashtagjob');
         writeHashtagsIntoDatabase(dataResponse);
         removeHashIdFromCollection(dataResponse); // warten bis daten in sql geschrieben wurden!!
@@ -239,8 +241,8 @@ function sendHashtagRequestToServer() {
 
     var hashTagTopTen = {
       jobID: id,
-      name: 'topHashtags',
-      params: [timeStringHour,'hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/',10],
+      name: 'TopHashtagJob',
+      params: ['2014-11-30 05:00:00','hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/',10],
       time: timeString,
     }
 
