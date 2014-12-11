@@ -13,16 +13,8 @@ import tat.SparkListener.utils.ApacheFlumeController
 class ApacheFlumeJob extends JobExecutor {
 
   override def executeJob(params: List[String]): AnyRef = {
-
-    Try(params(0).toString) match {
-      case Success(method) =>
-        val afc = new ApacheFlumeController();
-        afc.execute(method);
-
-      case Failure(wrong) =>
-        ErrorMessage("Parameter [" + wrong + "] cannot be cast to String", 100)
-
-    }
+    val afc = new ApacheFlumeController()
+    afc.execute(params(0))
   }
 
 }

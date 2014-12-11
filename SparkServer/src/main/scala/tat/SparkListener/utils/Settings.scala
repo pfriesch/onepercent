@@ -26,8 +26,7 @@ object Config {
     if (file.exists() && !file.isDirectory()) {
       JsonConverter.parseSettings(Source.fromFile(settingsFileName).mkString) match {
         case Success(settings) => this.settings = settings
-        case Failure(_) =>
-          setDefaultSettings
+        case Failure(_) => setDefaultSettings
       }
     }
     else setDefaultSettings
@@ -41,6 +40,6 @@ object Config {
 
   def get: Settings = settings
 
-  def getAbsolutConfigFilePath : String = new File(settingsFileName).getAbsolutePath
+  def getAbsolutConfigFilePath: String = new File(settingsFileName).getAbsolutePath
 
 }
