@@ -7,14 +7,14 @@ import akka.util.ByteString
 
 import org.json4s._
 
-import tat.SparkListener.utils.{Debug, Config, ErrorMessage, JsonConverter}
+import tat.SparkListener.utils._
 
 import scala.util.{Try}
 
 /**
  * Created by plinux on 12/11/14.
  */
-class JobHandler extends Actor {
+class JobHandler extends Actor with Logging {
 
   var connection: ActorRef = null
 
@@ -27,7 +27,7 @@ class JobHandler extends Actor {
     case Received(data) => {
       evaluateJob(data.decodeString("UTF-8")) match {
         case util.Success(job) =>
-          Debug.log("JobHandler", "receive", "New Job: " + job)
+          log("receive", "New Job: " + job)
           val fullJobName = Config.get.JobsPackageString + job.name
           Try(context.actorOf(Props(Class.forName(fullJobName).asInstanceOf[Class[JobExecutor]]))) match {
             case util.Success(jobActor) => jobActor ! ExecuteJob(job.jobID, job.params)
@@ -47,7 +47,7 @@ class JobHandler extends Actor {
       connection ! Write(ByteString.apply(JsonConverter.caseClassToJson(r) + "\n"))
     case PeerClosed => context stop self
     case Register(connection: ActorRef, _, _) => this.connection = connection
-    case _ => Debug.log("JobHandler", "receive", "JobHanlder default case triggered")
+    case _ => log("receive", "JobHanlder default case triggered")
 
   }
 
