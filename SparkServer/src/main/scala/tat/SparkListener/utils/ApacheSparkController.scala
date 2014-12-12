@@ -30,32 +30,55 @@ class ApacheSparkController() {
     }
   }
 
-
+  /**
+   * Runs the start Method from the apacheSparkInitSkript, to start the Apache Spark Service.
+   * @return Output of the start Method
+   */
   private def start(): String ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " start").lines_!
     output.mkString
   }
 
+  /**
+   * Runs the stop Method from the apacheSparkInitSkript, to stop the Apache Spark Service.
+   * @return Output of the stop Method
+   */
   private def stop(): String ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " stop").lines_!
     output.mkString
   }
 
+  /**
+   * Runs the restart Method from the apacheSparkInitSkript, to restart the Apache Spark Service.
+   * @return Output of the restart Method
+   */
   private def restart(): String ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " restart").lines_!
     output.mkString
   }
 
+  /**
+   *  Runs the status Method from the apacheSparkInitSkript, to list in which state the Apache Spark Service is.
+   * @return Output of the status Method
+   */
   private def status(): String ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " status").lines_!
     output.mkString
   }
 
+  /**
+   *  Shows the Log of the Apache Spark Service.
+   * @return Outputs the last 20 Lines of the status Method
+   */
   private def log(): String ={
     val output = Process("tail -n 20 " + apacheSparkHome + apacheSparkLogFile).lines_!
     output.mkString
   }
 
+  /**
+   * Runs the debug Method from the apacheSparkInitSkript, to show the debug messages of the Apache Spark Service.
+   * @return Outputs the last 20 Lines that start with '### DEBUG ###'
+   */
   private def debug(): String ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " debug").lines_!
     output.mkString
