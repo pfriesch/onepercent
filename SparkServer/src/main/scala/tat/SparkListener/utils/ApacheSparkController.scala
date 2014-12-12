@@ -1,6 +1,11 @@
 package tat.SparkListener.utils
 
+import tat.SparkListener.JobResult
+
 import sys.process._;
+import tat.SparkListener.utils.ErrorMessage;
+
+case class ApacheSparkResult(output: String) extends JobResult
 
 /**
  *  Class to control the Apache Spark service.
@@ -20,44 +25,67 @@ class ApacheSparkController() {
    *  @param method String that contains the desired method
    *  @return Output of the function
    */
-  def execute(method: String): String = {
+  def execute(method: String): JobResult = {
     method match{
       case "restart" => restart()
       case "status" => status()
       case "log" => log()
       case "debug" => debug()
-      case _ => "No Method " + method + " available!"
+      case _ => ErrorMessage("No Method " + method + " available!", 100)
     }
   }
 
-
-  private def start(): String ={
+  /**
+   * Runs the start Method from the apacheSparkInitSkript, to start the Apache Spark Service.
+   * @return Output of the start Method
+   */
+  private def start(): ApacheSparkResult ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " start").lines_!
-    output.mkString
+    ApacheSparkResult(output.mkString)
   }
 
-  private def stop(): String ={
+  /**
+   * Runs the stop Method from the apacheSparkInitSkript, to stop the Apache Spark Service.
+   * @return Output of the stop Method
+   */
+  private def stop(): ApacheSparkResult ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " stop").lines_!
-    output.mkString
+    ApacheSparkResult(output.mkString)
   }
 
-  private def restart(): String ={
+  /**
+   * Runs the restart Method from the apacheSparkInitSkript, to restart the Apache Spark Service.
+   * @return Output of the restart Method
+   */
+  private def restart(): ApacheSparkResult ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " restart").lines_!
-    output.mkString
+    ApacheSparkResult(output.mkString)
   }
 
-  private def status(): String ={
+  /**
+   *  Runs the status Method from the apacheSparkInitSkript, to list in which state the Apache Spark Service is.
+   * @return Output of the status Method
+   */
+  private def status(): ApacheSparkResult ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " status").lines_!
-    output.mkString
+    ApacheSparkResult(output.mkString)
   }
 
-  private def log(): String ={
+  /**
+   *  Shows the Log of the Apache Spark Service.
+   * @return Outputs the last 20 Lines of the status Method
+   */
+  private def log(): ApacheSparkResult ={
     val output = Process("tail -n 20 " + apacheSparkHome + apacheSparkLogFile).lines_!
-    output.mkString
+    ApacheSparkResult(output.mkString)
   }
 
-  private def debug(): String ={
+  /**
+   * Runs the debug Method from the apacheSparkInitSkript, to show the debug messages of the Apache Spark Service.
+   * @return Outputs the last 20 Lines that start with '### DEBUG ###'
+   */
+  private def debug(): ApacheSparkResult ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " debug").lines_!
-    output.mkString
+    ApacheSparkResult(output.mkString)
   }
 }

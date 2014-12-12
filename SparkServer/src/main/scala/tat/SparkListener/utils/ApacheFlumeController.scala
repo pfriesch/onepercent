@@ -30,27 +30,46 @@ class ApacheFlumeController() {
     }
   }
 
-
+  /**
+   *  Runs the start Method from the apacheFlumeInitScript, to start the Apache Flume Service.
+   * @return Output of the start Method
+   */
   private def start(): String ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " start").lines_!
     output.mkString
   }
 
+  /**
+   *  Runs the stop Method from the apacheFlumeInitScript, to stop the Apache Flume Service.
+   * @return Output of the stop Method
+   */
   private def stop(): String ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " stop").lines_!
     output.mkString
   }
 
+  /**
+   *  Runs the restart Method from the apacheFlumeInitScript, to restart the Apache Flume Service.
+   * @return Output of the restart Method
+   */
   private def restart(): String ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " restart").lines_!
     output.mkString
   }
 
+  /**
+   *  Runs the status Method from the apacheFlumeInitScript, to list in which state the Apache Flume Service is.
+   * @return Output of the status Method
+   */
   private def status(): String ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " status").lines_!
     output.mkString
   }
 
+  /**
+   *  Shows the Log of the Apache Flume Service.
+   * @return Outputs the last 5 Lines of the status Method
+   */
   private def log(): String ={
     val output = Process("tail -n 5 " + apacheFlumeHome + "logs/flume.TwitterAgent.init.log").lines_!
     output.mkString
