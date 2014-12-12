@@ -21,7 +21,7 @@ class TopHashtagJob extends JobExecutor with Logging {
     TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(gregCalendar) =>
 
-        TypeCreator.createT_Path(params(1), gregCalendar, "*.data") match {
+        TypeCreator.createClusterPath(params(1), gregCalendar, "*.data") match {
           case Success(path) =>
 
             Try(params(2).toInt) match {

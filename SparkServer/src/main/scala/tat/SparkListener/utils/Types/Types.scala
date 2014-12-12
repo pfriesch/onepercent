@@ -60,12 +60,15 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createT_Path(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
+  def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
     Try(T_Path(prefixPath + createTimePath(time) + dataName))
   }
 
   /**
-   * Testing:
+   * This method creates multiple paths as same as the method createClusterPath.
+   * @see { createClusterPath }
+   *
+   * For Testing:
    * val begin: GregorianCalendar = new GregorianCalendar()
    * begin.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2014-12-04 12:00:00"))
    * val end: GregorianCalendar = new GregorianCalendar()
@@ -82,7 +85,7 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createMultipleT_Path(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
+  def createMultipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
     //calculate hours between the dates
     //TODO: Maybe without any cast???
     val hours: Int = ((timeEnd.getTimeInMillis - timeBegin.getTimeInMillis) / 3600000).toInt
