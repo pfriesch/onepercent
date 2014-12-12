@@ -12,11 +12,9 @@ import tat.SparkListener.utils.ApacheSparkController
 
 class ApacheSparkJob extends JobExecutor {
 
-
   override def executeJob(params: List[String]): JobResult = {
     val asc = new ApacheSparkController()
     asc.execute(params(0))
-
   }
   
 }

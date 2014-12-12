@@ -1,6 +1,11 @@
 package tat.SparkListener.utils
 
-import sys.process._;
+import tat.SparkListener.JobResult
+
+import sys.process._
+
+
+case class ApacheFlumeResult(output: String) extends JobResult
 
 /**
  *  Class to control the Apache Flume service.
@@ -19,14 +24,14 @@ class ApacheFlumeController() {
    *  @param method String that contains the desired method
    *  @return Output of the function
    */
-  def execute(method: String): String = {
+  def execute(method: String): JobResult = {
     method match{
       case "start" => start()
       case "stop" => stop()
       case "restart" => restart()
       case "status" => status()
       case "log" => log()
-      case _ => "No Method " + method + " available!"
+      case _ => ErrorMessage("No Method " + method + " available!", 100)
     }
   }
 
@@ -34,44 +39,44 @@ class ApacheFlumeController() {
    *  Runs the start Method from the apacheFlumeInitScript, to start the Apache Flume Service.
    * @return Output of the start Method
    */
-  private def start(): String ={
+  private def start(): ApacheFlumeResult ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " start").lines_!
-    output.mkString
+    ApacheFlumeResult(output.mkString)
   }
 
   /**
    *  Runs the stop Method from the apacheFlumeInitScript, to stop the Apache Flume Service.
    * @return Output of the stop Method
    */
-  private def stop(): String ={
+  private def stop(): ApacheFlumeResult ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " stop").lines_!
-    output.mkString
+    ApacheFlumeResult(output.mkString)
   }
 
   /**
    *  Runs the restart Method from the apacheFlumeInitScript, to restart the Apache Flume Service.
    * @return Output of the restart Method
    */
-  private def restart(): String ={
+  private def restart(): ApacheFlumeResult ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " restart").lines_!
-    output.mkString
+    ApacheFlumeResult(output.mkString)
   }
 
   /**
    *  Runs the status Method from the apacheFlumeInitScript, to list in which state the Apache Flume Service is.
    * @return Output of the status Method
    */
-  private def status(): String ={
+  private def status(): ApacheFlumeResult ={
     val output = Process(apacheFlumeHome + apacheFlumeInitScript + " status").lines_!
-    output.mkString
+    ApacheFlumeResult(output.mkString)
   }
 
   /**
    *  Shows the Log of the Apache Flume Service.
    * @return Outputs the last 5 Lines of the status Method
    */
-  private def log(): String ={
+  private def log(): ApacheFlumeResult ={
     val output = Process("tail -n 5 " + apacheFlumeHome + "logs/flume.TwitterAgent.init.log").lines_!
-    output.mkString
+    ApacheFlumeResult(output.mkString)
   }
 }
