@@ -6,11 +6,13 @@ import org.json4s.native.JsonMethods._
 import native.Serialization.write
 
 
-case class Result(jobID: String, jobResult: AnyRef)
+case class Result(jobID: String, jobResult: JobResult)
 
 case class JobSignature(jobID: String, name: String, params: List[String], time: String)
 
 case class ExecuteJob(jobID: String, params: List[String])
+
+trait JobResult
 
 /**
  * Each Job needs to implement this trait and the executeJob method.
@@ -30,6 +32,6 @@ trait JobExecutor extends Actor {
    * @param params the params of the specified job
    * @return the result as a case class
    */
-  def executeJob(params: List[String]): AnyRef
+  def executeJob(params: List[String]): JobResult
 
 }

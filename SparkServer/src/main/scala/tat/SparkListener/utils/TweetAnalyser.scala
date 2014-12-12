@@ -9,6 +9,8 @@ import org.apache.spark.sql.hive._
 
 import java.io.File
 
+import tat.SparkListener.JobResult
+
 import scala.util.Try
 ;
 
@@ -64,7 +66,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
  * @param hashtag   The twitter hashtag.
  * @param count     The count of this twitter hashtag.
  */
-case class HashtagFrequency(hashtag: String, count: Long)
+case class HashtagFrequency(hashtag: String, count: Long) extends JobResult
 
 /**
  * Type representing The Top twitter hashtags as an analysis result including
@@ -75,4 +77,4 @@ case class HashtagFrequency(hashtag: String, count: Long)
  * @param countAllHashtags  The count of all hashtags counted whyle analysing the
  *                          twitter tweets.
  */
-case class TopHashtags(topHashtags: Array[HashtagFrequency], countAllHashtags: Long)
+case class TopHashtags(topHashtags: Array[HashtagFrequency], countAllHashtags: Long) extends JobResult

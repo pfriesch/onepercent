@@ -32,13 +32,11 @@ class JobHandler extends Actor with Logging {
           Try(context.actorOf(Props(Class.forName(fullJobName).asInstanceOf[Class[JobExecutor]]))) match {
             case util.Success(jobActor) => jobActor ! ExecuteJob(job.jobID, job.params)
             case util.Failure(ex) =>
-              self ! Result(job.jobID, JsonConverter.caseClassToJson(
-                ErrorMessage("Job not known! Job name: " + job.name, 400)))
+              self ! Result(job.jobID, ErrorMessage("Job not known! Job name: " + job.name, 400))
           }
         case util.Failure(ex) =>
           //TODO What to do if json read failed?
-          self ! Result("", JsonConverter.caseClassToJson(
-            ErrorMessage("Unable to resolve request! Parse exception: " + ex.getMessage, 404)))
+          self ! Result("", ErrorMessage("Unable to resolve request! Parse exception: " + ex.getMessage, 404))
       }
     }
 

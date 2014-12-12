@@ -12,11 +12,11 @@ import scala.util.{Failure, Success, Try}
  */
 
 import tat.SparkListener.utils._
-import tat.SparkListener.JobExecutor
+import tat.SparkListener.{JobResult, JobExecutor}
 
 class TopHashtagJob extends JobExecutor with Logging {
 
-  override def executeJob(params: List[String]): AnyRef = {
+  override def executeJob(params: List[String]): JobResult = {
 
     TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(gregCalendar) =>
@@ -36,7 +36,7 @@ class TopHashtagJob extends JobExecutor with Logging {
                     //stop the spark context, otherwise its stuck in this context...
                     sc.stop()
                     log("executeJob", "End Anaylsis with path: " + path.path + " and topX: " + topX)
-                    result;
+                    result
                   case Failure(_) =>
                     log("executeJob", "TopHashtag analyses failed! path[" + path.path + "] topX[" + topX + "]")
                     ErrorMessage("TopHashtag analyses failed!", 101);

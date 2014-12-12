@@ -1,6 +1,9 @@
 package tat.SparkListener.utils
 
 //Scala imports
+
+import tat.SparkListener.JobResult
+
 import scala.util.Try;
 
 //JAVA imports
@@ -33,7 +36,7 @@ case class T_Path(path: String) {
  *
  * @author Florian Willich
  */
-case class ErrorMessage(errorMessage: String, errorCode: Int)
+case class ErrorMessage(errorMessage: String, errorCode: Int) extends JobResult
 
 //TODO add other JobResults
 

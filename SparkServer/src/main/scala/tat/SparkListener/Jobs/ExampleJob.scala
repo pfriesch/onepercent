@@ -1,15 +1,15 @@
 package tat.SparkListener.Jobs
 
-import tat.SparkListener.JobExecutor
+import tat.SparkListener.{JobResult, JobExecutor}
 
 
 // Ergebnis des Spark Jobs
-case class ExampleResult(didItWork: String)
+case class ExampleResult(didItWork: String) extends JobResult
 
 
 class ExampleJob extends JobExecutor{
 
-  override def executeJob(params: List[String]): AnyRef = {
+  override def executeJob(params: List[String]): JobResult = {
 
     // Hier Spark Analyse Einfügen
 
