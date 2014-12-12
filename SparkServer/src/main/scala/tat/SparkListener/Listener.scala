@@ -26,7 +26,7 @@ class Listener extends Actor with Logging {
       context stop self
       System.exit(-1)
     case Connected(remote, local) =>
-      val handler = context.actorOf(Props[JobHandler], name = "JobHandler#" + remote.getHostName + ":" + remote.getPort)
+      val handler = context.actorOf(Props[JobHandler], name = "JobHandler$" + remote.getHostName + ":" + remote.getPort)
       val connection = sender
       connection ! Register(handler)
       handler ! Register(connection)
