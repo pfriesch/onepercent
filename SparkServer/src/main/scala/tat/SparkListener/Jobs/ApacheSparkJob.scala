@@ -16,7 +16,7 @@ class ApacheSparkJob extends JobExecutor {
 
   override def executeJob(params: List[String]): AnyRef = {
     val asc = new ApacheSparkController();
-    asc.execute(method);
+    asc.execute(params(0));
   }
   
 }
