@@ -49,7 +49,7 @@ SPARK_LOG_DIR="${SPARK_DIR}/logs"
 SPARK_MASTER="spark://hadoop03.f4.htw-berlin.de:60001"
 SPARK_MASTER_OPTS='--executor-memory=32G --driver-memory 4G --driver-java-options "-Dspark.storage.memoryFraction=0.1"'
 
-SPARK_LOGFILE="${SPARK_DIR}/${JOB_CLASS}.lock"
+SPARK_LOCKFILE="${SPARK_DIR}/${JOB_CLASS}.lock"
 SPARK_PIDFILE="${SPARK_DIR}/${JOB_CLASS}.pid"
 EXEC_PATH="${SPARK_DIR}/bin/spark-submit"
 desc="Spark JOB daemon"
@@ -86,7 +86,7 @@ start() {
   log_success_msg "Starting $desc: "
   /bin/bash -c "/bin/bash -c 'echo \$\$ > ${SPARK_PIDFILE} && exec ${EXEC_PATH} --class $JOB_CLASS --master $SPARK_MASTER $SPARK_MASTER_OPTS --jars $JOB_JARS $JOB_PACKAGE >>${SPARK_LOG_DIR}/${JOB_CLASS}.log 2>&1 ' &"
   RETVAL=$?
-  [ $RETVAL -eq 0 ] && touch $SPARK_LOGFILE
+  [ $RETVAL -eq 0 ] && touch $SPARK_LOCKFILE
   return $RETVAL
 }
 
@@ -107,7 +107,7 @@ stop() {
     done
     kill -KILL ${SPARK_PID} &>/dev/null
   fi
-  rm -f $SPARK_LOGFILE $SPARK_PIDFILE
+  rm -f $SPARK_LOCKFILE $SPARK_PIDFILE
   return 0
 }
 
@@ -140,8 +140,12 @@ checkstatus(){
   return $status
 }
 
+debug(){
+  cat ${SPARK_LOG_DIR}/${JOB_CLASS}.log | grep ^'### DEBUG ###' | tail -n 15
+  return 0
+}
 condrestart(){
-  [ -e ${SPARK_LOGFILE} ] && restart || :
+  [ -e ${SPARK_LOCKFILE} ] && restart || :
 }
 
 case "$1" in
@@ -159,6 +163,9 @@ case "$1" in
     ;;
   condrestart|try-restart)
     condrestart
+    ;;
+  debug)
+    debug
     ;;
   *)
     echo $"Usage: $0 {start|stop|status|restart|try-restart|condrestart}"
