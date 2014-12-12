@@ -7,14 +7,14 @@ import scala.util.{Failure, Success, Try}
  */
 
 import tat.SparkListener.utils.{TypeValidator, ErrorMessage, TypeCreator}
-import tat.SparkListener.JobExecutor
+import tat.SparkListener.{JobResult, JobExecutor}
 import tat.SparkListener.utils.ApacheFlumeController
 
 case class ApacheFlumeResult(output: String)
 
 class ApacheFlumeJob extends JobExecutor {
 
-  override def executeJob(params: List[String]): AnyRef = {
+  override def executeJob(params: List[String]): JobResult = {
     val afc = new ApacheFlumeController()
     afc.execute(params(0))
   }

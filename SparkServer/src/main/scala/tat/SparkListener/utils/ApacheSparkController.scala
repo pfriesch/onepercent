@@ -2,8 +2,8 @@ package tat.SparkListener.utils
 
 import tat.SparkListener.JobResult
 
-import sys.process._;
-import tat.SparkListener.utils.ErrorMessage;
+import sys.process._
+
 
 case class ApacheSparkResult(output: String) extends JobResult
 
