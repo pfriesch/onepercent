@@ -10,6 +10,8 @@ import tat.SparkListener.utils.{TypeValidator, ErrorMessage, TypeCreator}
 import tat.SparkListener.JobExecutor
 import tat.SparkListener.utils.ApacheFlumeController
 
+case class ApacheFlumeResult(output: String)
+
 class ApacheFlumeJob extends JobExecutor {
 
   override def executeJob(params: List[String]): AnyRef = {
