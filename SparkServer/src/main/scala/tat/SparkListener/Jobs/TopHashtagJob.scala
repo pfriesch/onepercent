@@ -14,7 +14,7 @@ import scala.util.{Failure, Success, Try}
 import tat.SparkListener.utils._
 import tat.SparkListener.JobExecutor
 
-class TopHashtagJob extends JobExecutor {
+class TopHashtagJob extends JobExecutor with Logging {
 
   override def executeJob(params: List[String]): AnyRef = {
 
@@ -30,18 +30,20 @@ class TopHashtagJob extends JobExecutor {
                 val sc = new SparkContext(conf)
                 val hc = new HiveContext(sc)
                 val ta = new TweetAnalyser(sc, hc)
-                Debug.log("TopHashtagJob", "executeJob", "Starting Anaylsis with path: " + path.path + " and topX: " + topX)
-                ta.topHashtagAnalyser(path, topX) match {
+                log("executeJob", "Starting Anaylsis with path: " + path.path + " and topX: " + topX)
+                Try(ta.topHashtagAnalyser(path, topX)) match {
                   case Success(result) =>
+                    //stop the spark context, otherwise its stuck in this context...
                     sc.stop()
-                    Debug.log("TopHashtagJob", "executeJob", "End Anaylsis with path: " + path.path + " and topX: " + topX)
+                    log("executeJob", "End Anaylsis with path: " + path.path + " and topX: " + topX)
                     result;
                   case Failure(_) =>
-                    ErrorMessage("TopHashtag analyses failed!", 101)
+                    log("executeJob", "TopHashtag analyses failed! path[" + path.path + "] topX[" + topX + "]")
+                    ErrorMessage("TopHashtag analyses failed!", 101);
                 }
 
-              case Failure(wrongTopX) =>
-                ErrorMessage("Parameter [" + wrongTopX + "] is not an Integer!", 100)
+              case Failure(_) =>
+                ErrorMessage("Parameter [" + params(2) + "] is not an Integer!", 100)
 
             }
 

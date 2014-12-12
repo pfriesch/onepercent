@@ -30,7 +30,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param topX
    * @return
    */
-  def topHashtagAnalyser(path: T_Path, topX: Int): Try[T_TopHashtags] = {
+  def topHashtagAnalyser(path: T_Path, topX: Int): TopHashtags = {
 
     val scheme: SchemaRDD = fileReader.readFile(path.path)
 
@@ -44,10 +44,10 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
     val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString().toLowerCase(), 1))
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
-    val topHashtags: Array[T_HashtagFrequency] = reducedTable.map { case (a, b) => (b, a)}.top(topX).map { case (a, b) => T_HashtagFrequency(b, a)}
+    val topHashtags: Array[HashtagFrequency] = reducedTable.map { case (a, b) => (b, a)}.top(topX).map { case (a, b) => HashtagFrequency(b, a)}
 
     //table.count() -> All unique hashtags
-    Try(new T_TopHashtags(topHashtags, table.count()))
+    new TopHashtags(topHashtags, table.count())
   }
 
 }
@@ -64,7 +64,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
  * @param hashtag   The twitter hashtag.
  * @param count     The count of this twitter hashtag.
  */
-case class T_HashtagFrequency(hashtag: String, count: Long)
+case class HashtagFrequency(hashtag: String, count: Long)
 
 /**
  * Type representing The Top twitter hashtags as an analysis result including
@@ -75,4 +75,4 @@ case class T_HashtagFrequency(hashtag: String, count: Long)
  * @param countAllHashtags  The count of all hashtags counted whyle analysing the
  *                          twitter tweets.
  */
-case class T_TopHashtags(topHashtags: Array[T_HashtagFrequency], countAllHashtags: Long)
+case class TopHashtags(topHashtags: Array[HashtagFrequency], countAllHashtags: Long)
