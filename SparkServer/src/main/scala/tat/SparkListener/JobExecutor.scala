@@ -5,6 +5,7 @@ import org.json4s._
 import org.json4s.native.JsonMethods._
 import native.Serialization.write
 
+//TODO: Please make some documentation Pius
 
 case class Result(jobID: String, jobResult: AnyRef)
 

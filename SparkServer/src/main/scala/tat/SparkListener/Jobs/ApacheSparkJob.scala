@@ -1,12 +1,8 @@
 package tat.SparkListener.Jobs
 
-import scala.util.{Failure, Success, Try}
+//TODO: Patrick please make some documentation!
 
-/**
- * Own imports
- */
-
-import tat.SparkListener.utils.{TypeValidator, ErrorMessage, TypeCreator}
+//Own imports
 import tat.SparkListener.JobExecutor
 import tat.SparkListener.utils.ApacheSparkController
 

@@ -1,18 +1,11 @@
 package tat.SparkListener.utils
 
+//Spark imports
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.rdd._
 import org.apache.spark.sql._
 import org.apache.spark.sql.hive._
-
-
-import java.io.File
-
-import scala.util.Try
-;
-
-//Make a trait out of this class
 
 /**
  * This class shall be the the analyser which does the job of mapping and
@@ -22,13 +15,18 @@ import scala.util.Try
  **/
 class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 
+  /**
+   * JSON File reader is needed to read the tweets.
+   */
   val fileReader: TweetJSONFileReader = new TweetJSONFileReader(sc, hiveContext)
 
   /**
    * This method returns the top X hashtags of the transfered tweetFile
-   * @param path
-   * @param topX
-   * @return
+   *
+   * @param path    The path to the tweet data to analyse.
+   * @param topX    The top X hashtags you want to extract.
+   *
+   * @return        the top X hashtags.
    */
   def topHashtagAnalyser(path: T_Path, topX: Int): TopHashtags = {
 
@@ -42,7 +40,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     hashtagsScheme.registerTempTable("hashtags")
     
     val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
-    val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString().toLowerCase(), 1))
+    val mappedTable: RDD[(String, Int)] = table.map(word => (word.apply(0).toString.toLowerCase, 1))
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
     val topHashtags: Array[HashtagFrequency] = reducedTable.map { case (a, b) => (b, a)}.top(topX).map { case (a, b) => HashtagFrequency(b, a)}
 

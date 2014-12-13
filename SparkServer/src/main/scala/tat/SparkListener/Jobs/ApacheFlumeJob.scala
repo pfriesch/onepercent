@@ -1,16 +1,8 @@
 package tat.SparkListener.Jobs
 
-import scala.util.{Failure, Success, Try}
-
-/**
- * Own imports
- */
-
-import tat.SparkListener.utils.{TypeValidator, ErrorMessage, TypeCreator}
+//Own imports
 import tat.SparkListener.JobExecutor
 import tat.SparkListener.utils.ApacheFlumeController
-
-case class ApacheFlumeResult(output: String)
 
 class ApacheFlumeJob extends JobExecutor {
 
@@ -20,3 +12,12 @@ class ApacheFlumeJob extends JobExecutor {
   }
 
 }
+
+/**
+ * Result of the ApacheFlume Job.
+ *
+ * TODO: Patrick please make some documentation.
+ *
+ * @param output
+ */
+case class ApacheFlumeResult(output: String)

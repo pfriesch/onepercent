@@ -1,6 +1,6 @@
 package tat.SparkListener.utils
 
-import sys.process._;
+import sys.process._
 
 /**
  *  Class to control the Apache Flume service.

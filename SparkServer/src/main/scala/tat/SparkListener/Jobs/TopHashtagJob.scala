@@ -1,24 +1,25 @@
 package tat.SparkListener.Jobs
 
+//Scala imports
+import scala.util.{Failure, Success, Try}
+
+//JAVA imports
 import java.text.SimpleDateFormat
 
+//Spark imports
 import org.apache.spark.sql.hive._
 import org.apache.spark.{SparkConf, SparkContext}
 
-import scala.util.{Failure, Success, Try}
-
-/**
- * Own imports
- */
-
-import tat.SparkListener.utils._
+//Own imports
+import tat.SparkListener.utils.Types.TypeCreator
+import tat.SparkListener.utils.{ErrorMessage, Logging, TweetAnalyser}
 import tat.SparkListener.JobExecutor
 
 class TopHashtagJob extends JobExecutor with Logging {
 
   override def executeJob(params: List[String]): AnyRef = {
 
-    TypeValidator.validateTime(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
+    TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(gregCalendar) =>
 
         TypeCreator.createClusterPath(params(1), gregCalendar, "*.data") match {
