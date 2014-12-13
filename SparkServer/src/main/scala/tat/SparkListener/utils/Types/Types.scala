@@ -95,11 +95,11 @@ object TypeCreator {
       case toLess if toLess < 1 =>
         throw new IllegalArgumentException("The difference of the dates has to be 1 hour or bigger. Your dates differ the follows: " + toLess)
 
-      case hours =>
+      case x =>
         var pathList: ListBuffer[T_Path] = new ListBuffer[T_Path]()
         pathList += T_Path(prefixPath + createTimePath(timeBegin) + dataName)
 
-        for (i <- 1 to hours) {
+        for (i <- 1 to x) {
           timeBegin.add(Calendar.HOUR, 1)
           pathList += T_Path(prefixPath + createTimePath(timeBegin) + dataName)
         }
