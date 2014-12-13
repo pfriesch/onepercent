@@ -1,7 +1,6 @@
 package tat.SparkListener.utils
 
-import sys.process._;
-import tat.SparkListener.utils.ErrorMessage;
+import sys.process._
 
 case class ApacheSparkResult(output: String)
 
