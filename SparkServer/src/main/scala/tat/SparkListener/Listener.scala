@@ -7,11 +7,11 @@ import java.net.InetSocketAddress
 
 import tat.SparkListener.utils.{Logging, Config, Settings}
 
-//TODO: Please make some documentation Pius
 
 /**
- * This class listens to a port for job requests and passes the requests to the RequestHandler
- * Created by plinux on 12/11/14.
+ * Listens for connections and starts a JobHandler for every connection.
+ *
+ * @author pFriesch
  */
 class Listener extends Actor with Logging {
 
@@ -37,6 +37,9 @@ class Listener extends Actor with Logging {
 
 }
 
+/**
+ * Main
+ */
 object App {
 
   def main(args: Array[String]) {

@@ -5,13 +5,21 @@ import java.io.{File, PrintWriter}
 import scala.io.Source
 import scala.util.{Failure, Success}
 
+
 /**
- * Created by plinux on 03/12/14.
+ * Holding configuration for the App
+ * @param hostname
+ * @param port
+ * @param JobsPackageString
  */
-
-
 case class Settings(hostname: String, port: Int, JobsPackageString: String)
 
+
+/**
+ * Provides a Configuration Object based on a file. The files content is a UTF-8 Json String.
+ *
+ * @author pFriesch
+ */
 object Config {
 
   val settingsFileName = "config.cfg"
@@ -34,12 +42,20 @@ object Config {
 
   private def setDefaultSettings = {
     val writer = new PrintWriter(new File(settingsFileName))
-    writer.write(JsonConverter.caseClassToJson(Settings(defaultHostname, defaultPort, defaultJobsPackage)))
+    writer.write(JsonConverter.toJsonString(Settings(defaultHostname, defaultPort, defaultJobsPackage)))
     writer.close()
   }
 
+  /**
+   * Returns the current Settings
+   * @return
+   */
   def get: Settings = settings
 
+  /**
+   * Retruns the absolut Path where the Config file is expected/saved.
+   * @return
+   */
   def getAbsolutConfigFilePath: String = new File(settingsFileName).getAbsolutePath
 
 }

@@ -7,7 +7,8 @@ import tat.SparkListener.JobSignature
 import scala.util.Try
 
 /**
- * Created by plinux on 28/11/14.
+ * Provides methods to parse Objects out of Json Strings and to make Json Strings out of Objects
+ * @author pFriesch
  */
 object JsonConverter {
 
@@ -35,12 +36,12 @@ object JsonConverter {
 
   /**
    * Builds a json String of the given instance of a case Class
-   * @param jobResult
+   * @param caseClass
    * @return
    */
-  def caseClassToJson(jobResult: AnyRef) : String = {
+  def toJsonString(caseClass: AnyRef) : String = {
     implicit val formats = native.Serialization.formats(NoTypeHints)
-    write(jobResult)
+    write(caseClass)
   }
 
 
