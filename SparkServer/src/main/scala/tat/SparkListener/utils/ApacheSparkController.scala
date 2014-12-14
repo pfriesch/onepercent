@@ -33,6 +33,7 @@ class ApacheSparkController() {
       case "status" => status()
       case "log" => log()
       case "debug" => debug()
+      case "update" => update()
       case _ => ErrorMessage("No Method " + method + " available!", 100)
     }
   }
@@ -57,6 +58,7 @@ class ApacheSparkController() {
 
   /**
    * Runs the restart Method from the apacheSparkInitSkript, to restart the Apache Spark Service.
+   * May return nothing, cause the Service gets restarted.
    * @return Output of the restart Method
    */
   private def restart(): ApacheSparkResult ={
@@ -88,6 +90,16 @@ class ApacheSparkController() {
    */
   private def debug(): ApacheSparkResult ={
     val output = Process(apacheSparkHome + apacheSparkInitSkript + " debug").lines_!
+    ApacheSparkResult(output.mkString)
+  }
+
+  /**
+   * Runs the update Method from the apacheSparkInitSkript, to update the Apache Spark Service.
+   * May return nothing, cause the Service gets restarted.
+   * @return Output of the update Method
+   */
+  private def update(): ApacheSparkResult ={
+    val output = Process(apacheSparkHome + apacheSparkInitSkript + " update").lines_!
     ApacheSparkResult(output.mkString)
   }
 }
