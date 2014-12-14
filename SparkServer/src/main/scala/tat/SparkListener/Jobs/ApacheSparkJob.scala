@@ -1,10 +1,7 @@
 package tat.SparkListener.Jobs
 
-//TODO: Patrick please make some documentation!
-
-
 /**
- * Own imports
+ * Job to control the Apache Spark Service through the Scala Application
  */
 
 import tat.SparkListener.utils.{TypeValidator, ErrorMessage}

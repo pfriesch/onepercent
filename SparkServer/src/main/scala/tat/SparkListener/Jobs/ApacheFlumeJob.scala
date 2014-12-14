@@ -4,7 +4,7 @@ package tat.SparkListener.Jobs
 import scala.util.{Failure, Success, Try}
 
 /**
- * Own imports
+ * Job to control the Apache Flume Service through the Scala Application.
  */
 
 import tat.SparkListener.utils.{TypeValidator, ErrorMessage}
@@ -20,12 +20,3 @@ class ApacheFlumeJob extends JobExecutor {
   }
 
 }
-
-/**
- * Result of the ApacheFlume Job.
- *
- * TODO: Patrick please make some documentation.
- *
- * @param output
- */
-case class ApacheFlumeResult(output: String)
