@@ -38,9 +38,12 @@
 . /lib/lsb/init-functions
 
 # Setting up a few defaults that can be later overrideen in /etc/default/flume-ng-agent
+GIT_PATH="${HOME}/Twitter-Analytics-Tool"
+POM_PATH="${GIT_PATH}/SparkServer/pom.xml"
+PACKAGE_VERSION=$(grep -oPm1 "(?<=<version>)[^<]+" ${POM_PATH})
 JOB_CLASS="tat.SparkListener.App"
 JOB_JARS="${HOME}/.m2/repository/org/json4s/json4s-native_2.10/3.2.10/json4s-native_2.10-3.2.10.jar"
-JOB_PACKAGE="${HOME}/Twitter-Analytics-Tool/SparkServer/target/twitter-analytics-tool-0.0.2.jar"
+JOB_PACKAGE="${GIT_PATH}/SparkServer/target/twitter-analytics-tool-${PACKAGE_VERSION}.jar"
 
 SPARK_DIR="${HOME}/spark"
 SPARK_LOG_DIR="${SPARK_DIR}/logs"
@@ -168,7 +171,7 @@ case "$1" in
     debug
     ;;
   *)
-    echo $"Usage: $0 {start|stop|status|restart|try-restart|condrestart}"
+    echo $"Usage: $0 {start|stop|status|restart|try-restart|condrestart|debug|update}"
     exit 1
 esac
 
