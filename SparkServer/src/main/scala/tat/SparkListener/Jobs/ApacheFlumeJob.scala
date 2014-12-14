@@ -1,8 +1,5 @@
 package tat.SparkListener.Jobs
 
-
-import scala.util.{Failure, Success, Try}
-
 /**
  * Job to control the Apache Flume Service through the Scala Application.
  */
