@@ -1,11 +1,13 @@
 package tat.SparkListener.utils
 
+
 import tat.SparkListener.JobResult
 
 import sys.process._
 
 
 case class ApacheFlumeResult(output: String) extends JobResult
+
 
 /**
  *  Class to control the Apache Flume service.

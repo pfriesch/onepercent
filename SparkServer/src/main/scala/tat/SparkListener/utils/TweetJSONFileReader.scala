@@ -21,7 +21,7 @@ class TweetJSONFileReader(sc: SparkContext, hiveContext: HiveContext) {
 	* Reads the JSON File and returns a SchemaRDD.
 	**/
 	def readFile(pathToJSONFile: String) : SchemaRDD = {
-		return hiveContext.jsonFile(pathToJSONFile)
+		hiveContext.jsonFile(pathToJSONFile)
 	}
 
 }

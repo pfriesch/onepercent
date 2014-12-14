@@ -1,15 +1,15 @@
 package tat.SparkListener
 
+//Scala imports
 import akka.actor.{ActorRef, Props, Actor}
-
 import akka.io.Tcp.{Register, Write, PeerClosed, Received}
 import akka.util.ByteString
+import scala.util.Try
 
-import org.json4s._
-
+//Own imports
 import tat.SparkListener.utils._
 
-import scala.util.{Try}
+//TODO: Please make some documentation Pius
 
 /**
  * Created by plinux on 12/11/14.

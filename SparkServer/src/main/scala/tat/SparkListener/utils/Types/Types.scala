@@ -6,11 +6,12 @@ import tat.SparkListener.JobResult
 
 import scala.util.Try;
 
+
 //JAVA imports
 import java.io.File
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.GregorianCalendar
 
 /**
  * This Type represents a path to the filesystem which directory is validated.
@@ -40,32 +41,7 @@ case class ErrorMessage(errorMessage: String, errorCode: Int) extends JobResult
 
 //TODO add other JobResults
 
-/**
- * ==================================================================================
- * TYPES RELATED TO JOB PARAMETERS
- * ==================================================================================
- */
 
-object TypeCreator {
-
-  /**
-   * This method creates a path out of the given parameters as follows:
-   * First the prefixpath within the last / concatenated with the given time
-   * 2014-12-04 14:00:00 will result to <prefixPath>/2014/12/4/14/ this means the hour
-   * is the last element in the path - finalized with the dataName ending.
-   *
-   * @param prefixPath      The path to put before the time.
-   * @param time            The time with which the path will be build.
-   * @param dataName        THe data/file.
-   * @return                A Path if successful.
-   *
-   * @author                Florian Willich, Puis Friesch
-   */
-  def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
-    Try(T_Path(prefixPath + time.get(Calendar.YEAR) + "/" + String.format("%02d", time.get(Calendar.MONTH)+1: Integer) + "/" + String.format("%02d", time.get(Calendar.DAY_OF_MONTH): Integer) + "/" + String.format("%02d", time.get(Calendar.HOUR_OF_DAY): Integer) + "/" + dataName))
-  }
-
-}
 
 object TypeValidator {
 
