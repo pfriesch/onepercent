@@ -147,7 +147,16 @@ debug(){
   cat ${SPARK_LOG_DIR}/${JOB_CLASS}.log | grep ^'### DEBUG ###' | tail -n 15
   return 0
 }
-condrestart(){
+
+update(){
+  git --git-dir ${GIT_PATH}/.git pull
+  mvn -q -f ${POM_PATH} clean package -DskipTests
+  PACKAGE_VERSION=$(grep -oPm1 "(?<=<version>)[^<]+" ${POM_PATH})
+  JOB_PACKAGE="${GIT_PATH}/SparkServer/target/twitter-analytics-tool-${PACKAGE_VERSION}.jar"
+  restart
+}
+
+}condrestart(){
   [ -e ${SPARK_LOCKFILE} ] && restart || :
 }
 
@@ -169,6 +178,9 @@ case "$1" in
     ;;
   debug)
     debug
+    ;;
+  update)
+    update
     ;;
   *)
     echo $"Usage: $0 {start|stop|status|restart|try-restart|condrestart|debug|update}"
