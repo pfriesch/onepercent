@@ -6,7 +6,7 @@ var TagCountView = Backbone.View.extend({
 	},
 
 	initialize: function(table, date, hour, options) {
-		_.bindAll(this, 'render', 'showChart', 'dateSelected', 'showNavigation', 'fetchData', 'getAvaibleDates');
+		_.bindAll(this, 'render', 'showColumnChart', 'dateSelected', 'showNavigation', 'fetchData', 'getAvailableDates');
 		this.setElement(options.el);
 		this.template = _.template(tpl.get(options.template));
 		this.path = {
@@ -17,36 +17,36 @@ var TagCountView = Backbone.View.extend({
 
 		this.timestampCollection = new TimestampCollection(this.path.table);
 		this.timestampCollection.fetch({reset: true});
-		this.timestampCollection.once("reset", this.getAvaibleDates, this);
+		this.timestampCollection.once("reset", this.getAvailableDates, this);
 
 		this.dataCollection = new TagCountCollection(this.path.table, this.path.date, this.path.hour);
 		this.dataCollection.fetch({reset: true});
-		this.dataCollection.on("reset", this.showChart, this);
+		this.dataCollection.on("reset", this.showColumnChart, this);
 	},
 	
 	render: function() {
 		this.$el.html(this.template(this.params));
 	},
 
-	getAvaibleDates: function() {
-		this.avaibleDates = this.timestampCollection.getDates();
+	getAvailableDates: function() {
+		this.availableDates = this.timestampCollection.getDates();
 		this.showNavigation();
 	},
 
 	dateSelected: function() {
 		this.path.date = $('#date_selector').val();
-		var avaibleHours = this.timestampCollection.getHoursForDate(this.path.date);
-		this.path.hour = avaibleHours[0];
+		var availableHours = this.timestampCollection.getHoursForDate(this.path.date);
+		this.path.hour = availableHours[0];
 
 		this.params = {
-			dates: this.avaibleDates,
-			hours: avaibleHours,
+			dates: this.availableDates,
+			hours: availableHours,
 			selectedDate: this.path.date,
 			selectedHour: this.path.hour
 		};
 
 		this.render();
-		this.showChart();
+		this.showColumnChart();
 	},
 
 	fetchData: function() {
@@ -55,7 +55,7 @@ var TagCountView = Backbone.View.extend({
 
 		this.dataCollection = new TagCountCollection(this.path.table, this.path.date, this.path.hour);
 		this.dataCollection.fetch({reset: true});
-		this.dataCollection.on("reset", this.showChart, this);
+		this.dataCollection.on("reset", this.showColumnChart, this);
 
 		appRouter.navigate("hourly/" + this.path.table + "/" + this.path.date + "/" + this.path.hour, {trigger: false});
 
@@ -63,10 +63,10 @@ var TagCountView = Backbone.View.extend({
 	},
 
 	showNavigation: function() {
-		var avaibleHours = this.timestampCollection.getHoursForDate(this.path.date);
+		var availableHours = this.timestampCollection.getHoursForDate(this.path.date);
 		this.params = {
-			dates: this.avaibleDates,
-			hours: avaibleHours,
+			dates: this.availableDates,
+			hours: availableHours,
 			selectedDate: this.path.date,
 			selectedHour: this.path.hour
 		};
@@ -74,7 +74,19 @@ var TagCountView = Backbone.View.extend({
 		this.render();
 	},
 	
-	showChart: function() {
+	showColumnChart: function() {
 		drawColumnChart(this.dataCollection.getNames(), this.dataCollection.getValues(), "Tag Häufigkeit", "Tags");
 	},
+
+	showPieChart: function() {
+		drawPieChart(this.dataCollection.getNames(), this.dataCollection.getValues());
+	},
+
+	showDonutChart: function() {
+		drawDonutChart(this.dataCollection.getNames(), this.dataCollection.getValues());
+	}
+
+	//showDiffColumnChart: function() {
+	//	drawDiffColumnChart(this.dataCollection.getNames(), this.dataCollection.getValues(), Boo, Foo,"Tag Häufigkeit", "Tags");
+	//}
 });

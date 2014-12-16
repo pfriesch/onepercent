@@ -34,6 +34,10 @@ header {
 	margin-top: 10px;
 }
 
+#load {
+    margin-top: 0;
+}
+
 .form-control{
 	margin-right: 10px;
 	margin-bottom: 10px;
