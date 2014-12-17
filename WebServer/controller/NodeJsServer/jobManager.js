@@ -11,31 +11,20 @@ var moment = require('moment'); //Timestampparser
 module.exports = {
   "createJob": {
     "hash": createHashJob,
-    "time": createTimeJob,
     "response": createResponseJob
   }
 };
 
 /* create a Hashjob with the given parameters and return it to TAT_Webserver*/
 function createHashJob (jobName, prefixPath, topX) {
-  var timestamp = generateTimestamp();
+  var timestamp = '';
+  timestamp = generateTimestamp();
   return {
     "jobId": generateHash(),
     "name": jobName,
     "params": [timestamp,prefixPath,topX],
     "time": timestamp
  	};
-}
-
-/* create a Timezonejob with the given parameters and return it to TAT_Webserver*/
-function createTimeJob (name, prefixPath, timezone) {
-  var timestamp = generateTimestamp();
-  return {
-    "jobId": generateHash(),
-    "name": jobName,
-    "params": [timestamp,prefixPath,timezone],
-    "time": timestamp
- 	};   
 }
 
 /* create a Responsejob with the data that comes back from the SparkServer*/
@@ -50,9 +39,10 @@ function generateHash() {
   return hashCode;
 };
 
-/* Generates actual timestamp */
+/* Generates actual timestamp minus 1 hour*/
 function generateTimestamp() {
-  var time = moment();
+  var time = moment().subtract(1, 'hours');;
   var timeString = time.format('YYYY-MM-DD HH:mm:ss');
+  
   return timeString;
 };  

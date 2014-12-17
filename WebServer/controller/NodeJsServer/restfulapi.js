@@ -16,7 +16,7 @@ var app = express(); //create a new expressObject
 
 app.use(express.static(__dirname + '/public'));
 
-var server = app.listen(8080, function(){
+var server = app.listen(config.browserClientPort, function(){
   console.log("Server is up and running");
 });
 

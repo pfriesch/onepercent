@@ -12,11 +12,11 @@
 var moment = require('moment'); //Timestampparser
 var waitjs = require('waitjs'); //Systemtime
 
-var sparkClient = require('./js/sparkClient.js'); //Socketconnection to SparkServer
-var jobManager = require('./js/jobManager.js'); //Jobs as Objects
-var config = require('./js/config.js'); //Configurationfile
-var databaseHandler = require('./js/sqlDatabase.js'); //DatabaseHandler
-var restfulapi = require('./js/restfulapi.js'); //Restapi
+var sparkClient = require('./sparkClient.js'); //Socketconnection to SparkServer
+var jobManager = require('./jobManager.js'); //Jobs as Objects
+var config = require('./config.js'); //Configurationfile
+var databaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
+var restfulapi = require('./restfulapi.js'); //Restapi
 
 var jobCollection = []; //stores the Jobs
 
@@ -24,9 +24,10 @@ initJobInterval();
 
 /* Inits the tophashtagjob, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval(){
-		wait(moment().endOf('seconds') - moment(), function() {
-		logData('End of hour reached. Start TopHashtagJob interval.');
-		repeatJobPerInterval('TopHashtagJob', 10000, 10);
+    //wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
+		wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
+		logData('5 Minutes after full Hour reached. Start Hashtagjob interval every hour.');
+		repeatJobPerInterval('TopHashtagJob', 1000*60*60, 10);
 	}); 
 }
 
@@ -48,13 +49,28 @@ function repeatJobPerInterval(job, intervalInMilliseconds, topX) {
  */
 function getJobResponse(dataResponse) {
 	var sparkJobResponse = jobManager.createJob["response"](dataResponse);
-	databaseHandler.writeDataToDatabase(sparkJobResponse);
-  //deleteElementFromCollection(sparkJobResponse);
+	var jobResult = findById(jobCollection, dataResponse.jobID);
+  databaseHandler.writeDataToDatabase(sparkJobResponse, jobResult);
+  deleteElementFromCollection(jobResult);
 }
 
 /* Delete the Job from the array (JobCollection).*/
 function deleteElementFromCollection (itemToDelete) {
-	//myarray.indexof();
+  var position = jobCollection.indexOf(itemToDelete);
+  console.log(jobCollection);
+	jobCollection.splice(position,1);
+  logData('Deleted Element with ID: ' + itemToDelete.jobId);
+  console.log(jobCollection);
+}
+
+//todo check if source fo i has field
+function findById(source, id) {
+  for (var i = 0; i < source.length; i++) {
+    if (source[i].jobId === id) {
+      return source[i];
+    }
+  }
+  throw "Couldn't find object with id: " + id;
 }
 
 /* Logs Data*/
