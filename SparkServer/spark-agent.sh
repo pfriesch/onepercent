@@ -41,7 +41,7 @@
 GIT_PATH="${HOME}/Twitter-Analytics-Tool"
 POM_PATH="${GIT_PATH}/SparkServer/pom.xml"
 PACKAGE_VERSION=$(grep -oPm1 "(?<=<version>)[^<]+" ${POM_PATH})
-JOB_CLASS="tat.SparkListener.App"
+JOB_CLASS="htwb.onepercent.SparkListener.App"
 JOB_JARS="${HOME}/.m2/repository/org/json4s/json4s-native_2.10/3.2.10/json4s-native_2.10-3.2.10.jar"
 JOB_PACKAGE="${GIT_PATH}/SparkServer/target/twitter-analytics-tool-${PACKAGE_VERSION}.jar"
 

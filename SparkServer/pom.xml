@@ -3,11 +3,11 @@
 
     <!-- PROJECT INFORMATION -->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>tat</groupId>
-    <artifactId>twitter-analytics-tool</artifactId>
-    <version>0.0.2</version>
+    <groupId>htwb.onepercent</groupId>
+    <artifactId>onepercent</artifactId>
+    <version>0.1</version>
     <name>${project.artifactId}</name>
-    <description>My wonderfull scala app</description>
+    <description>A Twitter-Analytics-Tool</description>
     <inceptionYear>2014</inceptionYear>
 
     <licenses>

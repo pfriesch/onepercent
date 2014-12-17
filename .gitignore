@@ -1,6 +1,9 @@
 *.class
 *.log
 
+#temp files
+*~
+
 #Config
 config.cfg
 */config.cfg
