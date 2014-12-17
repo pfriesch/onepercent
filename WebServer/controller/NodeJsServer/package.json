@@ -11,12 +11,7 @@
     "moment": "^2.8.4",
     "mysql": "^2.5.3",
     "request": "^2.48.0",
-<<<<<<< HEAD
     "sha1": "latest",
-    "underscore": "^1.7.0",
     "waitjs": "^0.2.0"
-=======
-    "sha1" : "latest"
->>>>>>> 8eb2d5232009fc226d90076015edc48d78e13f4f
   }
 }
