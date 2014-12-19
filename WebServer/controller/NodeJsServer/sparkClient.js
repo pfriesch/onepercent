@@ -27,8 +27,13 @@ client.connect(config.sparkServerPORT, config.sparkServerHOST, function() {
     if ('error' in dataResponseJson) {
       sparkErrorMessageResponse(dataResponseJson);
     }
-    else {
+    else if ('jobResult' in dataResponse){
+      console.log('jobResult');
       callbackToTATWebserver(dataResponseJson);
+    }
+    else {
+      console.log('invalid Data');
+      console.log(dataResponseJson);
     }
   });
 
