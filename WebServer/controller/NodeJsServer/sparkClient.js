@@ -10,7 +10,7 @@ var sparkClient = exports; // exports the sparkclientMethods
 
 var client = new net.Socket(); // Creates Socket
 
-var callbackToTATWebserver; // Callbackfunction to send the responsedata back to the TAT_Webserver.
+var callbackToTATWebserver; // Callbackfunction to send the responsedata back to the OP_Webserver.
 
 /* Connects to the Sparkserver with Configuationfile parameters per Websocket*/
 client.connect(config.sparkServerPORT, config.sparkServerHOST, function() {
@@ -21,7 +21,7 @@ client.connect(config.sparkServerPORT, config.sparkServerHOST, function() {
     console.log('Sparkserver connected');
   });
 
-  /* Gets the responsedata from Sparkserver and send it back to TAT_Webserver by callbackfunction */
+  /* Gets the responsedata from Sparkserver and send it back to OP_Webserver by callbackfunction */
   client.on('data', function(dataResponse) {
     var dataResponseJson = JSON.parse(dataResponse);
     if ('error' in dataResponseJson) {

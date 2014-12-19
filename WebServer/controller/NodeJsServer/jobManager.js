@@ -15,7 +15,7 @@ module.exports = {
   }
 };
 
-/* create a Hashjob with the given parameters and return it to TAT_Webserver*/
+/* create a Hashjob with the given parameters and return it to OP_Webserver*/
 function createHashJob (jobName, prefixPath, topX) {
   var timestamp = '';
   timestamp = generateTimestamp();
