@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="utf-8">
+	<!--meta name="viewport" content="width=device-width,initial-scale=1.0, "-->
+	<title>Startseite &minus; Twitter Analytics Tool</title>
+	<meta name="description" content="Analyse von Twitternachrichten">
+	
+	<!-- Bootstrap -->
+    <link href="bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bootstrap-3.1.1-dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+
+    <link href="css/tat_Stylesheet.css" rel="stylesheet" type="text/css" media="screen">
+
+    <!--Datetimepicker (http://xdsoft.net/jqplugins/datetimepicker/)-->
+   	<link rel="stylesheet" type="text/css" href="datetimepicker/jquery.datetimepicker.css"/ >
+
+</head>
+
+<body>
+	 <!-- Seiten-Container -->
+	<div class="container">
+		<header>		
+			<!-- Nav -->
+			<div class="col col-md-3">
+				<ul class="nav navbar-nav">
+					<li class="dropdown" class="active">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+							<h2>Menü</h2>
+						</a>
+						<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu1">
+							<li role="presentation">
+								<a role="menuitem" tabindex="-1" href="#">Home</a>
+							</li>
+							<li role="presentation">
+								<a role="menuitem" tabindex="-1" href="?#hourly/toptentags">10 Top Hashtags</a>
+							</li> 
+							<li class="dropdown-submenu">
+								<a role="menuitem" tabindex="-1" href="#">Hashtagverlauf</a>
+								<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu1">
+									<li class="dropdown-submenu" role="presentation">
+										<form class="navbar-form navbar-right" role="search">
+							                <div class="form-group">
+							                    <input type="text" class="form-control" name="'#name'" placeholder="#name">
+							                </div>
+							                <button type="submit" class="btn btn-default">show</button>
+							            </form>
+									</li>
+								</ul>
+							</li> 
+						</ul>
+					</li>
+				</ul> 
+			</div><!-- Ende Nav -->
+			<div class="col col-md-6">
+				<h1>Twitter Analytics Tool</h1>
+			</div>
+			<div class="col col-md-3">
+				<img class="img-responsive" src="images/bird_chart.png" height="150" alt="bird">
+			</div>
+		</header>
+
+		
+		
+		
+		<div id="main-content"></div> <!-- Ende chart_content -->
+		
+		
+
+		<ul class="pager">
+			<li class="top">
+				<a href="#home"><span class="glyphicon glyphicon-chevron-up"></span> top</a>
+			</li>
+		</ul>
+
+		<footer class="row">
+			<ol class="breadcrumb">
+				<li class="active">
+					Home
+				</li>
+				<li>
+					<a href="">Kontakt</a>
+				</li>
+				<li>
+					<a href="">Impressum</a>
+				</li>
+				<li>
+					Twitter Analytics Tool &copy; 2014
+				</li>
+			<ol>
+		</footer>
+	</div> <!-- Ende Seiten-Container -->
+
+	<!-- jQuery für Bootstrap's JavaScrip plugins
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+
+  	<!--Datetimepicker-->
+	<script src="datetimepicker/jquery.datetimepicker.js"></script>
+
+  	<script language="JavaScript" src="js/tat_javascript.js"></script>
+  	<script language="JavaScript" src="js/template_loader.js"></script>
+	
+	
+	<script language="JavaScript" src="js/charts.js"></script>
+	<script language="JavaScript" src="js/views/tagcountview.js"></script>
+	<script language="JavaScript" src="js/views/homeview.js"></script>
+	<script language="JavaScript" src="js/models/timestampmodel.js"></script>
+	<script language="JavaScript" src="js/models/tagcountmodel.js"></script>
+	
+	
+	<script language="JavaScript" src="js/route.js"></script>
+	<script language="JavaScript" src="js/main.js"></script>
+
+</body>
+
+</html>

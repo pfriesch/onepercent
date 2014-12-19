@@ -111,3 +111,30 @@ function drawDiffColumnChart(names, diffnames, values, diffvalues, ytitle, xtitl
 	var diffData = chart.computeDiff(oldData, newData);
 	chart.draw(diffData, options);
 }
+
+/////////////////////////draw linechart/////////////////////////////////////
+
+function drawLineChart(values, ytitle, xtitle) {
+
+	for(i = 0; i < values.length; i++) {
+		values[i] = parseInt(values[i]);
+	}
+
+	values.unshift('');
+
+	var data = google.visualization.arrayToDataTable([
+		values
+	]);
+
+	var options = {
+		width: 1000,
+		height: 563,
+		curveType: 'function',			//smooth the lines
+		hAxis: {title: 'Time'},
+		vAxis: {title: 'Popularity'}
+	};
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
+
+}
