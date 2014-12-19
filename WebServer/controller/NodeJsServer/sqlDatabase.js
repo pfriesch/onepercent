@@ -23,53 +23,44 @@ var connectionPool = mysql.createPool (
   }
 );
 
-/* Testdata */
+/* The Layout for the QueryJobs to which table and which fields are needed */
 var sqlQueryLayout = {
   jobName: 'TopHashtagJob',
-  table: 'toptentags',
-  params: ['name','timestamp','count']
-}
-/* Testdata */
-var responseData = {
-  job: 
-    { 
-      jobID: '9b6351d695086ce03c799d8504e91240473644f3',
-      jobResult: 
-        { 
-          topHashtags: [ { hashtag: 'harald', anzahl: 200 },
-                         { hashtag: 'Brandenburg', anzahl: 100 },
-                         { hashtag: 'Neuschwanstein', anzahl: 130 } ],
-          countAllHashtags: 500 
-        } 
-    } 
+  table: '`toptentags`',
+  params: ['`name`','`timestamp`','`count`']
 }
 
 /*
  * Writes the jobResponseData into Database uses the sqlQueryLayout to get the 
  * right Tablename and Tablefields.
  */
-databaseHandler.writeDataToDatabase = function(responseJobData) {
-  var JobName = 'TopHashtagJob';
-  var time = moment();
-  var timeStamp = time.format('YYYY-MM-DD HH:mm:ss');
+databaseHandler.writeDataToDatabase = function(responseJobData, jobResult) {
+   connectionPool.getConnection(function(err, connection) {
 
-  connectionPool.getConnection(function(err, connection) {
+    for (var i=0; i<responseJobData.jobResult.topHashtags.length; i++) {
+      
+      var sqlInsertQuery = "INSERT INTO "+sqlQueryLayout.table+" ("
+                                         +sqlQueryLayout.params[0]+","
+                                         +sqlQueryLayout.params[1]+","
+                                         +sqlQueryLayout.params[2]+") VALUES ("
+                                         +connection.escape(responseJobData.jobResult.topHashtags[i].hashtag)+","
+                                         +connection.escape(jobResult.time)+","
+                                         +connection.escape(responseJobData.jobResult.topHashtags[i].anzahl)+");"
 
-    for (var i=0; i<responseData.job.jobResult.topHashtags.length; i++) {
-    
-      var sqlInsertQuery = "INSERT INTO "+connection.escape(sqlQueryLayout.table)+" ("
-                                            +connection.escape(sqlQueryLayout.params[0])+", "
-                                            +connection.escape(sqlQueryLayout.params[1])+","
-                                            +connection.escape(sqlQueryLayout.params[2])+") VALUES ("
-                                            +connection.escape(responseData.job.jobResult.topHashtags[i].hashtag)+","
-                                            +connection.escape(timeStamp)+","
-                                            +connection.escape(responseData.job.jobResult.topHashtags[i].anzahl)+");"
       console.log(sqlInsertQuery);
       
       connection.query(sqlInsertQuery, function(err, rows, fields) {
         if(err) throw err;
       });
     }
+    
+    var sqlCountAllQuery = "INSERT INTO `countalltags` (`count`, `time`) VALUES ('"
+                            +responseJobData.jobResult.countAllHashtags+"','"
+                            +jobResult.time+"');"
+
+    connection.query(sqlCountAllQuery, function(err, rows, fields) {
+        if(err) throw err;
+      });
   connection.release();
   });
 }

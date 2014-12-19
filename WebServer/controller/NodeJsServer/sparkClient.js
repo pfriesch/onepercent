@@ -43,7 +43,8 @@ client.connect(config.sparkServerPORT, config.sparkServerHOST, function() {
 /* Sends the jobData to sparkserver */
 sparkClient.sendJobDataToServer = function sendJobRequestToSparkServer(jobData, callback) {
   callbackToTATWebserver = callback;
-  client.write(JSON.stringify(jobData.job) +'\n');
+  console.log(JSON.stringify(jobData));
+  client.write(JSON.stringify(jobData) +'\n');
 }
 
 /* if there is a errormesage in the responseString this method logs the errorcode and errormessage*/
