@@ -53,6 +53,14 @@ databaseHandler.writeDataToDatabase = function(responseJobData, jobResult) {
         if(err) throw err;
       });
     }
+    
+    var sqlCountAllQuery = "INSERT INTO `countalltags` (`count`, `time`) VALUES ('"
+                            +responseJobData.jobResult.countAllHashtags+"','"
+                            +jobResult.time+"');"
+
+    connection.query(sqlCountAllQuery, function(err, rows, fields) {
+        if(err) throw err;
+      });
   connection.release();
   });
 }
