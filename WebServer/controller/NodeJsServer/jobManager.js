@@ -20,7 +20,7 @@ function createHashJob (jobName, prefixPath, topX) {
   var timestamp = '';
   timestamp = generateTimestamp();
   return {
-    "jobId": generateHash(),
+    "jobID": generateHash(),
     "name": jobName,
     "params": [timestamp,prefixPath,topX],
     "time": timestamp

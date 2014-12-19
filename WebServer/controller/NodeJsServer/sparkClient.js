@@ -24,16 +24,12 @@ client.connect(config.sparkServerPORT, config.sparkServerHOST, function() {
   /* Gets the responsedata from Sparkserver and send it back to OP_Webserver by callbackfunction */
   client.on('data', function(dataResponse) {
     var dataResponseJson = JSON.parse(dataResponse);
-    if ('error' in dataResponseJson) {
+    if ('errorMessage' in dataResponseJson) {
       sparkErrorMessageResponse(dataResponseJson);
     }
-    else if ('jobResult' in dataResponse){
-      console.log('jobResult');
-      callbackToTATWebserver(dataResponseJson);
-    }
     else {
-      console.log('invalid Data');
-      console.log(dataResponseJson);
+      //console.log(dataResponseJson);
+      callbackToTATWebserver(dataResponseJson);
     }
   });
 

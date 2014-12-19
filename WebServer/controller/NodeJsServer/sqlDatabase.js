@@ -19,7 +19,8 @@ var connectionPool = mysql.createPool (
     user     : config.sqlDatabaseUser,
     password : config.sqlDatabasePassword,
     database : config.sqlDatabase,
-    timezone : config.sqlDatabaseTimezone
+    timezone : config.sqlDatabaseTimezone,
+    charset  : config.sqlDatabaseCharset
   }
 );
 
@@ -42,10 +43,10 @@ databaseHandler.writeDataToDatabase = function(responseJobData, jobResult) {
       var sqlInsertQuery = "INSERT INTO "+sqlQueryLayout.table+" ("
                                          +sqlQueryLayout.params[0]+","
                                          +sqlQueryLayout.params[1]+","
-                                         +sqlQueryLayout.params[2]+") VALUES ("
-                                         +connection.escape(responseJobData.jobResult.topHashtags[i].hashtag)+","
-                                         +connection.escape(jobResult.time)+","
-                                         +connection.escape(responseJobData.jobResult.topHashtags[i].anzahl)+");"
+                                         +sqlQueryLayout.params[2]+") VALUES ('"
+                                         +responseJobData.jobResult.topHashtags[i].hashtag+"','"
+                                         +jobResult.time+"',"
+                                         +responseJobData.jobResult.topHashtags[i].anzahl+");"
 
       console.log(sqlInsertQuery);
       

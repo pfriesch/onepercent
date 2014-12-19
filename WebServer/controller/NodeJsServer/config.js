@@ -20,5 +20,6 @@ module.exports = {
 	sqlDatabaseUser: 's0536746',
 	sqlDatabasePassword: '123xyz,.',
 	sqlDatabase: '_s0540031__Twitter',
-	sqlDatabaseTimezone: '+0000'
+	sqlDatabaseTimezone: '+0000',
+	sqlDatabaseCharset: 'utf8_general_ci'
 };

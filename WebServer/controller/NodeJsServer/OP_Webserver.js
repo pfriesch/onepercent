@@ -24,10 +24,10 @@ initJobInterval();
 
 /* Inits the tophashtagjob, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval(){
-    wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
-		//wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
+    //wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
+		wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
 		logData('5 Minutes after full Hour reached. Start Hashtagjob interval every hour.');
-		repeatJobPerInterval('TopHashtagJob', 10000, 10); //1000*60*60
+		repeatJobPerInterval('TopHashtagJob', 1000*60*60, 10); //1000*60*60
 	}); 
 }
 
@@ -50,7 +50,7 @@ function repeatJobPerInterval(job, intervalInMilliseconds, topX) {
 function getJobResponse(dataResponse) {
 	var sparkJobResponse = jobManager.createJob["response"](dataResponse);
 	var jobResult = findById(jobCollection, dataResponse.jobID);
-  console.log(dataResponse);
+  //console.log(dataResponse);
   databaseHandler.writeDataToDatabase(sparkJobResponse, jobResult);
   deleteElementFromCollection(jobResult);
 }
@@ -65,7 +65,7 @@ function deleteElementFromCollection (itemToDelete) {
 //todo check if source fo i has field
 function findById(source, id) {
   for (var i = 0; i < source.length; i++) {
-    if (source[i].jobId === id) {
+    if (source[i].jobID == id) {
       return source[i];
     }
   }
