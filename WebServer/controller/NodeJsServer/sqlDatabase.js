@@ -46,7 +46,7 @@ databaseHandler.writeDataToDatabase = function(responseJobData, jobResult) {
                                          +sqlQueryLayout.params[2]+") VALUES ('"
                                          +responseJobData.jobResult.topHashtags[i].hashtag+"','"
                                          +jobResult.time+"','"
-                                         +responseJobData.jobResult.topHashtags[i].anzahl+"');"
+                                         +responseJobData.jobResult.topHashtags[i].count+"');"
 
       console.log(sqlInsertQuery);
       
