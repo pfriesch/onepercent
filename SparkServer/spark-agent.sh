@@ -38,19 +38,19 @@
 . /lib/lsb/init-functions
 
 # Setting up a few defaults that can be later overrideen in /etc/default/flume-ng-agent
-GIT_PATH="${HOME}/Twitter-Analytics-Tool"
+GIT_PATH="${HOME}/onepercent"
 POM_PATH="${GIT_PATH}/SparkServer/pom.xml"
 PACKAGE_VERSION=$(grep -oPm1 "(?<=<version>)[^<]+" ${POM_PATH})
 JOB_CLASS="htwb.onepercent.SparkListener.App"
 JOB_JARS="${HOME}/.m2/repository/org/json4s/json4s-native_2.10/3.2.10/json4s-native_2.10-3.2.10.jar"
-JOB_PACKAGE="${GIT_PATH}/SparkServer/target/twitter-analytics-tool-${PACKAGE_VERSION}.jar"
+JOB_PACKAGE="${GIT_PATH}/SparkServer/target/onepercent-${PACKAGE_VERSION}.jar"
 
 SPARK_DIR="${HOME}/spark"
 SPARK_LOG_DIR="${SPARK_DIR}/logs"
 #SPARK_USER=s0540031
 
 SPARK_MASTER="spark://hadoop03.f4.htw-berlin.de:60001"
-SPARK_MASTER_OPTS='--executor-memory=32G --driver-memory 4G --driver-java-options "-Dspark.storage.memoryFraction=0.1"'
+SPARK_MASTER_OPTS='--executor-memory=32G --driver-memory 6G --driver-java-options "-Dspark.storage.memoryFraction=0.1"'
 
 SPARK_LOCKFILE="${SPARK_DIR}/${JOB_CLASS}.lock"
 SPARK_PIDFILE="${SPARK_DIR}/${JOB_CLASS}.pid"
@@ -152,7 +152,7 @@ update(){
   git --git-dir ${GIT_PATH}/.git pull
   mvn -q -f ${POM_PATH} clean package -DskipTests
   PACKAGE_VERSION=$(grep -oPm1 "(?<=<version>)[^<]+" ${POM_PATH})
-  JOB_PACKAGE="${GIT_PATH}/SparkServer/target/twitter-analytics-tool-${PACKAGE_VERSION}.jar"
+  JOB_PACKAGE="${GIT_PATH}/SparkServer/target/onepercent-${PACKAGE_VERSION}.jar"
   restart
 }
 
