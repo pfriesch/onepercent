@@ -1,14 +1,14 @@
+<div class="jumbotron">
+    <div class="container">
+        <h1>Top Hashtags</h1>
+    </div>
+</div>
+
 <div class="container">
 
 	<div class="row">
-		<div id="chart_title" class="col col-md-8" style="padding-left: 40px; vertical-align:middle;">
-			<h2>10 Top Hashtags</h2>
-		</div>
-	</div>
-
-	<div class="row">
 		<form id="date_form">
-			<div class="col-md-2">
+			<div class="col-md-4">
 				<select class="form-control" id="date_selector">
 				<% _.each(dates, function(date) { %>
 					<option value="<%= date %>" <% if (date == selectedDate) { %> selected <% } %>><%= date %></option>
@@ -16,15 +16,18 @@
 				</select>
 			</div>
 
-			<div class="col-md-2">
+			<div class="col-md-4">
+
+
 				<select class="form-control" id="hour_selector">
 				<% _.each(hours, function(hour) { %>
 					<option value="<%= hour %>" <% if (hour == selectedHour) { %> selected <% } %>><%= hour %></option>
 				<% }) %>
 				</select>
+
 			</div>
 
-			<div id="load" class="col col-md-1" >
+			<div id="load" class="col col-md-4" >
 				<button type="submit" class="btn btn-default">show</button>
 			</div>
 
