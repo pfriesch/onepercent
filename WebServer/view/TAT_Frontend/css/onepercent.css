@@ -1,30 +1,39 @@
 /**
-* Body Style (Background etc.)
+* This is the onepercent css style sheet.
 *
+* Color Theme:
+* - Blue: #40667F
+* - White: #FFF
+*
+* @author Florian Willich
+**/
+
+/**
+* Body Style (Background etc.)
 * @author Florian Willich
 **/
 html body {
     background-color: #FFFFFF;
     font-family: 'Open Sans', Helvetica, Verdana, sans-serif;
     margin: 0;
-    padding: 0;
+    padding-top: 26px;
 }
 
 /**
 * ========================================================================
-* BOOTSTRAP COMPONENT NAVBAR
+* NAVBAR
 * ========================================================================
 **/
 .navbar { 
     border-radius: 0; 
-    border-color: #E5E5E5;
+    border-color: #FFF;
 }
 
 .navbar-default {
     color: #40667F;
     font-size: 20px;
     font-style: bold;
-    background-image: linear-gradient(to bottom, #E5E5E5 0px, #E5E5E5 100%);
+    background-image: linear-gradient(to bottom, #FFF 0px, #FFF 100%);
     background-repeat: repeat-x;
 }
 
@@ -35,19 +44,56 @@ html body {
     text-shadow: none;
 }
 
-/**
-* Jumbotron
-**/
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 0px;
+    border-radius: 0px;
+    min-width: 200px;
+}
 
+/**
+* If dropdown is active
+**/
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background-color: #FFF;
+    color: #555;
+}
+
+/**
+* ========================================================================
+* FORM
+*
+* Affected Components:
+* - Navbar Word Search
+* ========================================================================
+**/
+.form-navi-search {
+    margin-bottom: 0px;
+    border-radius: 0px;
+    background-color: #FFF;
+    color: #40667F;
+    border: 1px solid #40667F;
+}
+
+/**
+* ========================================================================
+* JUMBOTRON
+* ========================================================================
+**/
 .jumbotron {
-    padding-top: 48px;
-    padding-bottom: 48px;
-    background-color: #40667F;
+    margin-top: -25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /*background-color: #40667F;*/
+    background-image: linear-gradient(to bottom, #40667F 0px, #5485A6 100%);
+    background-repeat: repeat-x;
     color: #FFF;
 }
 
-
-
+/**
+* ========================================================================
+* PROGRESS
+* ========================================================================
+**/
 .progress {
     margin-left: 1em;
     margin-right: 1em;
@@ -68,53 +114,73 @@ html body {
     margin-left: 1em;
 }
 
+/**
+* ========================================================================
+* WELL
+* ========================================================================
+**/
 .well {
     padding: 1em;
     background-color: #F5F5F5;
     margin: 1em;
 }
 
+/**
+* ========================================================================
+* BUTTON
+* ========================================================================
+**/
 .btn {
 
 }
 
 .btn-default {
     margin-top: 1em;
-    color: #367E7B;
+    color: #40667F;
     background-color: #FFF;
     border-color: #CCC;
+    border-radius: 0px;
+}
+
+.btn-navi {
+    margin-top: 1px;
+    margin-left: -16px;
+    padding-top: 9px;
+    color: #FFF;
+    background-color: #40667F;
+    border-color: #40667F;
 }
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     color: #FFF;
-    background-color: #367E7B;
-    border-color: #367E7B;
+    background-color: #40667F;
+    border-color: #40667F;
 }
 
 .dropdown-toggle.btn-default {
     color: #FFF;
-    background-color: #367E7B;
+    background-color: #40667F;
     border-color: #ADADAD;
 }
 
 .btn-primary {
-    color: #367E7B;
+    color: #40667F;
     background-color: #FFF;
     border-color: #CCC;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
     color: #FFF;
-    background-color: #367E7B;
-    border-color: #367E7B;
+    background-color: #40667F;
+    border-color: #40667F;
 }
 
 .panel-primary > .panel-heading {
     color: #FFF;
-    background-color: #367E7B;
-    border-color: #367E7B;
+    background-color: #40667F;
+    border-color: #40667F;
 }
 
 .panel-primary {
-    border-color: #367E7B;
+    border-color: #40667F;
 }
