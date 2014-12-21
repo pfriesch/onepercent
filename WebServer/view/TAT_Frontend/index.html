@@ -4,18 +4,22 @@
 
 <head>
 	<meta charset="utf-8">
-	<!--meta name="viewport" content="width=device-width,initial-scale=1.0, "-->
-	<title>Startseite &minus; Twitter Analytics Tool</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="Analyse von Twitternachrichten">
+	
+	<title>Startseite &minus; Twitter Analytics Tool</title>
 	
 	<!-- Bootstrap -->
     <link href="bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="bootstrap-3.1.1-dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
 
     <link href="css/tat_Stylesheet.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="css/onepercent.css" rel="stylesheet" type="text/css" media="screen">
 
     <!--Datetimepicker (http://xdsoft.net/jqplugins/datetimepicker/)-->
    	<link rel="stylesheet" type="text/css" href="datetimepicker/jquery.datetimepicker.css"/ >
+
 
 </head>
 
@@ -23,7 +27,28 @@
 	 <!-- Seiten-Container -->
 	<div class="container">
 		<header>		
-			<!-- Nav -->
+			<!-- New Navbar -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	            <div class="container-fluid">
+
+	            	<!-- Brand and toggle get grouped for better mobile display -->
+    				<div class="navbar-header">
+	                	<div class="navbar-header">
+	                	    <a class="navbar-brand" href="#">onepercent</a>
+	                	</div>
+	                	
+	                	<ul class="nav  navbar-nav">
+	                		<li><a href="#">Home</a></li>
+	                		<li><a href="?#hourly/toptentags">10 Top Hashtags</a></li>
+	            		</ul>
+
+	      
+	            	</div>
+
+	            </div>
+        	</div>
+
+			<!-- Old Navbar 
 			<div class="col col-md-3">
 				<ul class="nav navbar-nav">
 					<li class="dropdown" class="active">
@@ -53,13 +78,17 @@
 						</ul>
 					</li>
 				</ul> 
-			</div><!-- Ende Nav -->
-			<div class="col col-md-6">
-				<h1>Twitter Analytics Tool</h1>
 			</div>
-			<div class="col col-md-3">
-				<img class="img-responsive" src="images/bird_chart.png" height="150" alt="bird">
+			End Old Nav -->
+
+			<!-- Jumbotron -->
+			<div class="jumbotron">
+				<div class="container">
+			  		<h1>Twitter Analytics Tool by onepercent</h1>
+			  		<p>We use 1 % to determine what 99 % think or do</p>
+				</div>
 			</div>
+
 		</header>
 
 		
