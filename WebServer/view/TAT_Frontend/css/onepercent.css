@@ -1,0 +1,120 @@
+/**
+* Body Style (Background etc.)
+*
+* @author Florian Willich
+**/
+html body {
+    background-color: #FFFFFF;
+    font-family: 'Open Sans', Helvetica, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/**
+* ========================================================================
+* BOOTSTRAP COMPONENT NAVBAR
+* ========================================================================
+**/
+.navbar { 
+    border-radius: 0; 
+    border-color: #E5E5E5;
+}
+
+.navbar-default {
+    color: #40667F;
+    font-size: 20px;
+    font-style: bold;
+    background-image: linear-gradient(to bottom, #E5E5E5 0px, #E5E5E5 100%);
+    background-repeat: repeat-x;
+}
+
+/**
+* Have to set none to override standard shadowing
+**/
+.navbar-default .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+    text-shadow: none;
+}
+
+/**
+* Jumbotron
+**/
+
+.jumbotron {
+    padding-top: 48px;
+    padding-bottom: 48px;
+    background-color: #40667F;
+    color: #FFF;
+}
+
+
+
+.progress {
+    margin-left: 1em;
+    margin-right: 1em;
+    border-radius: 6px;
+}
+
+.progress-bar {
+    background-color: #367E7B;
+}
+
+.answer_text {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.row {
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.well {
+    padding: 1em;
+    background-color: #F5F5F5;
+    margin: 1em;
+}
+
+.btn {
+
+}
+
+.btn-default {
+    margin-top: 1em;
+    color: #367E7B;
+    background-color: #FFF;
+    border-color: #CCC;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    color: #FFF;
+    background-color: #367E7B;
+    border-color: #367E7B;
+}
+
+.dropdown-toggle.btn-default {
+    color: #FFF;
+    background-color: #367E7B;
+    border-color: #ADADAD;
+}
+
+.btn-primary {
+    color: #367E7B;
+    background-color: #FFF;
+    border-color: #CCC;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    color: #FFF;
+    background-color: #367E7B;
+    border-color: #367E7B;
+}
+
+.panel-primary > .panel-heading {
+    color: #FFF;
+    background-color: #367E7B;
+    border-color: #367E7B;
+}
+
+.panel-primary {
+    border-color: #367E7B;
+}
