@@ -66,40 +66,22 @@ databaseHandler.writeDataToDatabase = function(responseJobData, jobResult) {
   });
 }
 
-/* Gets the inserted timestamps from Database by table */
-databaseHandler.readTableFromDatabase = function(callback, req) {
-  connectionPool.getConnection(function(err, connection) {
-    var sqlQuery = "SELECT timestamp FROM " + req.params.table +" GROUP BY timestamp";
-    connection.query(sqlQuery, function(err, rows, fields) {
-      if (err) throw err;
-      callback(rows);
-    }, req);
-    connection.release();
-  });  
-}
-
-/* Gets the rows of Data from Database between two dates */
-databaseHandler.readTableAndDateFromDatabase = function(callback, req, date, nextDate) {
-  connectionPool.getConnection(function(err, connection) {
-    var sqlQuery = "SELECT * FROM " + req.params.table +" WHERE timestamp >= '" + date + "' AND timestamp < '" + nextDate + "'";
-    connection.query(sqlQuery, function(err, rows, fields) {
-      if (err) throw err;
-      callback(rows);
-    }, req, date, nextDate);
-  connection.release();
-  });  
-}
-
-/* Gets the rows of Data from Database between two dates and order them by countfield */
-databaseHandler.readTableAndDateAndHourFromDatabase = function(callback, req, date, nextDate) {
-  connectionPool.getConnection(function(err, connection) {
-    var sqlQuery = "SELECT * FROM " + req.params.table +" WHERE timestamp >= '" + date + "' AND timestamp < '" + nextDate + "' ORDER BY count DESC";
-    connection.query(sqlQuery, function(err, rows, fields) {
-      if (err) throw err;
-      callback(rows);
-    }, req, date, nextDate);
-  connection.release();
-  });  
+/**
+ * Function to Query the MySQL Database.
+ * @param sql Contains the SQL Query with placeholders for variables.
+ * @param paramters Array that contains the variables.
+ * @param callback Function to call when the result is avaible.
+ */
+databaseHandler.select = function(sql,paramters, callback) {
+    connectionPool.getConnection(function (err, connection) {
+        connection.query(sql, paramters, function(err, rows) {
+            if(err) {
+               console.log(err);
+            }
+            connection.release();
+            callback(rows);
+        });
+    });
 }
 
 /* Logs Data*/
