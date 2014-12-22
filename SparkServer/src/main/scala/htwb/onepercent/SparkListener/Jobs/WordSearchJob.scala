@@ -22,7 +22,19 @@ class WordSearchJob extends JobExecutor with Logging {
    *
    * @param params List element 0: Word to look for
    *
-   * @return  to be discussed
+   * @return  The result of the analysis that looks like follow:
+   *          WordSearch @see { TweetAnalyser }
+   *
+   *          Or errors if there has been something going wrong:
+   *
+   *          If the timestamp between start- and enddate is not valid:
+   *          ErrorMessage("No Data available between X and Y", 100)
+   *
+   *          If start- or enddate doesn't match a valid date:
+   *          ErrorMessage("Parameter X is not a valid path!", 100)
+   *
+   *          If there was something going wrong in the analysis:
+   *          ErrorMessage("WordSearch analyses failed!", 101)
    */
   override def executeJob(params: List[String]): JobResult = {
 
@@ -40,7 +52,7 @@ class WordSearchJob extends JobExecutor with Logging {
             TypeCreator.createMultipleClusterPath("hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/", startGregCalendar, endGregCalendar, "*.data") match {
               case Success(path) =>
 
-                val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "6G").set("spark.cores.max", "24")
+                val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "8G").set("spark.cores.max", "24")
                 val sc = new SparkContext(conf)
                 val hc = new HiveContext(sc)
                 val ta = new TweetAnalyser(sc, hc)
@@ -61,16 +73,16 @@ class WordSearchJob extends JobExecutor with Logging {
                 }
 
               case Failure(wrongPath) =>
-                ErrorMessage("No Data avaible between " + startTime + " and " + endTime, 100)
+                ErrorMessage("No Data available between " + startTime + " and " + endTime, 100)
             }
 
           case Failure(wrongEndTime) =>
-            ErrorMessage("Parameter [" + wrongEndTime + "] i not a valid path!", 100)
+            ErrorMessage("Parameter [" + wrongEndTime + "] is not a valid path!", 100)
 
         }
 
       case Failure(wrongStartTime) =>
-        ErrorMessage("Parameter [" + wrongStartTime + "] i not a valid path!", 100)
+        ErrorMessage("Parameter [" + wrongStartTime + "] is not a valid path!", 100)
 
     }
 
