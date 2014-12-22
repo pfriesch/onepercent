@@ -5,6 +5,14 @@
 * - Blue: #40667F
 * - White: #FFF
 *
+* Second Theme:
+* - Blue: #168CBF;
+* - White Body: #F7FDFA;
+* - White Navbar: #13457F;
+*
+* TODO: navi ranrücken, headliner groß & fett!, den strich unter der navi weg
+*
+* TODO; 
 * @author Florian Willich
 **/
 
@@ -13,7 +21,7 @@
 * @author Florian Willich
 **/
 html body {
-    background-color: #FFFFFF;
+    background-color: #F7FDFA;
     font-family: 'Open Sans', Helvetica, Verdana, sans-serif;
     margin: 0;
     padding-top: 26px;
@@ -32,11 +40,12 @@ html body {
 }
 
 .navbar-default {
-    color: #40667F;
+    color: #13457F;
     font-size: 20px;
     font-style: bold;
-    background-image: linear-gradient(to bottom, #FFF 0px, #FFF 100%);
+    background-image: linear-gradient(to bottom, #272727 0px, #272727 100%);
     background-repeat: repeat-x;
+    border-bottom-width: 0px;
 }
 
 /**
@@ -51,6 +60,15 @@ html body {
     min-width: 200px;
     background-color: #426A84;
     border: none;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #F7FDFA;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #FEFEFE;
+    background-color: #168CBF;
 }
 
 /**
@@ -97,8 +115,8 @@ html body {
     margin-bottom: 0px;
     border-radius: 0px;
     background-color: #FFF;
-    color: #40667F;
-    border: 1px solid #40667F;
+    color: #168CBF;
+    border: 1px solid #F7FDFA;
 }
 
 .form-control {
@@ -108,10 +126,10 @@ html body {
     padding: 6px 12px;
     font-size: 14px;
     line-height: 1.42857;
-    color: #40667F;
+    color: #168CBF;
     background-color: #FFF;
     background-image: none;
-    border: 1px solid #40667F;
+    border: 1px solid #F7FDFA;
     border-radius: 0px;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
@@ -123,17 +141,30 @@ html body {
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
 }
 
+.navbar .nav,
+.navbar .nav > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    *zoom:1; /* hasLayout ie7 trigger */
+    vertical-align: top;
+}
+
+ .navbar-inner {
+    text-align:center;
+}
+
 /**
 * ========================================================================
 * JUMBOTRON
 * ========================================================================
 **/
 .jumbotron {
-    margin-top: -25px;
+    margin-top: -26px;
     padding-top: 20px;
     margin-bottom: 16px;
-    /*background-color: #40667F;*/
-    background-image: linear-gradient(to bottom, #40667F 0px, #5485A6 100%);
+    /*background-color: #168CBF;*/
+    background-image: linear-gradient(to bottom, #168CBF 0px, #168CBF 100%);
     background-repeat: repeat-x;
     color: #FFF;
 }
@@ -189,7 +220,7 @@ html body {
 
 .btn-default {
     color: #FFF;
-    background-color: #40667F;
+    background-color: #168CBF;
     border: none;
     border-radius: 0px;
     background-image: none;
@@ -200,8 +231,9 @@ html body {
     margin-left: -16px;
     padding-top: 9px;
     color: #FFF;
-    background-color: #40667F;
-    border-color: #40667F;
+    background-color: #168CBF;
+    border-color: #168CBF;
+    border-radius: 0px;
 }
 
 .btn-navi:hover {
@@ -210,36 +242,36 @@ html body {
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     color: #FFF;
-    background-color: #40667F;
-    border-color: #40667F;
+    background-color: #168CBF;
+    border-color: #168CBF;
 }
 
 .dropdown-toggle.btn-default {
     color: #FFF;
-    background-color: #40667F;
+    background-color: #168CBF;
     border-color: #ADADAD;
 }
 
 .btn-primary {
-    color: #40667F;
+    color: #168CBF;
     background-color: #FFF;
     border-color: #CCC;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
     color: #FFF;
-    background-color: #40667F;
-    border-color: #40667F;
+    background-color: #168CBF;
+    border-color: #168CBF;
 }
 
 .panel-primary > .panel-heading {
     color: #FFF;
-    background-color: #40667F;
-    border-color: #40667F;
+    background-color: #168CBF;
+    border-color: #168CBF;
 }
 
 .panel-primary {
-    border-color: #40667F;
+    border-color: #168CBF;
 }
 
 /**
