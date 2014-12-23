@@ -29,7 +29,7 @@ object Config {
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
   val defaultPort = 5555
   val defaultJobsPackage = "htwb.onepercent.SparkListener.Jobs."
-  val defaultTweetsPrefixPath = "/studenten/s0540031/tweets/"
+  val defaultTweetsPrefixPath = "hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/"
 
   var settings = Settings(configVersion, defaultHostname, defaultPort, defaultJobsPackage, defaultTweetsPrefixPath)
 
