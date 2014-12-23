@@ -47,45 +47,44 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
       case Success(mainGregCalendar) =>
         val startTempCalender: Calendar = mainGregCalendar
         startTempCalender.set(Calendar.HOUR_OF_DAY, 0)
-        startTempCalender.set(Calendar.HOUR_OF_DAY, startTempCalender.get(Calendar.HOUR_OF_DAY) - 12)
+        startTempCalender.set(Calendar.HOUR_OF_DAY, startTempCalender.get(Calendar.HOUR_OF_DAY) - 13)
         val startTime: String = timeFormatter.format(startTempCalender)
 
         TypeCreator.createGregorianCalendar(startTime, timeFormatter) match {
           case Success(startGregCalendar) =>
             val endTempCalender: Calendar = mainGregCalendar
             endTempCalender.set(Calendar.HOUR_OF_DAY, 23)
-            endTempCalender.set(Calendar.HOUR_OF_DAY, endTempCalender.get(Calendar.HOUR_OF_DAY) + 11)
+            endTempCalender.set(Calendar.HOUR_OF_DAY, endTempCalender.get(Calendar.HOUR_OF_DAY) + 12)
             val endTime: String = timeFormatter.format(endTempCalender)
 
             TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
               case Success(endGregCalendar) =>
 
-                val paths: List[T_Path] = TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")
-                val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "48")
-                val sc = new SparkContext(conf)
-                val hc = new HiveContext(sc)
-                val ta = new TweetAnalyser(sc, hc)
+                TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
+                  case Success(path) =>
 
-                log("executeJob", "Starting Anaylsis for : " + params(0))
-                //TODO implement job
-                ErrorMessage("Job not implemented", 404)
+                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "48")
+                    val sc = new SparkContext(conf)
+                    val hc = new HiveContext(sc)
+                    val ta = new TweetAnalyser(sc, hc)
 
+                    log("executeJob", "Starting Anaylsis for : " + params(0))
+                    Try(ta.tweetsAtDaytimeAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
+                    case Success(result) =>
+                      //stop the spark context, otherwise its stuck in this context...
+                      sc.stop()
+                      log("executeJob", "End Anaylsis for: " + params(0))
+                      result
+                    case Failure(_) =>
+                      //stop the spark context, otherwise its stuck in this context...
+                      sc.stop()
+                      log("executeJob", "TweetsAtDaytime analyses failed! timestamp[" + params(0) + "]")
+                      ErrorMessage("TweetsAtDaytime analyses failed!", 101)
+                    }
+                  case Failure(wrongPath) =>
+                    ErrorMessage("No Data available between " + startTime + " and " + endTime, 100)
+                }
 
-
-//                Try(ta.tweetsAtDaytimeAnalyser(new TweetJSONFileReader(sc, hc).readFile(paths), params(0))) match {
-//                  case Success(result) =>
-//                    //stop the spark context, otherwise its stuck in this context...
-//                    sc.stop()
-//                    log("executeJob", "End Anaylsis for: " + params(0))
-//                    result
-//                  case Failure(_) =>
-//                    //stop the spark context, otherwise its stuck in this context...
-//                    sc.stop()
-//                    log("executeJob", "TweetsAtDaytime analyses failed! timestamp[" + params(0) + "]")
-//                    ErrorMessage("TweetsAtDaytime analyses failed!", 101);
-//
-//
-//                }
               case Failure(wrongEndTime) =>
                 ErrorMessage("Parameter [" + wrongEndTime + "] is not a valid path!", 100)
             }
