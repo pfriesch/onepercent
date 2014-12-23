@@ -49,28 +49,32 @@ class WordSearchJob extends JobExecutor with Logging {
         TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
           case Success(endGregCalendar) =>
 
-            val paths: List[T_Path] = TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")
-            val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "8G").set("spark.cores.max", "24")
-            val sc = new SparkContext(conf)
-            val hc = new HiveContext(sc)
-            val ta = new TweetAnalyser(sc, hc)
+            TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
+              case Success(path) =>
 
-            log("executeJob", "Starting Anaylsis with keyword: " + params(0))
-            //TODO implement job
-            ErrorMessage("Job not implemented", 404)
+                val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "8G").set("spark.cores.max", "24")
+                val sc = new SparkContext(conf)
+                val hc = new HiveContext(sc)
+                val ta = new TweetAnalyser(sc, hc)
 
-          //            Try(ta.wordSearchAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
-          //              case Success(result) =>
-          //                //stop the spark context, otherwise its stuck in this context...
-          //                sc.stop()
-          //                log("executeJob", "End Anaylsis with word: " + params(0))
-          //                result
-          //              case Failure(_) =>
-          //                //stop the spark context, otherwise its stuck in this context...
-          //                sc.stop()
-          //                log("executeJob", "WordSearch analyses failed! word[" + params(0) + "]")
-          //                ErrorMessage("WordSearch analyses failed!", 101);
-          //            }
+                log("executeJob", "Starting Anaylsis with keyword: " + params(0))
+
+                Try(ta.wordSearchAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
+                  case Success(result) =>
+                    //stop the spark context, otherwise its stuck in this context...
+                    sc.stop()
+                    log("executeJob", "End Anaylsis with word: " + params(0))
+                    result
+                  case Failure(_) =>
+                    //stop the spark context, otherwise its stuck in this context...
+                    sc.stop()
+                    log("executeJob", "WordSearch analyses failed! word[" + params(0) + "]")
+                    ErrorMessage("WordSearch analyses failed!", 101);
+                }
+
+              case Failure(wrongPath) =>
+                ErrorMessage("No Data available between " + startTime + " and " + endTime, 100)
+            }
           case Failure(wrongEndTime) =>
             ErrorMessage("Parameter [" + wrongEndTime + "] is not a valid path!", 100)
         }
