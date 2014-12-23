@@ -24,7 +24,7 @@ html body {
     background-color: #F7FDFA;
     font-family: 'Open Sans', Helvetica, Verdana, sans-serif;
     margin: 0;
-    padding-top: 26px;
+    padding-top: 77px;
 }
 
 /**
@@ -32,20 +32,19 @@ html body {
 * NAVBAR
 * ========================================================================
 **/
-.navbar { 
-    border-radius: 0; 
-    border-color: #FFF;
-    padding-left: 25px;
-    padding-right: 25px;
-}
 
 .navbar-default {
+    padding-right: 25px;
+    padding-left: 25px;
+    border-color: #FFF;
+    border-radius: 0; 
     color: #13457F;
     font-size: 20px;
     font-style: bold;
     background-image: linear-gradient(to bottom, #272727 0px, #272727 100%);
     background-repeat: repeat-x;
     border-bottom-width: 0px;
+    text-align: left;
 }
 
 /**
@@ -55,10 +54,8 @@ html body {
     text-shadow: none;
 }
 
-.navbar-nav > li > .dropdown-menu {
-    margin-top: 2px;
-    min-width: 200px;
-    background-color: #426A84;
+.navbar-nav > li > a {
+    min-width: 150px;
     border: none;
 }
 
@@ -71,29 +68,15 @@ html body {
     background-color: #168CBF;
 }
 
-/**
-* If dropdown is active
-**/
-.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-    background-color: #FFF;
-    color: #555;
+.navbar-default .navbar-nav > .active > a {
+    color: #FEFEFE;
+    background-color: #168CBF;
 }
 
-.dropdown-menu .divider {
-    height: 1px;
-    margin: 9px 0px;
-    overflow: hidden;
-    background-color: #FFF;
-}
-
-.dropdown-menu > li > a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: 400;
-    line-height: 1.42857;
-    color: #FFF;
-    white-space: nowrap;
+.navbar-default .navbar-nav > .active > a {
+    background-image: linear-gradient(to bottom, #168CBF 0px, #168CBF 100%);
+    background-repeat: repeat-x;
+    box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.075) inset;
 }
 
 .container-fluid {
@@ -163,7 +146,6 @@ html body {
     margin-top: -26px;
     padding-top: 20px;
     margin-bottom: 16px;
-    /*background-color: #168CBF;*/
     background-image: linear-gradient(to bottom, #168CBF 0px, #168CBF 100%);
     background-repeat: repeat-x;
     color: #FFF;
@@ -297,4 +279,39 @@ header {
 
 #load {
     margin-top: 0;
+}
+
+/**
+* Don't know what this is acutally doing... from old css
+**/
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
 }
