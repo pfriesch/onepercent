@@ -10,7 +10,7 @@ import org.apache.spark.sql.hive._
 
 
 import java.io.File
-import java.util.Date
+import java.util.{Calendar, Date}
 import java.text.SimpleDateFormat
 
 import htwb.onepercent.SparkListener.JobResult
@@ -77,11 +77,44 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     val mappedTable: RDD[(String, Int)] = filteredTable.map(row => (timestampFormatter.format(new Date(row.apply(0).toString.toLong)), 1))
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
 
-    val wordDistribution: Array[WordDistribution] = reducedTable.collect.map { case (a, b) => WordDistribution(a, b) }
+    val wordDistribution: Array[TweetDistribution] = reducedTable.collect.map { case (a, b) => TweetDistribution(a, b) }
 
     val sampleIds: Array[String] = filteredTable.map(row => row.apply(1).toString).takeSample(true, 10, 3)
 
     new WordSearch(searchWord, wordDistribution, sampleIds)
+  }
+
+  def tweetsAtDaytimeAnalyser(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
+
+    def convertToLocalTime(timestamp: Long, offset: Int): Date = {
+      val inputDate: Calendar = Calendar.getInstance()
+      inputDate.setTime(new Date(timestamp))
+      val offsetInHours: Int = offset / 3600
+      inputDate.set(Calendar.HOUR, inputDate.get(Calendar.HOUR) + offsetInHours)
+      return inputDate.getTime()
+    }
+
+    def checkForSameDay(date1: Date, date2: Date): Boolean = {
+      val cal1 = Calendar.getInstance()
+      val cal2 = Calendar.getInstance()
+      cal1.setTime(date1)
+      cal2.setTime(date2)
+      cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+    }
+
+    val timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
+    val searchDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val searchDate: Date = searchDateFormatter.parse(searchDateString)
+
+    scheme.registerTempTable("tweets")
+
+    val table: SchemaRDD = hiveContext.sql("SELECT timestamp_ms, user.utc_offset FROM tweets WHERE user.utc_offset IS NOT NULL")
+    val mappedTable: RDD[(String, Int)] = table.map(row => (timestampFormatter.format(convertToLocalTime(row.apply(0).toString.toLong, row.apply(1).toString.toInt)), 1))
+    val filteredTable: RDD[(String, Int)] = mappedTable.filter { case (a,b) => checkForSameDay(timestampFormatter.parse(a), searchDate) }
+    val reducedTable: RDD[(String, Int)] = filteredTable.reduceByKey(_ + _)
+    val tweetDistribution: Array[TweetDistribution] = reducedTable.collect.map{ case (a, b) => TweetDistribution(a, b) }
+
+    new TweetsAtDaytime(tweetDistribution)
   }
 
 }
@@ -117,7 +150,7 @@ case class TopHashtags(topHashtags: Array[HashtagFrequency], countAllHashtags: L
  * @param timestamp The Tweet timestamp.
  * @param count     The Count of this tweet timestamp.
  */
-case class WordDistribution(timestamp: String, count: Long) extends JobResult
+case class TweetDistribution(timestamp: String, count: Long) extends JobResult
 
 /**
  * Type representing the distribution of a word used in Tweet texts as an analysis result including
@@ -128,4 +161,11 @@ case class WordDistribution(timestamp: String, count: Long) extends JobResult
  * @param countedTweets All timestamps and the counts, where tweet texts contain the searchWord.
  * @param tweetIds      Up to 10 ids of tweet that contain the searchWord.
  */
-case class WordSearch(searchWord: String, countedTweets: Array[WordDistribution], tweetIds: Array[String]) extends JobResult
+case class WordSearch(searchWord: String, countedTweets: Array[TweetDistribution], tweetIds: Array[String]) extends JobResult
+
+/**
+ * Type representing the distribution of tweets over time.
+ *
+ * @param countedTweets All timestamps and the counts, where tweets happened.
+ */
+case class TweetsAtDaytime(countedTweets: Array[TweetDistribution]) extends JobResult
