@@ -57,7 +57,7 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createMultipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
+  def createMultipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): Try[List[T_Path]] = {
     //calculate hours between the dates
     //TODO: Maybe without any cast???
     val hours: Int = ((timeEnd.getTimeInMillis - timeBegin.getTimeInMillis) / 3600000).toInt
@@ -76,8 +76,7 @@ object TypeCreator {
           pathList += T_Path(prefixPath + createTimePath(timeBegin) + dataName)
         }
 
-        pathList.toList
-
+        Try(pathList.toList)
     }
 
   }
