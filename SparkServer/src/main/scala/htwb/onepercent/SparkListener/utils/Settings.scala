@@ -12,7 +12,8 @@ import scala.util.{Failure, Success}
  * @param port
  * @param JobsPackageString
  */
-case class Settings(hostname: String, port: Int, JobsPackageString: String)
+// !!!!!!!! If changed configVersion needs to be counted up !!!!!!!!!
+case class Settings(configVersion: Int, hostname: String, port: Int, JobsPackageString: String, tweetsPrefixPath: String)
 
 
 /**
@@ -22,18 +23,26 @@ case class Settings(hostname: String, port: Int, JobsPackageString: String)
  */
 object Config {
 
+  // !!!!!!!!!! Count up every time you change the Settings case class !!!!!!!!!
+  val configVersion = 2
   val settingsFileName = "config.cfg"
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
   val defaultPort = 5555
   val defaultJobsPackage = "htwb.onepercent.SparkListener.Jobs."
-  var settings = Settings(defaultHostname, defaultPort, defaultJobsPackage)
+  val defaultTweetsPrefixPath = "/studenten/s0540031/tweets/"
+
+  var settings = Settings(configVersion, defaultHostname, defaultPort, defaultJobsPackage, defaultTweetsPrefixPath)
 
   // Constructor
   {
     val file = new File(settingsFileName)
     if (file.exists() && !file.isDirectory()) {
       JsonConverter.parseSettings(Source.fromFile(settingsFileName).mkString) match {
-        case Success(settings) => this.settings = settings
+        case Success(settings) =>
+          if (settings.configVersion != configVersion)
+            setDefaultSettings
+          else
+            this.settings = settings
         case Failure(_) => setDefaultSettings
       }
     }
@@ -42,7 +51,7 @@ object Config {
 
   private def setDefaultSettings = {
     val writer = new PrintWriter(new File(settingsFileName))
-    writer.write(JsonConverter.toJsonString(Settings(defaultHostname, defaultPort, defaultJobsPackage)))
+    writer.write(JsonConverter.toJsonString(Settings(configVersion, defaultHostname, defaultPort, defaultJobsPackage, defaultTweetsPrefixPath)))
     writer.close()
   }
 

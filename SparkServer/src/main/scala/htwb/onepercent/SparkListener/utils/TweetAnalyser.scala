@@ -10,6 +10,8 @@ import org.apache.spark.sql.hive._
 
 
 import java.io.File
+import java.util.Date
+import java.text.SimpleDateFormat
 
 import htwb.onepercent.SparkListener.JobResult
 
@@ -56,6 +58,32 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     new TopHashtags(topHashtags, table.count())
   }
 
+  /**
+   * This method calculates the distribution of tweets that contain a given word.
+   *
+   * @param scheme      The scheme on which the analysis is processed.
+   * @param searchWord  Word to look for in the tweet texts.
+   *
+   * @return            the searchWord, distribution of this word, example tweet ids
+   */
+  def wordSearchAnalyser(scheme: SchemaRDD, searchWord: String): WordSearch = {
+
+    val timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
+
+    scheme.registerTempTable("tweets")
+
+    val table: SchemaRDD = hiveContext.sql("SELECT timestamp_ms, id_str, text FROM tweets")
+    val filteredTable: SchemaRDD = table.filter(row => row.apply(2).toString.toLowerCase.contains(searchWord))
+    val mappedTable: RDD[(String, Int)] = filteredTable.map(row => (timestampFormatter.format(new Date(row.apply(0).toString.toLong)), 1))
+    val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
+
+    val wordDistribution: Array[WordDistribution] = reducedTable.collect.map { case (a, b) => WordDistribution(a, b) }
+
+    val sampleIds: Array[String] = filteredTable.map(row => row.apply(1).toString).takeSample(true, 10, 3)
+
+    new WordSearch(searchWord, wordDistribution, sampleIds)
+  }
+
 }
 
 /**
@@ -82,3 +110,22 @@ case class HashtagFrequency(hashtag: String, count: Long) extends JobResult
  *                          twitter tweets.
  */
 case class TopHashtags(topHashtags: Array[HashtagFrequency], countAllHashtags: Long) extends JobResult
+
+/**
+ * Type representing one Tweet timestamp and its related count.
+ *
+ * @param timestamp The Tweet timestamp.
+ * @param count     The Count of this tweet timestamp.
+ */
+case class WordDistribution(timestamp: String, count: Long) extends JobResult
+
+/**
+ * Type representing the distribution of a word used in Tweet texts as an analysis result including
+ * the word to search for, the distribution over time including the timestamp and the count. Furthermore
+ * in contains up to 10 tweet ids, that contain the word to search for.
+ *
+ * @param searchWord    The word to search for in the tweet texts.
+ * @param countedTweets All timestamps and the counts, where tweet texts contain the searchWord.
+ * @param tweetIds      Up to 10 ids of tweet that contain the searchWord.
+ */
+case class WordSearch(searchWord: String, countedTweets: Array[WordDistribution], tweetIds: Array[String]) extends JobResult
