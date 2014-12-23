@@ -17,13 +17,11 @@ module.exports = {
 
 /* create a Hashjob with the given parameters and return it to OP_Webserver*/
 function createHashJob (jobName, topX) {
-  var timestamp = '';
-  timestamp = generateTimestamp();
   return {
     "jobID": generateHash(),
     "name": jobName,
-    "params": [timestamp,topX],
-    "time": timestamp
+    "params": [generateTimestamp(-1),topX],
+    "time": generateTimestamp(0)
  	};
 }
 
@@ -40,8 +38,9 @@ function generateHash() {
 };
 
 /* Generates actual timestamp minus 1 hour*/
-function generateTimestamp() {
-  var time = moment().subtract(1, 'hours');;
+function generateTimestamp(offset) {
+  offset = typeof offset !== 'undefined' ? offset : 0;
+  var time = moment().add(offset, 'hours');;
   var timeString = time.format('YYYY-MM-DD HH:mm:ss');
   
   return timeString;
