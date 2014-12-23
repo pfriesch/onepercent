@@ -34,7 +34,7 @@ function initJobInterval(){
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/
 function repeatJobPerInterval(job, intervalInMilliseconds, topX) {
 	setInterval(function() {
-       var sparkJob = jobManager.createJob["hash"](job,config.sparkPrefixPath, topX);
+       var sparkJob = jobManager.createJob["hash"](job, topX);
        jobCollection.push(sparkJob);
        logData('Added Element with ID: ' + sparkJob.jobId);
        logData('Sending Hashtagrequest every ' + intervalInMilliseconds + 'sec.');

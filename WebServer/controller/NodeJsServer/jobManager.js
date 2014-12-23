@@ -16,13 +16,13 @@ module.exports = {
 };
 
 /* create a Hashjob with the given parameters and return it to OP_Webserver*/
-function createHashJob (jobName, prefixPath, topX) {
+function createHashJob (jobName, topX) {
   var timestamp = '';
   timestamp = generateTimestamp();
   return {
     "jobID": generateHash(),
     "name": jobName,
-    "params": [timestamp,prefixPath,topX],
+    "params": [timestamp,topX],
     "time": timestamp
  	};
 }
