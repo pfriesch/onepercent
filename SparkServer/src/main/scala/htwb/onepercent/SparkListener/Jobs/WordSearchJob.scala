@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
-import htwb.onepercent.SparkListener.utils.{ErrorMessage, TweetJSONFileReader, Logging, TweetAnalyser}
+import htwb.onepercent.SparkListener.utils._
 import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkContext, SparkConf}
@@ -49,7 +49,7 @@ class WordSearchJob extends JobExecutor with Logging {
         TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
           case Success(endGregCalendar) =>
 
-            TypeCreator.createMultipleClusterPath("hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/", startGregCalendar, endGregCalendar, "*.data") match {
+            TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
               case Success(path) =>
 
                 val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "8G").set("spark.cores.max", "24")

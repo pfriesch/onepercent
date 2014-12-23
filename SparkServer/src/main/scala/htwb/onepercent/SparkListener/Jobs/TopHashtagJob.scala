@@ -12,7 +12,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 //Own imports
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
-import htwb.onepercent.SparkListener.utils.{TweetJSONFileReader, ErrorMessage, Logging, TweetAnalyser}
+import htwb.onepercent.SparkListener.utils._
 import htwb.onepercent.SparkListener.{JobResult, JobExecutor}
 
 /**
@@ -29,8 +29,7 @@ class TopHashtagJob extends JobExecutor with Logging {
    *
    * @param     params        Have to be as follows:
    *                          List element 0: Timestamp <yyyy-mm-dd hh:mm:ss>
-   *                          List element 1: Prefix path begin and end with a /
-   *                          List element 2: Natural Number (Integer) defining the top X
+   *                          List element 1: Natural Number (Integer) defining the top X
    *
    * @return    The result of the analysis that looks like follow:
    *            TopHashtags @see { TweetAnalyser }
@@ -57,10 +56,10 @@ class TopHashtagJob extends JobExecutor with Logging {
     TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
       case Success(gregCalendar) =>
 
-        TypeCreator.createClusterPath(params(1), gregCalendar, "*.data") match {
+        TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data") match {
           case Success(path) =>
 
-            Try(params(2).toInt) match {
+            Try(params(1).toInt) match {
               case Success(topX) =>
                 val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
                 val sc = new SparkContext(conf)
@@ -85,7 +84,7 @@ class TopHashtagJob extends JobExecutor with Logging {
                 }
 
               case Failure(_) =>
-                ErrorMessage("Parameter [" + params(2) + "] is not an Integer!", 100)
+                ErrorMessage("Parameter [" + params(1) + "] is not an Integer!", 100)
 
             }
 
