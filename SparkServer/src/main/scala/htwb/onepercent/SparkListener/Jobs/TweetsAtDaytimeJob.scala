@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
-import htwb.onepercent.SparkListener.utils.{ErrorMessage, Logging, TweetAnalyser, TweetJSONFileReader}
+import htwb.onepercent.SparkListener.utils._
 import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkConf, SparkContext}
@@ -60,31 +60,32 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
             TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
               case Success(endGregCalendar) =>
 
-                TypeCreator.createMultipleClusterPath("hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/", startGregCalendar, endGregCalendar, "*.data") match {
-                  case Success(path) =>
+                val paths: List[T_Path] = TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")
+                val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "48")
+                val sc = new SparkContext(conf)
+                val hc = new HiveContext(sc)
+                val ta = new TweetAnalyser(sc, hc)
 
-                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "48")
-                    val sc = new SparkContext(conf)
-                    val hc = new HiveContext(sc)
-                    val ta = new TweetAnalyser(sc, hc)
+                log("executeJob", "Starting Anaylsis for : " + params(0))
+                //TODO implement job
+                ErrorMessage("Job not implemented", 404)
 
-                    log("executeJob", "Starting Anaylsis for : " + params(0))
 
-                    Try(ta.tweetsAtDaytimeAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
-                      case Success(result) =>
-                        //stop the spark context, otherwise its stuck in this context...
-                        sc.stop()
-                        log("executeJob", "End Anaylsis for: " + params(0))
-                        result
-                      case Failure(_) =>
-                        //stop the spark context, otherwise its stuck in this context...
-                        sc.stop()
-                        log("executeJob", "TweetsAtDaytime analyses failed! timestamp[" + params(0) + "]")
-                        ErrorMessage("TweetsAtDaytime analyses failed!", 101);
-                    }
-                  case Failure(wrongPath) =>
-                    ErrorMessage("No Data available between " + startTime + " and " + endTime, 100)
-                }
+
+//                Try(ta.tweetsAtDaytimeAnalyser(new TweetJSONFileReader(sc, hc).readFile(paths), params(0))) match {
+//                  case Success(result) =>
+//                    //stop the spark context, otherwise its stuck in this context...
+//                    sc.stop()
+//                    log("executeJob", "End Anaylsis for: " + params(0))
+//                    result
+//                  case Failure(_) =>
+//                    //stop the spark context, otherwise its stuck in this context...
+//                    sc.stop()
+//                    log("executeJob", "TweetsAtDaytime analyses failed! timestamp[" + params(0) + "]")
+//                    ErrorMessage("TweetsAtDaytime analyses failed!", 101);
+//
+//
+//                }
               case Failure(wrongEndTime) =>
                 ErrorMessage("Parameter [" + wrongEndTime + "] is not a valid path!", 100)
             }
