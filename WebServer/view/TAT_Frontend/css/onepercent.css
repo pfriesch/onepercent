@@ -12,13 +12,11 @@
 *
 * TODO: navi ranrücken, headliner groß & fett!, den strich unter der navi weg
 *
-* TODO; 
 * @author Florian Willich
 **/
 
 /**
 * Body Style (Background etc.)
-* @author Florian Willich
 **/
 html body {
     background-color: #F7FDFA;
@@ -45,6 +43,7 @@ html body {
     background-repeat: repeat-x;
     border-bottom-width: 0px;
     text-align: left;
+    float: left;
 }
 
 /**
@@ -59,24 +58,37 @@ html body {
     border: none;
 }
 
+/**
+* Text color of navigation.
+**/
 .navbar-default .navbar-nav > li > a {
     color: #F7FDFA;
 }
 
-.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+/**
+* Navbar element hover style
+**/
+.navbar-default .navbar-nav > li > a:hover {
     color: #FEFEFE;
     background-color: #168CBF;
 }
 
-.navbar-default .navbar-nav > .active > a {
-    color: #FEFEFE;
-    background-color: #168CBF;
-}
-
+/**
+* Navbar element active style
+**/
 .navbar-default .navbar-nav > .active > a {
     background-image: linear-gradient(to bottom, #168CBF 0px, #168CBF 100%);
     background-repeat: repeat-x;
     box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.075) inset;
+    color: #FEFEFE;
+}
+
+/**
+* If Navbar element is active => hover style
+**/
+.navbar-default .navbar-nav > .active > a:hover {
+    color: #FEFEFE;
+    background-color: #168CBF;
 }
 
 .container-fluid {
@@ -254,6 +266,15 @@ html body {
 
 .panel-primary {
     border-color: #168CBF;
+}
+
+
+.content-group {
+    min-height: 500px;
+}
+
+.content-group .content-subgroup {
+    min-height: 100px;
 }
 
 /**
