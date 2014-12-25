@@ -9,8 +9,7 @@
 * - Blue: #168CBF;
 * - White Body: #F7FDFA;
 * - White Navbar: #13457F;
-*
-* TODO: navi ranrücken, headliner groß & fett!, den strich unter der navi weg
+* - Black: #272727
 *
 * @author Florian Willich
 **/
@@ -63,6 +62,7 @@ html body {
 **/
 .navbar-default .navbar-nav > li > a {
     color: #F7FDFA;
+    margin-right: -6px;
 }
 
 /**
@@ -71,6 +71,7 @@ html body {
 .navbar-default .navbar-nav > li > a:hover {
     color: #FEFEFE;
     background-color: #168CBF;
+    padding-bottom: 16px;
 }
 
 /**
@@ -79,8 +80,9 @@ html body {
 .navbar-default .navbar-nav > .active > a {
     background-image: linear-gradient(to bottom, #168CBF 0px, #168CBF 100%);
     background-repeat: repeat-x;
-    box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.075) inset;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.8) inset;
     color: #FEFEFE;
+    padding-bottom: 16px;
 }
 
 /**
@@ -213,13 +215,14 @@ html body {
 }
 
 .btn-default {
-    color: #FFF;
-    background-color: #168CBF;
-    border: none;
-    border-radius: 0px;
+    color: #168CBF;
+    background-color: #F7FDFA;
     background-image: none;
 }
 
+/**
+* This is the search button for the navi.
+**/
 .btn-navi {
     margin-top: 1px;
     margin-left: -16px;
@@ -230,6 +233,9 @@ html body {
     border-radius: 0px;
 }
 
+/**
+* Need that to overwrite bootstrap stuff.
+**/
 .btn-navi:hover {
     color: #FFF;
 }
@@ -268,7 +274,13 @@ html body {
     border-color: #168CBF;
 }
 
-
+/**
+* ========================================================================
+* CONTENT GROUPS
+* ========================================================================
+*
+* This is stuff for later if we need that...
+**/
 .content-group {
     min-height: 500px;
 }
@@ -293,7 +305,7 @@ header {
 }
 */
 
-#day{
+#day {
     padding-top: 25px;
     text-align:right;
 }
@@ -303,7 +315,7 @@ header {
 }
 
 /**
-* Don't know what this is acutally doing... from old css
+* Old CSS stuff
 **/
 .dropdown-submenu {
     position: relative;
