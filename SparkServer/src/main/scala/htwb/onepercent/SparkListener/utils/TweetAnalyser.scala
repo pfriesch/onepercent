@@ -62,11 +62,13 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * This method calculates the distribution of tweets that contain a given word.
    *
    * @param scheme      The scheme on which the analysis is processed.
-   * @param searchWord  Word to look for in the tweet texts.
+   * @param inputSearchWord  Word to look for in the tweet texts.
    *
    * @return            the searchWord, distribution of this word, example tweet ids
    */
-  def wordSearchAnalyser(scheme: SchemaRDD, searchWord: String): WordSearch = {
+  def wordSearchAnalyser(scheme: SchemaRDD, inputSearchWord: String): WordSearch = {
+
+    val searchWord = inputSearchWord.toLowerCase
 
     val timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
 
@@ -81,7 +83,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 
     val sampleIds: Array[String] = filteredTable.map(row => row.apply(1).toString).takeSample(true, 10, 3)
 
-    new WordSearch(searchWord, wordDistribution, sampleIds)
+    new WordSearch(inputSearchWord, wordDistribution, sampleIds)
   }
 
   def tweetsAtDaytimeAnalyser(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
