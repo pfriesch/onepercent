@@ -67,21 +67,23 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @return            the searchWord, distribution of this word, example tweet ids
    */
   def wordSearchAnalyser(scheme: SchemaRDD, inputSearchWord: String): WordSearch = {
-
     val searchWord = inputSearchWord.toLowerCase
 
+    // defines a SimpleDateFormat ignores minutes and seconds
     val timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
 
     scheme.registerTempTable("tweets")
 
     val table: SchemaRDD = hiveContext.sql("SELECT timestamp_ms, id_str, text FROM tweets")
-    val filteredTable: SchemaRDD = table.filter(row => row.apply(2).toString.toLowerCase.contains(searchWord))
-    val mappedTable: RDD[(String, Int)] = filteredTable.map(row => (timestampFormatter.format(new Date(row.apply(0).toString.toLong)), 1))
+    // filter the text column, wether it contains the word to search for
+    val filteredTable: SchemaRDD = table.filter(row => row.getString(2).toLowerCase.contains(searchWord))
+    // format the timestamp_ms in a valid timestamp format, automatically use the timezone from the server on which spark is running
+    val mappedTable: RDD[(String, Int)] = filteredTable.map(row => (timestampFormatter.format(new Date(row.getLong(0))), 1))
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
 
     val wordDistribution: Array[TweetDistribution] = reducedTable.collect.map { case (a, b) => TweetDistribution(a, b) }
 
-    val sampleIds: Array[String] = filteredTable.map(row => row.apply(1).toString).takeSample(true, 10, 3)
+    val sampleIds: Array[String] = filteredTable.map(row => row.getString(1)).takeSample(true, 10, 3)
 
     new WordSearch(inputSearchWord, wordDistribution, sampleIds)
   }
