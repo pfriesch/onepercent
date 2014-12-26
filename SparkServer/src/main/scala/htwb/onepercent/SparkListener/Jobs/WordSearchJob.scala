@@ -41,7 +41,7 @@ class WordSearchJob extends JobExecutor with Logging {
     val timeFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val currentCalendar: Calendar = Calendar.getInstance()
     val startCalendar: Calendar = currentCalendar
-    startCalendar.set(Calendar.HOUR_OF_DAY, startCalendar.get(Calendar.HOUR_OF_DAY) - 24)
+    startCalendar.set(Calendar.HOUR_OF_DAY, startCalendar.get(Calendar.HOUR_OF_DAY) - 23)
     val endTime: String = timeFormatter.format(currentCalendar.getTime())
     val startTime: String = timeFormatter.format(startCalendar.getTime())
 
@@ -54,7 +54,7 @@ class WordSearchJob extends JobExecutor with Logging {
             TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
               case Success(path) =>
 
-                val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "8G").set("spark.cores.max", "24")
+                val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "36")
                 val sc = new SparkContext(conf)
                 val hc = new HiveContext(sc)
                 val ta = new TweetAnalyser(sc, hc)
