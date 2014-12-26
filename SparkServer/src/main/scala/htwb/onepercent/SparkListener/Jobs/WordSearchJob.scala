@@ -39,9 +39,11 @@ class WordSearchJob extends JobExecutor with Logging {
   override def executeJob(params: List[String]): JobResult = {
 
     val timeFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    val currentTime: Calendar = Calendar.getInstance()
-    val endTime: String = timeFormatter.format(currentTime.getTime())
-    val startTime: String = timeFormatter.format(currentTime.set(Calendar.HOUR_OF_DAY, currentTime.get(Calendar.HOUR_OF_DAY) - 24))
+    val currentCalendar: Calendar = Calendar.getInstance()
+    val startCalendar: Calendar = currentCalendar
+    startCalendar.set(Calendar.HOUR_OF_DAY, startCalendar.get(Calendar.HOUR_OF_DAY) - 24)
+    val endTime: String = timeFormatter.format(currentCalendar.getTime())
+    val startTime: String = timeFormatter.format(startCalendar.getTime())
 
     TypeCreator.createGregorianCalendar(startTime, timeFormatter) match {
       case Success(startGregCalendar) =>
