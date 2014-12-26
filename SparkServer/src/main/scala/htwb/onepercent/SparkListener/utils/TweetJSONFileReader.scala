@@ -30,11 +30,13 @@ class TweetJSONFileReader(sc: SparkContext, hiveContext: HiveContext) {
 	 * @return SchemaRDD that contains Data from all Paths
 	 */
 	def readFile(pathListToJSONFile: List[T_Path]) : SchemaRDD = {
-		val result: SchemaRDD = hiveContext.jsonFile(pathListToJSONFile.head.path)
-		for(i <- 1 to pathListToJSONFile.length) {
-			result.unionAll(hiveContext.jsonFile(pathListToJSONFile(i).path))
+		var result: SchemaRDD = hiveContext.jsonFile(pathListToJSONFile.head.path)
+		// setting Schema at hiveContext.jsonFile improves performance by a lot
+		val dataSchema: StructType = result.schema
+		for(i <- 1 to (pathListToJSONFile.length - 1)) {
+			result = result.unionAll(hiveContext.jsonFile(pathListToJSONFile(i).path, dataSchema))
 		}
-		return result
+		result
 	}
 
 }
