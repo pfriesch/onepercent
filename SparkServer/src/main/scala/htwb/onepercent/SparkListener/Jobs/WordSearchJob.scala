@@ -40,6 +40,8 @@ class WordSearchJob extends JobExecutor with Logging {
 
     val timeFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val currentCalendar: Calendar = Calendar.getInstance()
+    // make sure that a minimal amount of data is already written
+    currentCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE) - 10)
     val startCalendar: Calendar = Calendar.getInstance()
     startCalendar.setTime(currentCalendar.getTime)
     startCalendar.set(Calendar.HOUR_OF_DAY, startCalendar.get(Calendar.HOUR_OF_DAY) - 23)
