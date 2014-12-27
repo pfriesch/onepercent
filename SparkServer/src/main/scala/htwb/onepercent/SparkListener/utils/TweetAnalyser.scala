@@ -78,7 +78,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     // filter the text column, wether it contains the word to search for
     val filteredTable: SchemaRDD = table.filter(row => row.getString(2).toLowerCase.contains(searchWord))
     // format the timestamp_ms in a valid timestamp format, automatically use the timezone from the server on which spark is running
-    val mappedTable: RDD[(String, Int)] = filteredTable.map(row => (timestampFormatter.format(new Date(row.getLong(0))), 1))
+    val mappedTable: RDD[(String, Int)] = filteredTable.map(row => (timestampFormatter.format(new Date(row.getString(0).toLong)), 1))
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
 
     val wordDistribution: Array[TweetDistribution] = reducedTable.collect.map { case (a, b) => TweetDistribution(a, b) }
