@@ -153,6 +153,24 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     new OriginTweets(timestamp,originTweets, retweetedTweets)
   }
 
+  /**
+   * This method calculates how the distribution of langauges in tweets is for a given schema.
+   * @param scheme    The schema on which the analysis is processed.
+   * @param timestamp Contains the time and date for which the calculations will be done.
+   * @return          The language and there total appearance
+   */
+  def languageDistributionAnalyser(scheme: SchemaRDD, timestamp: String): LanguageDistributionResult = {
+
+    scheme.registerTempTable("tweets")
+
+    val table: SchemaRDD = hiveContext.sql("SELECT lang FROM tweets")
+    val mappedTable: RDD[(String, Int)] = table.map(row => (row.getString(0), 1))
+    val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
+    // filter if language appears more than 100 times
+    val filteredTable: RDD[(String, Int)] = reducedTable.filter{ case (a,b) => b > 100 }
+    val languageDistribution: Array[LanguageDistribution] = filteredTable.collect.map{ case (a, b) => LanguageDistribution(a, b) }
+    new LanguageDistributionResult(languageDistribution)
+  }
 }
 
 /**
@@ -213,3 +231,18 @@ case class TweetsAtDaytime(countedTweets: Array[TweetDistribution]) extends JobR
  * @param retweetCount      The count of retweeted tweets.
  */
 case class OriginTweets(timestamp: String, originTweetCount: Long, retweetCount: Long) extends JobResult
+
+/**
+ * Type representing one Tweet language and its related count.
+ *
+ * @param language  The Tweet language.
+ * @param count     The Count of this tweet timestamp.
+ */
+case class LanguageDistribution(language: String, count: Long) extends JobResult
+
+/**
+ * Type representing the distribution of languages in tweets over time.
+ *
+ * @param languages All languages and the counts, that where used in tweets.
+ */
+case class LanguageDistributionResult(languages: Array[LanguageDistribution]) extends JobResult
