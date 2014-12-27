@@ -136,6 +136,23 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     new TweetsAtDaytime(tweetDistribution)
   }
 
+  /**
+   * This method calculates how many origin and retweeted tweets exist in the given schema.
+   * @param scheme    The scheme on which the analysis is processed.
+   * @param timestamp Contains the time and date for which the calculations will be done.
+   * @return          the timestamp, count of origin tweets and count of retweeted tweets
+   */
+  def originTweetsAnalyser(scheme: SchemaRDD, timestamp: String): OriginTweets = {
+
+    scheme.registerTempTable("tweets")
+
+    val table: SchemaRDD = hiveContext.sql("SELECT count(*) FROM tweets WHERE retweeted_status IS NOT NULL")
+    val retweetedTweets: Long = table.first.getLong(0)
+    val originTweets: Long = scheme.count - retweetedTweets
+
+    new OriginTweets(timestamp,originTweets, retweetedTweets)
+  }
+
 }
 
 /**
@@ -188,3 +205,11 @@ case class WordSearch(searchWord: String, countedTweets: Array[TweetDistribution
  * @param countedTweets All timestamps and the counts, where tweets happened.
  */
 case class TweetsAtDaytime(countedTweets: Array[TweetDistribution]) extends JobResult
+
+/**
+ * Type representing the count of origin and retweeted tweets, including the timestamp for which the caluclation is done.
+ * @param timestamp         The timestamp that is a Job Parameter.
+ * @param originTweetCount  The count of origin tweets.
+ * @param retweetCount      The count of retweeted tweets.
+ */
+case class OriginTweets(timestamp: String, originTweetCount: Long, retweetCount: Long) extends JobResult
