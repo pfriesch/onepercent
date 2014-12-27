@@ -49,7 +49,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
         startTempCalender.setTime(mainGregCalendar.getTime)
         startTempCalender.set(Calendar.HOUR_OF_DAY, 0)
         startTempCalender.set(Calendar.HOUR_OF_DAY, startTempCalender.get(Calendar.HOUR_OF_DAY) - 13)
-        val startTime: String = timeFormatter.format(startTempCalender)
+        val startTime: String = timeFormatter.format(startTempCalender.getTime)
 
         TypeCreator.createGregorianCalendar(startTime, timeFormatter) match {
           case Success(startGregCalendar) =>
@@ -57,7 +57,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
             endTempCalender.setTime(mainGregCalendar.getTime)
             endTempCalender.set(Calendar.HOUR_OF_DAY, 23)
             endTempCalender.set(Calendar.HOUR_OF_DAY, endTempCalender.get(Calendar.HOUR_OF_DAY) + 12)
-            val endTime: String = timeFormatter.format(endTempCalender)
+            val endTime: String = timeFormatter.format(endTempCalender.getTime)
 
             TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
               case Success(endGregCalendar) =>
@@ -65,7 +65,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
                 TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
                   case Success(path) =>
 
-                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "48")
+                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "54")
                     val sc = new SparkContext(conf)
                     val hc = new HiveContext(sc)
                     val ta = new TweetAnalyser(sc, hc)
