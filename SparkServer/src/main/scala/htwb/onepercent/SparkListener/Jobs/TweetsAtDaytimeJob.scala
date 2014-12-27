@@ -45,14 +45,16 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
 
     TypeCreator.createGregorianCalendar(params(0), timeFormatter) match {
       case Success(mainGregCalendar) =>
-        val startTempCalender: Calendar = mainGregCalendar
+        val startTempCalender: Calendar = Calendar.getInstance()
+        startTempCalender.setTime(mainGregCalendar.getTime)
         startTempCalender.set(Calendar.HOUR_OF_DAY, 0)
         startTempCalender.set(Calendar.HOUR_OF_DAY, startTempCalender.get(Calendar.HOUR_OF_DAY) - 13)
         val startTime: String = timeFormatter.format(startTempCalender)
 
         TypeCreator.createGregorianCalendar(startTime, timeFormatter) match {
           case Success(startGregCalendar) =>
-            val endTempCalender: Calendar = mainGregCalendar
+            val endTempCalender: Calendar = Calendar.getInstance()
+            endTempCalender.setTime(mainGregCalendar.getTime)
             endTempCalender.set(Calendar.HOUR_OF_DAY, 23)
             endTempCalender.set(Calendar.HOUR_OF_DAY, endTempCalender.get(Calendar.HOUR_OF_DAY) + 12)
             val endTime: String = timeFormatter.format(endTempCalender)
