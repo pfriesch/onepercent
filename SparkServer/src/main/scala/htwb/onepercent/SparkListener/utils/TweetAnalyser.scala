@@ -10,7 +10,7 @@ import org.apache.spark.sql.hive._
 
 
 import java.io.File
-import java.util.{Calendar, Date}
+import java.util.{TimeZone, Calendar, Date}
 import java.text.SimpleDateFormat
 
 import htwb.onepercent.SparkListener.JobResult
@@ -90,15 +90,15 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
 
   def tweetsAtDaytimeAnalyser(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
 
-    def convertToLocalTime(timestamp: Long, offset: Int): Date = {
+    val convertToLocalTime = (timestamp: Long, offset: Int) => {
       val inputDate: Calendar = Calendar.getInstance()
       inputDate.setTime(new Date(timestamp))
       val offsetInHours: Int = offset / 3600
       inputDate.set(Calendar.HOUR, inputDate.get(Calendar.HOUR) + offsetInHours)
-      return inputDate.getTime()
+      inputDate.getTime
     }
 
-    def checkForSameDay(date1: Date, date2: Date): Boolean = {
+    val checkForSameDay = (date1: Date, date2: Date) => {
       val cal1 = Calendar.getInstance()
       val cal2 = Calendar.getInstance()
       cal1.setTime(date1)
@@ -107,13 +107,14 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     }
 
     val timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
+    timestampFormatter.setTimeZone(TimeZone.getTimeZone("GMT"))
     val searchDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val searchDate: Date = searchDateFormatter.parse(searchDateString)
 
     scheme.registerTempTable("tweets")
 
     val table: SchemaRDD = hiveContext.sql("SELECT timestamp_ms, user.utc_offset FROM tweets WHERE user.utc_offset IS NOT NULL")
-    val mappedTable: RDD[(String, Int)] = table.map(row => (timestampFormatter.format(convertToLocalTime(row.apply(0).toString.toLong, row.apply(1).toString.toInt)), 1))
+    val mappedTable: RDD[(String, Int)] = table.map(row => (timestampFormatter.format(convertToLocalTime(row.getString(0).toLong, row.getInt(1))), 1))
     val filteredTable: RDD[(String, Int)] = mappedTable.filter { case (a,b) => checkForSameDay(timestampFormatter.parse(a), searchDate) }
     val reducedTable: RDD[(String, Int)] = filteredTable.reduceByKey(_ + _)
     val tweetDistribution: Array[TweetDistribution] = reducedTable.collect.map{ case (a, b) => TweetDistribution(a, b) }
