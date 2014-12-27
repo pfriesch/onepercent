@@ -21,7 +21,7 @@ import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
  * @author Patrick
  */
 
-class LanguageDistibutionJob extends JobExecutor with Logging {
+class LanguageDistributionJob extends JobExecutor with Logging {
 
   /**
    * This method analysis one hour of tweets to extract the top hashtags.
