@@ -61,10 +61,10 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
   /**
    * This method calculates the distribution of tweets that contain a given word.
    *
-   * @param scheme      The scheme on which the analysis is processed.
-   * @param inputSearchWord  Word to look for in the tweet texts.
+   * @param scheme            The scheme on which the analysis is processed.
+   * @param inputSearchWord   Word to look for in the tweet texts.
    *
-   * @return            the searchWord, distribution of this word, example tweet ids
+   * @return                  the searchWord, distribution of this word, example tweet ids
    */
   def wordSearchAnalyser(scheme: SchemaRDD, inputSearchWord: String): WordSearch = {
     val searchWord = inputSearchWord.toLowerCase
@@ -88,8 +88,19 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     new WordSearch(inputSearchWord, wordDistribution, sampleIds)
   }
 
+  /**
+   * This method calculates the distribution of tweets, based on their local time of creation
+   *
+   * @param scheme            The scheme on which the analysis is processed.
+   * @param searchDateString  The timestamp that contains the date to filter.
+   * @return                  the distribution of the search date
+   */
   def tweetsAtDaytimeAnalyser(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
 
+    /**
+     * Combines the timestamp and the offset from UTC to "normalize" the timestamps to there local time of creation
+     * https://stackoverflow.com/questions/23732999/avoid-task-not-serialisable-with-nested-method-in-a-class
+     */
     val convertToLocalTime = (timestamp: Long, offset: Int) => {
       val inputDate: Calendar = Calendar.getInstance()
       inputDate.setTime(new Date(timestamp))
@@ -98,6 +109,9 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
       inputDate.getTime
     }
 
+    /**
+     * Checks if two Date Objects contain the same date.
+     */
     val checkForSameDay = (date1: Date, date2: Date) => {
       val cal1 = Calendar.getInstance()
       val cal2 = Calendar.getInstance()
