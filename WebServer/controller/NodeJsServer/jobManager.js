@@ -8,6 +8,7 @@ var sha1 = require('sha1'); // Hashcode
 var moment = require('moment'); //Timestampparser
 var TopHashtagJob = require('./jobs/tophashtagjob.js');
 var OriginTweetsJob = require('./jobs/origintweetsjob.js');
+var LanguageDistributionJob = require('./jobs/languagedistributionjob.js');
 
 var jobTypeCollection = new Array();
 
@@ -27,6 +28,7 @@ initJobTypes();
 function initJobTypes(){
   jobTypeCollection.push(new TopHashtagJob("TopHashtagJob", "toptentags", ["name","count", "timestamp"]));
   jobTypeCollection.push(new OriginTweetsJob("OriginTweetsJob", "origintweets", ["name","count", "timestamp"]));
+  jobTypeCollection.push(new LanguageDistributionJob("LanguageDistributionJob", "languagedistribution", ["language","count", "timestamp"]));
 }
 
 /**
