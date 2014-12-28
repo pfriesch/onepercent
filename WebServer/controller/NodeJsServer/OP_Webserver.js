@@ -18,26 +18,38 @@ var config = require('./config.js'); //Configurationfile
 var databaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
 var restfulapi = require('./restfulapi.js'); //Restapi
 
+
 var jobCollection = []; //stores the Jobs
 
 initJobInterval();
 
 /* Inits the tophashtagjob, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval(){
-    //wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
-		wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
-		logData('5 Minutes after full Hour reached. Start Hashtagjob interval every hour.');
-		repeatJobPerInterval('TopHashtagJob', 1000*60*60, 10); //1000*60*60
-	}); 
+    /**
+     * Jobs that run every Hour.
+     */
+	wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
+		//logData('5 Minutes after full Hour reached. Start Hashtagjob interval every hour.');
+		repeatJobPerInterval('TopHashtagJob', [10], 1000*60*60, -1); //1000*60*60
+        repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
+        repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
+	});
+
+    /**
+     * How does this wait thing work????
+     * We need to wait till 14:10 or something similiar.
+     */
+    /*wait(moment().hour(14).minute(10), function(){
+        repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60, -24);
+    });*/
 }
 
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/
-function repeatJobPerInterval(job, intervalInMilliseconds, topX) {
+function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
 	setInterval(function() {
-       var sparkJob = jobManager.createJob["hash"](job, topX);
+       var sparkJob = jobManager.createJob(jobName, params, offset);
        jobCollection.push(sparkJob);
-       logData('Added Element with ID: ' + sparkJob.jobId);
-       logData('Sending Hashtagrequest every ' + intervalInMilliseconds + 'sec.');
+       logData('Added Element with ID: ' + sparkJob.jobID);
        sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
     }, intervalInMilliseconds);	
 }
@@ -48,18 +60,19 @@ function repeatJobPerInterval(job, intervalInMilliseconds, topX) {
  * into dthe database.
  */
 function getJobResponse(dataResponse) {
-	var sparkJobResponse = jobManager.createJob["response"](dataResponse);
-	var jobResult = findById(jobCollection, dataResponse.jobID);
-  //console.log(dataResponse);
-  databaseHandler.writeDataToDatabase(sparkJobResponse, jobResult);
-  deleteElementFromCollection(jobResult);
+    var job = findById(jobCollection, dataResponse.jobID);
+    var jobType = jobManager.getJobTypeByName(job.name);
+
+    jobType.saveToDatabase(dataResponse, job);
+
+    deleteElementFromCollection(job);
 }
 
 /* Delete the Job from the array (JobCollection).*/
 function deleteElementFromCollection (itemToDelete) {
   var position = jobCollection.indexOf(itemToDelete);
 	jobCollection.splice(position,1);
-  logData('Deleted Element with ID: ' + itemToDelete.jobId);
+  logData('Deleted Element with ID: ' + itemToDelete.jobID);
 }
 
 //todo check if source fo i has field
@@ -78,8 +91,3 @@ function logData(data) {
 	console.log(data);
 	console.log('------------------------------------------');
 }
-
-
-
-
-
