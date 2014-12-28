@@ -20,7 +20,8 @@ var connectionPool = mysql.createPool (
     password : config.sqlDatabasePassword,
     database : config.sqlDatabase,
     timezone : config.sqlDatabaseTimezone,
-    charset  : config.sqlDatabaseCharset
+    charset  : config.sqlDatabaseCharset,
+    connectionLimit: config.sqlConnectionLimit
   }
 );
 
@@ -29,7 +30,7 @@ var sqlQueryLayout = {
   jobName: 'TopHashtagJob',
   table: '`toptentags`',
   params: ['`name`','`timestamp`','`count`']
-}
+};
 
 /*
  * Writes the jobResponseData into Database uses the sqlQueryLayout to get the 
@@ -82,7 +83,19 @@ databaseHandler.select = function(sql,paramters, callback) {
             callback(rows);
         });
     });
-}
+};
+
+databaseHandler.insert = function(table, columnNames, data){
+    connectionPool.getConnection(function(err, connection) {
+        var sql = "INSERT INTO ?? (??) VALUES (?)";
+        connection.query(sql, [table, columnNames, data], function (err, rows) {
+            if(err){
+                console.log(err);
+            }
+            connection.release();
+        });
+    });
+};
 
 /* Logs Data*/
 function logData(data) {
@@ -90,4 +103,3 @@ function logData(data) {
   console.log(data);
   console.log('------------------------------------------');
 }
-
