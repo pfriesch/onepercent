@@ -43,7 +43,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
 
     val timeFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-    TypeCreator.createGregorianCalendar(params(0), timeFormatter) match {
+    Try(TypeCreator.createGregorianCalendar(params(0), timeFormatter)) match {
       case Success(mainGregCalendar) =>
         val startTempCalender: Calendar = Calendar.getInstance()
         startTempCalender.setTime(mainGregCalendar.getTime)
@@ -51,7 +51,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
         startTempCalender.set(Calendar.HOUR_OF_DAY, startTempCalender.get(Calendar.HOUR_OF_DAY) - 13)
         val startTime: String = timeFormatter.format(startTempCalender.getTime)
 
-        TypeCreator.createGregorianCalendar(startTime, timeFormatter) match {
+        Try(TypeCreator.createGregorianCalendar(startTime, timeFormatter)) match {
           case Success(startGregCalendar) =>
             val endTempCalender: Calendar = Calendar.getInstance()
             endTempCalender.setTime(mainGregCalendar.getTime)
@@ -59,10 +59,10 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
             endTempCalender.set(Calendar.HOUR_OF_DAY, endTempCalender.get(Calendar.HOUR_OF_DAY) + 12)
             val endTime: String = timeFormatter.format(endTempCalender.getTime)
 
-            TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
+            Try(TypeCreator.createGregorianCalendar(endTime, timeFormatter)) match {
               case Success(endGregCalendar) =>
 
-                TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
+                Try(TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
                   case Success(path) =>
 
                     val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "66")

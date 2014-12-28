@@ -32,8 +32,8 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): Try[T_Path] = {
-    Try(T_Path(prefixPath + createTimePath(time) + dataName))
+  def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): T_Path = {
+    T_Path(prefixPath + createTimePath(time) + dataName)
   }
 
   /**
@@ -57,7 +57,7 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createMultipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): Try[List[T_Path]] = {
+  def createMultipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
     //calculate hours between the dates
     //TODO: Maybe without any cast???
     val hours: Int = ((timeEnd.getTimeInMillis - timeBegin.getTimeInMillis) / 3600000).toInt
@@ -76,7 +76,7 @@ object TypeCreator {
           pathList += T_Path(prefixPath + createTimePath(timeBegin) + dataName)
         }
 
-        Try(pathList.toList)
+        pathList.toList
     }
 
   }
@@ -107,13 +107,14 @@ object TypeCreator {
    *
    * @author          Florian Willich
    */
-  def createGregorianCalendar(time: String, format: SimpleDateFormat) : Try[GregorianCalendar] = {
+  def createGregorianCalendar(time: String, format: SimpleDateFormat) : GregorianCalendar = {
 
     val calendar: GregorianCalendar = {
       new GregorianCalendar()
     }
 
-    Try(calendar.setTime(format.parse(time))).map(c => calendar)
+    calendar.setTime(format.parse(time))
+    calendar
   }
 
 }

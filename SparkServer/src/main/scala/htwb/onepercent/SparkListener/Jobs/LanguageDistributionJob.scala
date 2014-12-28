@@ -52,10 +52,10 @@ class LanguageDistributionJob extends JobExecutor with Logging {
   override def executeJob(params: List[String]): JobResult = {
 
 
-    TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
+    Try(TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))) match {
       case Success(gregCalendar) =>
 
-        TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data") match {
+        Try(TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
 
             val conf = new SparkConf().setAppName("Twitter Language Distribution").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
@@ -67,16 +67,16 @@ class LanguageDistributionJob extends JobExecutor with Logging {
 
             //method
             Try(ta.languageDistributionAnalyser(new TweetJSONFileReader(sc, hc).readFile(path.path), params(0))) match {
-            case Success(result) =>
-              //stop the spark context, otherwise its stuck in this context...
-              sc.stop()
-              log("executeJob", "End Anaylsis with path: " + path.path)
-              result
-            case Failure(_) =>
-              //stop the spark context, otherwise its stuck in this context...
-              sc.stop()
-              log("executeJob", "LanguageDistribution analyses failed! path[" + path.path + "]")
-              ErrorMessage("LanguageDistribution analyses failed!", 101);
+              case Success(result) =>
+                //stop the spark context, otherwise its stuck in this context...
+                sc.stop()
+                log("executeJob", "End Anaylsis with path: " + path.path)
+                result
+              case Failure(_) =>
+                //stop the spark context, otherwise its stuck in this context...
+                sc.stop()
+                log("executeJob", "LanguageDistribution analyses failed! path[" + path.path + "]")
+                ErrorMessage("LanguageDistribution analyses failed!", 101);
             }
 
           case Failure(wrongPath) =>

@@ -53,10 +53,10 @@ class TopHashtagJob extends JobExecutor with Logging {
   override def executeJob(params: List[String]): JobResult = {
 
 
-    TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) match {
+    Try(TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))) match {
       case Success(gregCalendar) =>
 
-        TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data") match {
+        Try(TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
 
             Try(params(1).toInt) match {

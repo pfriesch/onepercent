@@ -48,13 +48,13 @@ class WordSearchJob extends JobExecutor with Logging {
     val endTime: String = timeFormatter.format(currentCalendar.getTime())
     val startTime: String = timeFormatter.format(startCalendar.getTime())
 
-    TypeCreator.createGregorianCalendar(startTime, timeFormatter) match {
+    Try(TypeCreator.createGregorianCalendar(startTime, timeFormatter)) match {
       case Success(startGregCalendar) =>
 
-        TypeCreator.createGregorianCalendar(endTime, timeFormatter) match {
+        Try(TypeCreator.createGregorianCalendar(endTime, timeFormatter)) match {
           case Success(endGregCalendar) =>
 
-            TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data") match {
+            Try(TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
               case Success(path) =>
 
                 val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48")
