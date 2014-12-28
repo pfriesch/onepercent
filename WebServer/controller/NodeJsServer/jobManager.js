@@ -6,18 +6,18 @@
 
 var sha1 = require('sha1'); // Hashcode
 var moment = require('moment'); //Timestampparser
+
 var TopHashtagJob = require('./jobs/tophashtagjob.js');
 var OriginTweetsJob = require('./jobs/origintweetsjob.js');
 var LanguageDistributionJob = require('./jobs/languagedistributionjob.js');
 var TweetsAtDaytimeJob = require('./jobs/tweetsatdaytimejob.js');
+var WordSearchJob = require('./jobs/wordsearchjob.js');
 
 var jobTypeCollection = new Array();
 
 /* exports the createJob methode witch can be used to create jobobjects */
 module.exports = {
   "createJob": createJob,
-  "response": createResponseJob,
-  "generateTimestamp": generateTimestamp,
   "getJobTypeByName": findByName
 };
 
@@ -31,6 +31,7 @@ function initJobTypes(){
   jobTypeCollection.push(new OriginTweetsJob("OriginTweetsJob", "origintweets", ["name","count", "timestamp"]));
   jobTypeCollection.push(new LanguageDistributionJob("LanguageDistributionJob", "languagedistribution", ["language","count", "timestamp"]));
   jobTypeCollection.push(new TweetsAtDaytimeJob("TweetsAtDaytimeJob", "tweetsatdaytime", ["timestamp","count"]));
+  jobTypeCollection.push(new WordSearchJob("WordSearchJob", "wordsearch", ["name","timestamp","count", "written"]));
 }
 
 /**
@@ -47,36 +48,18 @@ function findByName(name) {
 }
 
 /* create a Job with the given parameters and return it to OP_Webserver*/
-function createJob (jobName, params) {
-  if(typeof findByName(jobName) !== 'undefined') {
-    return {
-      "jobID": generateHash(),
-      "name": jobName,
-      "params": params,
-      "time": generateTimestamp(0)
-    };
+function createJob (jobName, params, timeOffset) {
+  var jobType = findByName(jobName)
+  if(typeof jobType !== 'undefined') {
+    return jobType.createJob(generateHash(), params, timeOffset);
   } else {
     throw "JobName not known";
   }
 }
 
-/* create a Responsejob with the data that comes back from the SparkServer*/
-function createResponseJob (sparkHashResponse) {
-    return sparkHashResponse;
-}
-
 /* Generates jobid as hashvalue of the actual time */
-function generateHash() {
+function generateHash(){
   var time = new Date();
   var hashCode = sha1(time.getTime());
   return hashCode;
-};
-
-/* Generates actual timestamp minus 1 hour*/
-function generateTimestamp(offset) {
-  offset = typeof offset !== 'undefined' ? offset : 0;
-  var time = moment().add(offset, 'hours');
-  var timeString = time.format('YYYY-MM-DD HH:mm:ss');
-  
-  return timeString;
-};
+}
