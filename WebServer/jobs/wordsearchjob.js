@@ -30,12 +30,26 @@ WordSearchJob.prototype.saveToDatabase = function(rD, jD){
  */
 WordSearchJob.prototype.createJob = function(jobId, inputParams, offset){
     var params = inputParams.slice();
-    return {
-        "jobID": jobId,
-        "name": this.getName(),
-        "params": params,
-        "time": this.generateTimestamp(0)
-    };
-}
+    if(this.checkSearchWord(params[0])){
+        return {
+            "jobID": jobId,
+            "name": this.getName(),
+            "params": params,
+            "time": this.generateTimestamp(0)
+        };
+    } else {
+        throw "SearchWord not valid";
+    }
+};
+
+/**
+ * Tests if the search word matches the regular expression.
+ * The word can start with a Hashtag (#) and needs at least two symbols from the group [a-zA-Zäüö0-9].
+ * @returns {boolean}
+ */
+WordSearchJob.prototype.checkSearchWord = function(word){
+    var matcher = /^[#]?[a-zA-Zäüö0-9]{2,150}$/g;
+    return matcher.test(word);
+};
 
 module.exports = WordSearchJob;
