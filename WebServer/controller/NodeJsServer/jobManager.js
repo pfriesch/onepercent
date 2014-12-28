@@ -7,6 +7,7 @@
 var sha1 = require('sha1'); // Hashcode
 var moment = require('moment'); //Timestampparser
 var TopHashtagJob = require('./jobs/tophashtagjob.js');
+var OriginTweetsJob = require('./jobs/origintweetsjob.js');
 
 var jobTypeCollection = new Array();
 
@@ -25,6 +26,7 @@ initJobTypes();
  */
 function initJobTypes(){
   jobTypeCollection.push(new TopHashtagJob("TopHashtagJob", "toptentags", ["name","count", "timestamp"]));
+  jobTypeCollection.push(new OriginTweetsJob("OriginTweetsJob", "origintweets", ["name","count", "timestamp"]));
 }
 
 /**
@@ -69,7 +71,7 @@ function generateHash() {
 /* Generates actual timestamp minus 1 hour*/
 function generateTimestamp(offset) {
   offset = typeof offset !== 'undefined' ? offset : 0;
-  var time = moment().add(offset, 'hours');;
+  var time = moment().add(offset, 'hours');
   var timeString = time.format('YYYY-MM-DD HH:mm:ss');
   
   return timeString;
