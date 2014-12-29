@@ -104,6 +104,13 @@ class WordSearchJob extends JobExecutor with Logging {
 
   }
 
+  /**
+   * This method checks the transfered word if it includes only valid chars.
+   *
+   * @param     word    The word on which the check is processed on.
+   *
+   * @return    true if the validation succeeded, else false.
+   */
   def checkSearchWord(word: String) : Boolean = {
     //TODO: This is just a basic regex
     val regex: String = "^[a-zA-Z]+$"
