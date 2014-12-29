@@ -13,7 +13,7 @@ import scala.util.{Failure, Success, Try}
 
 /**
  * Job to search for a specific word in the Tweet texts.
- * @author Patrick Mariot
+ * @author Patrick Mariot, Florian Willich
  */
 class WordSearchJob extends JobExecutor with Logging {
 
@@ -27,6 +27,9 @@ class WordSearchJob extends JobExecutor with Logging {
    *
    *          Or errors if there has been something going wrong:
    *
+   *          If the search word includes not valid characters:
+   *          "SearchWord contains not valid characters: WORD, 100)
+   *
    *          If the timestamp between start- and enddate is not valid:
    *          ErrorMessage("No Data available between X and Y", 100)
    *
@@ -35,6 +38,8 @@ class WordSearchJob extends JobExecutor with Logging {
    *
    *          If there was something going wrong in the analysis:
    *          ErrorMessage("WordSearch analyses failed!", 101)
+   *
+   * @author  Patrick Mariot, Florian Willich
    */
   override def executeJob(params: List[String]): JobResult = {
 
@@ -57,24 +62,33 @@ class WordSearchJob extends JobExecutor with Logging {
             Try(TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
               case Success(path) =>
 
-                val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48")
-                val sc = new SparkContext(conf)
-                val hc = new HiveContext(sc)
-                val ta = new TweetAnalyser(sc, hc)
+                checkSearchWord(params(0)) match {
+                  case true =>
 
-                log("executeJob", "Starting Anaylsis with keyword: " + params(0))
+                    val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48")
+                    val sc = new SparkContext(conf)
+                    val hc = new HiveContext(sc)
+                    val ta = new TweetAnalyser(sc, hc)
 
-                Try(ta.wordSearchAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
-                  case Success(result) =>
-                    //stop the spark context, otherwise its stuck in this context...
-                    sc.stop()
-                    log("executeJob", "End Anaylsis with word: " + params(0))
-                    result
-                  case Failure(_) =>
-                    //stop the spark context, otherwise its stuck in this context...
-                    sc.stop()
-                    log("executeJob", "WordSearch analyses failed! word[" + params(0) + "]")
-                    ErrorMessage("WordSearch analyses failed!", 101);
+                    log("executeJob", "Starting Anaylsis with keyword: " + params(0))
+
+                    Try(ta.wordSearchAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
+                      case Success(result) =>
+                        //stop the spark context, otherwise its stuck in this context...
+                        sc.stop()
+                        log("executeJob", "End Anaylsis with word: " + params(0))
+                        result
+                      case Failure(_) =>
+                        //stop the spark context, otherwise its stuck in this context...
+                        sc.stop()
+                        log("executeJob", "WordSearch analyses failed! word[" + params(0) + "]")
+                        ErrorMessage("WordSearch analyses failed!", 101);
+                    }
+
+                  case false =>
+                    log("executeJob", "SearchWord contains not valid characters: " + params(0))
+                    ErrorMessage("SearchWord contains not valid characters: " + params(0), 100)
+
                 }
 
               case Failure(wrongPath) =>
@@ -88,6 +102,12 @@ class WordSearchJob extends JobExecutor with Logging {
 
     }
 
+  }
+
+  def checkSearchWord(word: String) : Boolean = {
+    //TODO: This is just a basic regex
+    val regex: String = "^[a-zA-Z]+$"
+    word.matches(regex)
   }
 
 }
