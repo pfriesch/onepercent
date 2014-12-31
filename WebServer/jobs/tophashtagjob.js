@@ -20,7 +20,7 @@ TopHashtagJob.prototype.saveToDatabase = function(rD, jD){
         dataBaseHandler.insert(this.getTable(), this.getColumnNames(), [rD.jobResult.topHashtags[i].hashtag, rD.jobResult.topHashtags[i].count, jD.params[0]]);
     }
     // why is one cloumn called time, makes things extra complicated
-    dataBaseHandler.insert("countalltags", ["count","time"], [rD.jobResult.countAllHashtags, jD.params[0]]);
+    dataBaseHandler.insert("countalltags", ["count","timestamp"], [rD.jobResult.countAllHashtags, jD.params[0]]);
 };
 
 module.exports = TopHashtagJob;

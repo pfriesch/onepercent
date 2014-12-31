@@ -33,8 +33,8 @@ USE `_s0540031__Twitter`;
 DROP TABLE IF EXISTS `countalltags`;
 CREATE TABLE IF NOT EXISTS `countalltags` (
   `count` int(11) DEFAULT NULL,
-  `time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`time`)
+  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
