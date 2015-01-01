@@ -12,6 +12,7 @@
     "mysql": "^2.5.3",
     "request": "^2.48.0",
     "sha1": "latest",
-    "waitjs": "^0.2.0"
+    "waitjs": "^0.2.0",
+    "language-tags": "latest"
   }
 }
