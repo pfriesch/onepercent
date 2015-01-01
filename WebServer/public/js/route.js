@@ -1,24 +1,46 @@
+/**
+ * Controlls which function to excecute when a specific sites gets called.
+ *
+ * @author Patrick Mariot
+ */
 var Router = Backbone.Router.extend({
 	routes: {
-		"hourly/:table": "selectLatest",
-		"hourly/:table/:date/:hour": "tagcount",
-		"": "home",
+		"hourly/:table": "selectLatestHourly",
+		"hourly/:table/:date/:hour": "hourly",
+		"": "home"
 	},
-	
+
+	/**
+	 * Shows the Home site.
+	 */
 	home: function() {
-		new HomeView({el: '#main-content', template: templates.home_template});
+		this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
+		this.navigationView = new HomeView({el: '#main-content-navigation', template: templates.home_template});
+
 	},
-	
-	selectLatest: function(table) {
+
+	/**
+	 * Selects the latest timestamp from the site/table for the tables that got updated every hour.
+	 * @param table	table from the database
+	 */
+	selectLatestHourly: function(table) {
 		var timestamps = new TimestampCollection(table);
 		timestamps.fetch({reset: true});
-		timestamps.on("reset", function() {
+		timestamps.on('sync', function() {
 			var latest = timestamps.getLatest();
-			appRouter.navigate("hourly/" + table + "/" + latest.getDate() + "/" + latest.getHour(), true);
+			this.navigate("hourly/" + table + "/" + latest.getDate() + "/" + latest.getHour(), true);
 		}, this);
 	},
 
-	tagcount: function(table, date, hour) {
-		new TagCountView(table, date, hour,{el: '#main-content', template: templates.hourly_template});
-	},
+	/**
+	 * Shows the desired site.
+	 * @param table	table from the database
+	 * @param date	The date from when the data is.
+	 * @param hour	The hour of the date from when the data is.
+	 */
+	hourly: function(table, date, hour) {
+		this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.tophashtag_template})
+		this.navigationView = new HourlyNavigationView({table: table, date: date, hour: hour, el: '#main-content-navigation',
+			template: templates.hourly_template, router: this, chartView: this.chartView});
+	}
 });
