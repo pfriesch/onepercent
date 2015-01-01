@@ -1,5 +1,6 @@
 var templates = {
 	hourly_template: 'hourly_navigation_template',
+	daily_template: 'daily_navigation_template',
 	home_template: 'home_template',
 	tophashtag_template: 'tophashtag_template',
 	empty_template: 'empty_template',
@@ -12,7 +13,7 @@ Backbone.View.prototype.close = function() {
 };
 
 var appRouter;
-tpl.loadTemplates([templates.hourly_template, templates.home_template, templates.tophashtag_template, templates.empty_template, templates.single_chart_template], function () {
+tpl.loadTemplates([templates.hourly_template, templates.home_template, templates.tophashtag_template, templates.empty_template, templates.single_chart_template, templates.daily_template], function () {
 	appRouter = new Router();
 	Backbone.history.start();
 });
