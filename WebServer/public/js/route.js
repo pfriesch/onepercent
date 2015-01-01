@@ -46,6 +46,9 @@ var Router = Backbone.Router.extend({
 			case 'origintweets':
 				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
+			case 'languagedistribution':
+				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
+				break;
 			default:
 				this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
 		}

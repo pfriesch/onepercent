@@ -2,7 +2,7 @@
  *	Model that contains the attributes name and count.
  * @author Patrick Mariot
  */
-var NameCountModel = Backbone.Model.extend({
+var LanguageCountModel = Backbone.Model.extend({
 	url: "api/hourly",
 
 	initialize: function(table, date, hour) {
@@ -12,11 +12,11 @@ var NameCountModel = Backbone.Model.extend({
 });
 
 /**
- * Collection that contains the NameCountModels.
+ * Collection that contains the LanguageCountModels.
  * @author Patrick Mariot
  */
-var NameCountCollection = Backbone.Collection.extend({
-	model: NameCountModel,
+var LanguageCountCollection = Backbone.Collection.extend({
+	model: LanguageCountModel,
 	url: "api/hourly",
 	
 	initialize: function(table, date, hour){
