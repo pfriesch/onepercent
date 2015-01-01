@@ -3,7 +3,7 @@
  * @author Patrick Mariot
  */
 var TimestampModel = Backbone.Model.extend({
-	url: "api/hourly",
+	url: "api",
 	
 	initialize: function(table) {
 		this.url = this.url + "/" + table;
@@ -72,7 +72,7 @@ var TimestampModel = Backbone.Model.extend({
  */
 var TimestampCollection = Backbone.Collection.extend({
 	model: TimestampModel,
-	url: "api/hourly",
+	url: "api",
 	
 	initialize: function(table){
 		this.url = this.url + "/" + table;

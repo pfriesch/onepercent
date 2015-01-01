@@ -22,10 +22,10 @@ var server = app.listen(config.browserClientPort, function(){
 });
 
 /*
- * If the browserClient requests with URLparams (/api/hourly/:table) 
+ * If the browserClient requests with URLparams (/api/:table)
  * this methode gets the needed data from database and responds it to the Browserclient.
  */
-app.get('/api/hourly/:table', function(req, res){
+app.get('/api/:table', function(req, res){
   dataBaseHandler.select("SELECT timestamp FROM ?? GROUP BY timestamp", [req.params.table], function(result){
     res.send(result);
   });
