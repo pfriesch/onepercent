@@ -1,0 +1,15 @@
+<div class="container">
+	<div class="row">
+		<form id="date_form">
+			<div class="col-md-4">
+				<select class="form-control" id="data_type_selector">
+					<% if(typeof data_types != 'undefined') { %>
+					<% _.each(data_types, function(data_type) { %>
+					<option value="<%= data_type %>" <% if (data_type == selectedDataType) { %> selected <% } %>><%= data_type %></option>
+					<% }) } %>
+				</select>
+			</div>
+		</form>
+	</div>
+	<div id="chart" style="width:auto; height: 400px;"></div>
+</div>
