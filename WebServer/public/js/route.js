@@ -39,7 +39,16 @@ var Router = Backbone.Router.extend({
 	 * @param hour	The hour of the date from when the data is.
 	 */
 	hourly: function(table, date, hour) {
-		this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.tophashtag_template})
+		switch(table){
+			case 'toptentags':
+				this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.tophashtag_template});
+				break;
+			case 'origintweets':
+				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
+				break;
+			default:
+				this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
+		}
 		this.navigationView = new HourlyNavigationView({table: table, date: date, hour: hour, el: '#main-content-navigation',
 			template: templates.hourly_template, router: this, chartView: this.chartView});
 	}
