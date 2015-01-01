@@ -33,10 +33,10 @@ app.get('/api/:table', function(req, res){
 
 
 /*
- * If the browserClient requests with URLparams (/api/hourly/:table/:date)
+ * If the browserClient requests with URLparams (/api/daily/:table/:date)
  * this methode gets the needed data from database and responds it to the Browserclient.
  */
-app.get('/api/hourly/:table/:date', function(req, res){
+app.get('/api/daily/:table/:date', function(req, res){
   var date = createSQLDate(req.params.date, 00);
   var nextDate = createSQLDate(req.params.date, 00, +24);
   dataBaseHandler.select("SELECT * FROM ?? WHERE timestamp >= ? AND timestamp < ?", [req.params.table,date,nextDate], function(result){
