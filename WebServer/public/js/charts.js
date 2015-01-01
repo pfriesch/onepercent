@@ -57,5 +57,34 @@ onepercent = {
 
         var chart = new google.visualization.PieChart(document.getElementById('chart'));
         chart.draw(data, options);
+    },
+
+    /**
+     * Draws a column chart into the element with the id 'chart'
+     * @param names     Array that contains the column names
+     * @param values    Array that contains the column values
+     * @param lineName  String that contains the title of the line
+     * @param ytitle    String that contains the caption of the y-axis
+     * @param xtitle    String that contains the caption of the x-axis
+     */
+    drawLineChart: function (names, values, lineName, ytitle, xtitle) {
+
+        var raw_data = new Array();
+        for (var i = 0; i < values.length; i++) {
+            raw_data.push(new Array(names[i], parseFloat(values[i])));
+        }
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'X');
+        data.addColumn('number', lineName);
+        data.addRows(raw_data);
+
+        var options = {
+            vAxis: {title: ytitle},
+            hAxis: {title: xtitle}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart'));
+        chart.draw(data, options);
     }
 };
