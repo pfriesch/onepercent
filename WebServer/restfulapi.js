@@ -10,6 +10,8 @@ var moment = require('moment'); //Timestampparser
 
 var config = require('./config.js'); //Configurationfile
 var dataBaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
+var sparkClient = require('./sparkClient.js'); //Socketconnection to SparkServer
+var jobManager = require('./jobManager.js'); //Jobs as Objects
 
 var restfulapi = exports; // exports the Restapi
 
@@ -28,6 +30,47 @@ var server = app.listen(config.browserClientPort, function(){
 app.get('/api/:table', function(req, res){
   dataBaseHandler.select("SELECT timestamp FROM ?? GROUP BY timestamp", [req.params.table], function(result){
     res.send(result);
+  });
+});
+
+/*
+ * If the browserClient requests with URLparams (/api/:table)
+ * this methode gets the needed data from database and responds it to the Browserclient.
+ */
+app.get('/api/live/:table', function(req, res){
+  var time = moment();
+  var date = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), -48);
+  var nextDate = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), +1);
+  dataBaseHandler.select("SELECT name FROM ?? WHERE written >= ? AND written < ?", [req.params.table,date,nextDate], function(result){
+    res.send(result);
+  });
+});
+
+/*
+ * If the browserClient requests with URLparams (/api/:table)
+ * this methode gets the needed data from database and responds it to the Browserclient.
+ */
+app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
+  var time = moment();
+  var date = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), -48);
+  var nextDate = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), +1);
+  dataBaseHandler.select("SELECT * FROM ?? WHERE written >= ? AND written < ? AND name = ?", ['wordsearch',date,nextDate, req.params.searchWord], function(result){
+    if(result.length > 0){
+      res.send(result);
+    } else {
+      try {
+        var wordSearchJob = jobManager.createJob('WordSearchJob', [req.params.searchWord]);
+        sparkClient.sendJobDataToServer(wordSearchJob, function (dataResponse) {
+          var jobType = jobManager.getJobTypeByName(wordSearchJob.name);
+          jobType.saveToDatabase(dataResponse, wordSearchJob, function () {
+            wordSearchREST(req, res);
+          });
+        });
+      } catch(ex){
+        console.log(new Date() + " " + ex);
+        res.send(null);
+      }
+    }
   });
 });
 
