@@ -9,6 +9,8 @@ var Router = Backbone.Router.extend({
 		"hourly/:table/:date/:hour": "hourly",
 		"daily/:table": "selectLatestDaily",
 		"daily/:table/:date": "daily",
+		"live/:table": "wordSearch",
+		"live/:table/:searchWord": "wordSearch",
 		"": "home"
 	},
 
@@ -18,7 +20,6 @@ var Router = Backbone.Router.extend({
 	home: function() {
 		this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
 		this.navigationView = new HomeView({el: '#main-content-navigation', template: templates.home_template});
-
 	},
 
 	/**
@@ -87,5 +88,17 @@ var Router = Backbone.Router.extend({
 		}
 		this.navigationView = new DailyNavigationView({table: table, date: date, el: '#main-content-navigation',
 			template: templates.daily_template, router: this, chartView: this.chartView});
+	},
+
+	wordSearch: function(table, searchWord){
+		if(typeof searchWord != 'string'){
+			this.chartView = new WordSearchView({table: table, el: '#main-content-chart', template: templates.single_chart_template});
+			this.navigationView = new SearchNavigationView({table: table, el: '#main-content-navigation',
+				template: templates.search_template, router: this, chartView: this.chartView});
+		} else {
+			this.chartView = new WordSearchView({table: table, searchWord: searchWord, el: '#main-content-chart', template: templates.single_chart_template});
+			this.navigationView = new SearchNavigationView({table: table, searchWord: searchWord, el: '#main-content-navigation',
+				template: templates.search_template, router: this, chartView: this.chartView});
+		}
 	}
 });

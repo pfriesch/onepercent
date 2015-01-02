@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="row">
+		<form id="search_form">
+			<div class="col-md-4">
+				<input id="searchword_field" type="text" size="40" maxlength="40" <% if(typeof searchWord != 'undefined'){ %> value="<%= searchWord %>"<% } %> >
+			</div>
+
+			<div id="load" class="col col-md-4" >
+				<button type="submit" class="btn btn-default">show</button>
+			</div>
+		</form>
+	</div>
+
+	<% if(typeof availableWords != 'undefined') { %>
+	<div class="row">
+		<% _.each(availableWords, function(word) { %>
+		<a href="?#live/wordsearch/<%= word %>"><%= word %></a>
+		<% }) %>
+	</div>
+	<% } %>
+
+</div>
