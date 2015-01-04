@@ -1,0 +1,47 @@
+*.class
+*.log
+
+#temp files
+*~
+
+#Config
+config.cfg
+*/config.cfg
+config.cfg*
+*/config.cfg*
+
+# sbt specific
+.cache/
+.history/
+.lib/
+dist/*
+metastore_db/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# Nodejs
+node_modules
+routes
