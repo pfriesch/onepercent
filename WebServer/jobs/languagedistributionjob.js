@@ -4,7 +4,6 @@
  */
 var job = require('./jobPrototype.js');
 var dataBaseHandler = require('../sqlDatabase.js');
-var tags = require('language-tags');
 
 // initialize constructor
 var LanguageDistribtuionJob = function(name, table, columnNames){
@@ -18,7 +17,7 @@ LanguageDistribtuionJob.prototype.constructor = LanguageDistribtuionJob;
 LanguageDistribtuionJob.prototype.saveToDatabase = function(rD, jD){
     for (var i=0; i< rD.jobResult.languages.length; i++) {
         // to access data you must access the "jobResult" Field in rD
-        dataBaseHandler.insert(this.getTable(), this.getColumnNames(), [tags.language(rD.jobResult.languages[i].language).descriptions()[0], rD.jobResult.languages[i].count, jD.params[0]]);
+        dataBaseHandler.insert(this.getTable(), this.getColumnNames(), [rD.jobResult.languages[i].language, rD.jobResult.languages[i].count, jD.params[0]]);
     }
 };
 
