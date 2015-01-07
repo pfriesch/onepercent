@@ -31,7 +31,7 @@ var connectionPool = mysql.createPool (
  * @param paramters Array that contains the variables.
  * @param callback Function to call when the result is avaible.
  */
-databaseHandler.select = function(sql,paramters, callback) {
+databaseHandler.select = function(sql, paramters, callback) {
     connectionPool.getConnection(function (err, connection) {
         connection.query(sql, paramters, function(err, rows) {
             if(err) {
@@ -51,7 +51,46 @@ databaseHandler.select = function(sql,paramters, callback) {
  */
 databaseHandler.insert = function(table, columnNames, data){
     connectionPool.getConnection(function(err, connection) {
-        var sql = "INSERT INTO ?? (??) VALUES (?)";
+        
+        var sqlColumns = "";
+        var sqlData = "";
+
+        for (var i = 0; i < columnNames.length; i++) {
+            sqlColumns = sqlColumns.concat("`");
+            sqlColumns = sqlColumns.concat(columnNames[i]);
+
+            if(i < columnNames.length-1) {
+              sqlColumns = sqlColumns.concat("`,"); 
+            }
+            else {
+              sqlColumns = sqlColumns.concat("`"); 
+            }
+        }
+
+        for (var i = 0; i < data.length; i++) {
+
+          if(data[i] === parseInt(data[i],10)) {
+            sqlData = sqlData.concat(data[i]);
+
+            if(i < data.length-1) {
+              sqlData = sqlData.concat(","); 
+            }
+          }
+          else {
+            sqlData = sqlData.concat("'");
+            sqlData = sqlData.concat(data[i]);
+
+            if(i < data.length-1) {
+              sqlData = sqlData.concat("',"); 
+            }
+            else {
+              sqlData = sqlData.concat("'"); 
+            }
+          }   
+        }
+
+        var sql = "INSERT INTO "+table+" ("+sqlColumns+") VALUES ("+sqlData+");"
+         
         connection.query(sql, [table, columnNames, data], function (err, rows) {
             if(err){
                 console.log(err);
@@ -67,3 +106,4 @@ function logData(data) {
   console.log(data);
   console.log('------------------------------------------');
 }
+

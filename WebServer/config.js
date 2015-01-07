@@ -7,7 +7,7 @@
 module.exports = {
 	
 	/*config Sparkserver*/
-	sparkServerHOST: 'hadoop03.f4.htw-berlin.de',
+	sparkServerHOST: 'localhost', //'hadoop03.f4.htw-berlin.de'
 	sparkServerPORT: 5555,
 	//sparkPrefixPath: 'hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/',
 
@@ -19,7 +19,7 @@ module.exports = {
 	sqlDatabasePort: 3306,
 	sqlDatabaseUser: 's0536746',
 	sqlDatabasePassword: '123xyz,.',
-	sqlDatabase: '_s0540031__Twitter',
+	sqlDatabase: '_s0536746__TwitterDB', //_s0540031__Twitter
 	sqlDatabaseTimezone: '+0000',
 	sqlDatabaseCharset: 'utf8_general_ci',
 	// database limits count of connects per user to 10

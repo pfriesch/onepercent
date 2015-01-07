@@ -28,11 +28,13 @@ client.on('data', function(dataResponse) {
     sparkErrorMessageResponse(dataResponseJson);
   }
   else {
+    //console.log("dataResponseJson: ");
     //console.log(dataResponseJson);
     callbackToTATWebserver(dataResponseJson);
   }
 });
 
+/* errorhandling if connection fails with sparkserver, client try to reconnect after 10sec if the server is not reachable */
 client.on('error', function(e) {
   console.log(new Date() + "Socket Error: " + e);
   if(e.code == 'ECONNREFUSED') {
@@ -45,6 +47,7 @@ client.on('error', function(e) {
   }
 });
 
+/* errorhandling if connection is closed, try to reconnect to server after 30sec. */
 client.on('close', function() {
   console.log(new Date() + "Socket Connection closed trying to reconnect.");
   client.setTimeout(30000, function() {
@@ -58,7 +61,7 @@ client.on('close', function() {
 /* Sends the jobData to sparkserver */
 sparkClient.sendJobDataToServer = function sendJobRequestToSparkServer(jobData, callback) {
   callbackToTATWebserver = callback;
-  console.log(JSON.stringify(jobData));
+  //console.log(JSON.stringify(jobData));
   client.write(JSON.stringify(jobData) +'\n');
 }
 

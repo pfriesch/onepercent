@@ -6,12 +6,14 @@
 
 var moment = require('moment'); //Timestampparser
 
+// like a class, constructor
 var Job = function(name, table, columnNames) {
     this.name = name;
     this.table = table;
     this.columnNames = columnNames;
 };
 
+// gettermethoden
 Job.prototype.getName = function(){
     return this.name;
 };
@@ -24,13 +26,14 @@ Job.prototype.getColumnNames = function(){
     return this.columnNames;
 };
 
+// classmethods
 Job.prototype.saveToDatabase = function(){
 
 };
 
 Job.prototype.createJob = function(jobId, inputParams, offset){
-    var params = inputParams.slice();
-    params.unshift(this.generateTimestamp(offset));
+    var params = inputParams.slice(); // delete first params 
+    params.unshift(this.generateTimestamp(offset)); // insert param
     return {
         "jobID": jobId,
         "name": this.getName(),

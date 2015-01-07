@@ -21,23 +21,26 @@ var restfulapi = require('./restfulapi.js'); //Restapi
 
 var jobCollection = []; //stores the Jobs
 
-initJobInterval();
+//initJobInterval();
 
-/* Inits the tophashtagjob, wait till full hour then starts the repeatJobInterval*/
+/* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval(){
-    /**
-     * Jobs that run every Hour.
-     */
-	wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
-		//logData('5 Minutes after full Hour reached. Start Hashtagjob interval every hour.');
-		repeatJobPerInterval('TopHashtagJob', [10], 1000*60*60, -1); //1000*60*60
-        repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
-        repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
+	//wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
+  wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
+		//logData('5 Minutes after full Hour reached. Start jobs per interval.');
+		repeatJobPerInterval('TopHashtagJob', [10], 10000, -1); //1000*60*60
+    //repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
+    //repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
 	});
 
     /**
      * How does this wait thing work????
      * We need to wait till 14:10 or something similiar.
+     * wait() - wait till a systemtime is reached!
+     * moment() actual time.
+     * .endOf('hour') end of hour
+     * .add(5,'minutes') adds 5 minutes
+     * then starts the repeatjobmethode
      */
     /*wait(moment().hour(14).minute(10), function(){
         repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60, -24);
@@ -62,9 +65,7 @@ function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
 function getJobResponse(dataResponse) {
     var job = findById(jobCollection, dataResponse.jobID);
     var jobType = jobManager.getJobTypeByName(job.name);
-
     jobType.saveToDatabase(dataResponse, job);
-
     deleteElementFromCollection(job);
 }
 
@@ -85,9 +86,27 @@ function findById(source, id) {
   throw "Couldn't find object with id: " + id;
 }
 
+/* checks if the send jobs are answered in a reasonable time, if not the will send again */
+function checkIfJobsExecuted () {
+  for (var i = 0; i < jobCollection.length; i++){
+      if (jobCollection[i].time < moment().subtract(30,'minutes').format('YYYY-MM-DD HH:mm:ss')){
+        logData('Sending Job with id: ' + jobCollection[i].jobID + ' again.');
+        sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
+      }
+    }    
+  }
+}
+
 /* Logs Data*/
 function logData(data) {
 	console.log('------------------------------------------');
 	console.log(data);
 	console.log('------------------------------------------');
 }
+
+
+
+
+
+
+
