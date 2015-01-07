@@ -19,7 +19,7 @@ module.exports = {
 	sqlDatabasePort: 3306,
 	sqlDatabaseUser: 's0536746',
 	sqlDatabasePassword: '123xyz,.',
-	sqlDatabase: '_s0536746__TwitterDB', //_s0540031__Twitter
+	sqlDatabase: '_s0540031__Twitter', //_s0536746__TwitterDB
 	sqlDatabaseTimezone: '+0000',
 	sqlDatabaseCharset: 'utf8_general_ci',
 	// database limits count of connects per user to 10

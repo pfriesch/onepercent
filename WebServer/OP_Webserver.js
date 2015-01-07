@@ -27,24 +27,14 @@ var jobCollection = []; //stores the Jobs
 function initJobInterval(){
 	//wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
   wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
-		//logData('5 Minutes after full Hour reached. Start jobs per interval.');
+		logData('5 Minutes after full Hour reached. Start jobs per interval.');
 		repeatJobPerInterval('TopHashtagJob', [10], 10000, -1); //1000*60*60
     //repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
     //repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
 	});
-
-    /**
-     * How does this wait thing work????
-     * We need to wait till 14:10 or something similiar.
-     * wait() - wait till a systemtime is reached!
-     * moment() actual time.
-     * .endOf('hour') end of hour
-     * .add(5,'minutes') adds 5 minutes
-     * then starts the repeatjobmethode
-     */
-    /*wait(moment().hour(14).minute(10), function(){
-        repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60, -24);
-    });*/
+  wait(moment().endOf('day').add(14,'hours') - moment(), function(){
+    repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60*24, -24);
+  });   
 }
 
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/

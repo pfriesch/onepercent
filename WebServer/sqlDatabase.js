@@ -52,45 +52,7 @@ databaseHandler.select = function(sql, paramters, callback) {
 databaseHandler.insert = function(table, columnNames, data){
     connectionPool.getConnection(function(err, connection) {
         
-        var sqlColumns = "";
-        var sqlData = "";
-
-        for (var i = 0; i < columnNames.length; i++) {
-            sqlColumns = sqlColumns.concat("`");
-            sqlColumns = sqlColumns.concat(columnNames[i]);
-
-            if(i < columnNames.length-1) {
-              sqlColumns = sqlColumns.concat("`,"); 
-            }
-            else {
-              sqlColumns = sqlColumns.concat("`"); 
-            }
-        }
-
-        for (var i = 0; i < data.length; i++) {
-
-          if(data[i] === parseInt(data[i],10)) {
-            sqlData = sqlData.concat(data[i]);
-
-            if(i < data.length-1) {
-              sqlData = sqlData.concat(","); 
-            }
-          }
-          else {
-            sqlData = sqlData.concat("'");
-            sqlData = sqlData.concat(data[i]);
-
-            if(i < data.length-1) {
-              sqlData = sqlData.concat("',"); 
-            }
-            else {
-              sqlData = sqlData.concat("'"); 
-            }
-          }   
-        }
-
-        var sql = "INSERT INTO "+table+" ("+sqlColumns+") VALUES ("+sqlData+");"
-         
+        var sql = "INSERT INTO ?? (??) VALUES (?)";         
         connection.query(sql, [table, columnNames, data], function (err, rows) {
             if(err){
                 console.log(err);
