@@ -106,14 +106,18 @@ class WordSearchJob extends JobExecutor with Logging {
 
   /**
    * This method checks the transfered word if it includes only valid chars.
+   * The regex pattern is build as follows:
+   * - # is allowed once or not at all
+   * - Every word character is allowed (A word character: [a-zA-Z_0-9]) from Javadoc Regex Pattern
+   * - Special Chars are allowed: äöü
+   * - The word length has to be a minimum of 2 characters and a maximum of 150
    *
-   * @param     word    The word on which the check is processed on.
+   * @param     word    The word on which the regex check is processed on.
    *
    * @return    true if the validation succeeded, else false.
    */
   def checkSearchWord(word: String) : Boolean = {
-    //TODO: This is just a basic regex
-    val regex: String = "^[a-zA-Z]+$"
+    val regex: String = "^[#]?+[\\wäöü]{2,150}$"
     word.matches(regex)
   }
 
