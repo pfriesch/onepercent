@@ -1,9 +1,12 @@
 package htwb.onepercent.SparkListener.Jobs
 
-/**
- * Created by plinux on 08/01/15.
- */
-class ClassifyJob {
+import htwb.onepercent.SparkListener.{JobResult, JobExecutor}
+
+
+case class CategoryCount(category: String, count: Int)
+case class CategoryDistribution(distribution: List[CategoryCount], totalCount: Int) extends JobResult
+
+class ClassifyJob extends JobExecutor {
 
   //TODO
 
@@ -17,4 +20,8 @@ class ClassifyJob {
     println(classified.maxBy(_._2))
 
 */
+
+  override def executeJob(params: List[String]): JobResult = {
+    CategoryDistribution(List(("others", 100)), 100)
+  }
 }
