@@ -1,5 +1,5 @@
 # onepercent
-A Twitter analytics tool
+A Twitter Analytics Tool
 
 #License
 ```
