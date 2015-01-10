@@ -8,6 +8,169 @@ import scala.collection.immutable.List
  */
 object ScoringTrainingSample {
 
+  /**
+   * This Method returns a sample of violence Tweets from the following accounts:
+   * - BBC World (https://twitter.com/bbcworld)
+   * - CNN (https://twitter.com/cnn)
+   * - NYPD News
+   *
+   * Those tweets maybe overfitted to the recent events in France (including 52 Tweets)
+   * Reading those was terrible disgusting sometimes...
+   *
+   * @return a sample of entertainment Tweets.
+   */
+  def trainingSampleViolence() : List [String] = {
+    var violenceSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
+
+    //BBC World Tweets (https://twitter.com/bbcworld)
+    violenceSample += "At least 16 killed in bomb attack in #Maiduguri, north-east Nigeria, medics say http://bbc.in/17tFOyK"
+    violenceSample += "\"Devastated\" & \"share pain\" of all victims' families, says brother of policeman killed outside #CharlieHebdo office http://bbc.in/1IAnP4S"
+    violenceSample += "Viewpoint: Paris attacks expose gaps in monitoring of extremists http://bbc.in/14BtdaY  #CharlieHebdo"
+    violenceSample += "Pakistan halts execution of man sentenced to death by anti-terrorism court http://bbc.in/1vUAiJS"
+    violenceSample += "Hedge fund founder shot dead in NY http://bbc.in/14bIAGI"
+    violenceSample += "Powerful car bomb explodes in #Mogadishu, Somalia killing 4 people, Somali officials say http://bbc.in/1Ab3S55"
+    violenceSample += "US drone strike targeting Pakistan Taliban kills at least 6 militants, Pakistan officials say http://bbc.in/1xths1E"
+    violenceSample += "7-year-old girl who survived plane crash in Kentucky, US & walked to find help is praised for her courage http://bbc.in/1BkIMAs"
+    violenceSample += "Masked militants in Sirte, northern #Libya kidnap 13 Coptic Christians workers from Egypt http://bbc.in/1F0dByl"
+    violenceSample += "Japanese woman 'gang-raped' in India http://bbc.in/1BhhPxx"
+    violenceSample += "No new murder charges for man who shot White House aide James Brady in 1981 Reagan assassination bid http://bbc.in/13NCRqd"
+    violenceSample += "Madrid's #Atocha train station evacuated after bomb threat but police say man claiming to be suicide bomber was not carrying explosives"
+    violenceSample += "'Fix society. Please' http://bbc.in/1D8wJFL  The suicide note that went viral"
+    violenceSample += "The images used to teach soldiers to kill http://bbc.in/1Bc2MFc"
+    violenceSample += "#AlJazeera calls for swift #Egypt retrial of its journalists, who have been held \"unjustly\" for more than a year http://bbc.in/1BjHuDS" //rethink
+    violenceSample += "Kashmir clashes kill five troops http://bbc.in/1B827oc"
+    violenceSample += "Man and woman die in house fire http://bbc.in/1B7Q9em"
+    violenceSample += "Rocket 'kills 15' at Afghan wedding http://bbc.in/1xArtsG"
+    violenceSample += "Crush at New Year's Eve celebrations in Shanghai kills 35 people, Chinese state media reports http://bbc.in/1CTULGY"
+
+    //CNN Tweets (https://twitter.com/cnn)
+    violenceSample += "Recording may have captured Paris gunman justifying his actions to hostages before violent end to standoff. http://cnn.it/1AHRTMJ"
+    violenceSample += "Fireworks explosion during massive traffic pileup. http://cnn.it/1x7omVc"
+    violenceSample += "#Anonymous has declared war on Islamic extremists and promised to take revenge for the attack on #CharlieHedbo. http://cnn.it/1wEsY6n"
+    violenceSample += "It seems the 2 gumen went outside and opened fire on police - @fpleitgenCNN on raid that killed #Kouachi bros "
+    violenceSample += "#KouachiBrothers had a rocket-propelled grenade, automatic weapons \"they were suited for a war zone\" @jimsciutto @CNN"
+    violenceSample += "In wake of Paris massacre, who were suspects in two hostage standoffs? http://cnn.it/1DH1SjS  More at 7pE on @CNN."
+    violenceSample += "A CNN affiliate released a video of the police raid against a kosher market gunman and terrorist suspect in #Paris. http://cnn.it/14Bvsek"
+    violenceSample += "Four hostages died and 15 were freed at the #Paris store, French President told Israeli PM, Israeli sources said. http://cnn.it/1Ds26xN"
+    violenceSample += "The hunt for the female suspect is on: http://cnn.it/14Avmn3"
+    violenceSample += "BREAKING: Explosions, smoke at industrial area where #CharlieHebdo suspects are holed up: http://cnn.it/1xXB3Jf"
+    violenceSample += "#ISIS in a radio broadcast praised the #CharlieHebdo attack that killed 12, calling the gunmen \"brave jihadists.\" http://CNN.it/go"
+    violenceSample += "Girl, 5, dies after father tosses her off Florida bridge http://cnn.it/1BKKER2"
+    violenceSample += "2 police officers killed during Charlie Hebdo attack were Ahmed Merabet, Franck Brinsolaro, police spokeswoman says. http://cnn.it/14xX9oX"
+    violenceSample += "FBI investigating an explosion at the #NAACP office in Colorado Springs: http://cnn.it/1tLiEse  @CBSDenver"
+    violenceSample += "#Breaking: 3 men are in custody, including the gunman police say shot two NYPD officers: http://cnn.it/13X1Nvj"
+    violenceSample += "After a missing baby was found dead in a dumpster, police are asking for your help: http://cnn.it/1KinKGK"
+    violenceSample += "Two New York City police officers were shot Monday in the Bronx, the department said. Both are expected to survive."
+    violenceSample += "Barrel bombs & militias are a harsh reality for some 300,000 stuck between a regime & #ISIS: http://cnn.it/1xyemcG"
+    violenceSample += "Just in: U.S. troops at Iraqi base under 'regular' fire from ISIS fighters: http://cnn.it/1Dbckmb  @CNN"
+    violenceSample += "A baby who was abducted after her parents were shot has been found dead, police say. http://cnn.it/1tCQsaR"
+    violenceSample += "A transgender teen's suicide has brought questions about what it means to be transgender. Here's what the experts say http://cnn.it/1Dky78k"
+    violenceSample += "Five men arrested in India over alleged rape of Japanese tourist. http://cnn.it/1AaAxYE" //41
+    violenceSample += "Georgia police chief said on 911 call his gun was in bed while sleeping, he accidentally shot wife when he moved it. http://cnn.it/142NaqJ"
+
+    //NYPD News (https://twitter.com/nypdnews)
+    violenceSample += "WANTED: M/B 25 for robbery punched F/11 in face & took her phone. 8pm 12/18 Bathgate Ave/E187St #Bronx"
+    violenceSample += "Help ID This Suspect Wanted For A Shooting In Brooklyn http://ow.ly/GZqoO"
+    violenceSample += "WANTED: Male for stabbing/killing a 25y/o Queens man on 12/19 near 35-30 90 St. Qns. Call #800577TIPS."
+    violenceSample += "WANTED: Male 5'5\" 130lbs for attempted rape of F/24 while she was walking on 43 Ave Qns @NYPD110Pct. Call #800577TIPS"
+    violenceSample += "2 suspects are in custody in regard to the shooting of 2 NYPD officers in the Bronx yesterday."
+    violenceSample += "Both NYPD police officers shot yesterday in the Bronx are currently in stable condition- @CommissBratton\n0 Antworten 123 Retweets 164 Favoriten"
+    violenceSample += "ARREST: Bronx man charged w/murder for stabbing a M/69 1750 Davidson Ave, @NYPD46Pct on 12/30. Share crime info, call #800577TIPS."
+    violenceSample += "WANTED: suspect, \"Rudy\" Lopez for assault/slashing the face of M/37 on Wythe Ave 12/28, Call #800577TIPS"
+    violenceSample += "WANTED: F/H for sexual abuse of F/81 on 12/26 at 10:45pm in the #Bronx. Call #800577TIPS "
+    violenceSample += "WANTED: M/B 18, for armed robbery of cab driver at Van Pelt Ave/Forest Ave, noon 12/24 #StatenIsland Call #800577TIPS"
+
+    violenceSample.toList
+  }
+
+  /**
+   * This Method returns a sample of entertainment Tweets from the following accounts:
+   * - CNN Entertainment (https://twitter.com/cnnent)
+   * - Vice (https://twitter.com/vice)
+   * - MTV (https://twitter.com/mtv)
+   * - Rolling Stone (https://twitter.com/rollingstone)
+   * - Today Show (https://twitter.com/todayshow)
+   *
+   * You maybe have to get a drink after reading those Tweets...
+   *
+   * @return a sample of entertainment Tweets.
+   */
+  def trainingSampleEntertainment() : List[String] = {
+    var entertainmentSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
+
+    //CNN Entertainment Tweets (https://twitter.com/cnnent)
+    entertainmentSample += "Have you seen the #AntMan trailer yet? http://cnn.it/1yB85yD"
+    entertainmentSample += "Sorry @kanyewest , but some other folks helped make @PaulMcCartney famous http://cnn.it/1wSjNxV"
+    entertainmentSample += "Pop culture fans, here is what to get excited for in 2015 http://cnn.it/1tLRDKB"
+    entertainmentSample += "They grow up so fast! @RobertDowneyJr @chrisrock and more celebs turning 50 in 2015 http://cnn.it/1HBnobZ"
+    entertainmentSample += "Bono worried he may never play guitar again http://cnn.it/1BqTfYV"
+    entertainmentSample += "This weird #Christmas video by @SirPatStew is kind of hilarious http://cnn.it/1zYcoC3"
+    entertainmentSample += "From that #Oscar selfie of @TheEllenShow to @justinbieber 2014’s best & worst pop culture http://cnn.it/1ADMKDL"
+    entertainmentSample += "Singer Joe Cocker is dead at 70 http://cnn.it/1AzWSxq"
+    entertainmentSample += "Where does @kourtneykardash ‘s new baby rank among unique celeb baby names? http://cnn.it/1weis49"
+    entertainmentSample += "What's #KnightofCups ? The first trailer has some hints http://cnn.it/1zsqwmH"
+
+    //Vice Tweets (https://twitter.com/vice)
+    entertainmentSample += "The Baha Men told us about groupies, their new album, and who really let the dogs out http://bit.ly/17tY2zW"
+    entertainmentSample += "The actress formerly known as Belladonna talks about life after porn: http://bit.ly/1FAS13B"
+    entertainmentSample += "Watch the new trailer for Season 3 of #VICEonHBO, and catch the premiere March 6 @HBO http://www.vice.com/read/watch-the-trailer-for-season-3-of-vice-on-hbo-109"
+    entertainmentSample += "Here's a sneak peek at some upcoming VICE documentaries http://bit.ly/1xPG1pN"
+    entertainmentSample += "Watch 'Skin,' a short coming of age film about a young taxidermist and the girl he loves http://bit.ly/1AynttI"
+    entertainmentSample += "I Gave Marilyn Manson a Pink Stuffed Unicorn and He Gave Me Sex Tips http://bit.ly/1DsTFlY"
+    entertainmentSample += "We sat down with director Paul Thomas Anderson to talk about his new film 'Inherent Vice' http://bit.ly/1tR8Hz8"
+    entertainmentSample += "Over the next few weeks, we're putting Season 2 of our Emmy-winning HBO show online, for free: http://bit.ly/1BLyBmG"
+    entertainmentSample += "Photos of Famous Teen Heartthrobs from the 1970s http://bit.ly/1HFMEOp"
+    entertainmentSample += "Sex Workers and the City: Inside NYC's special prostitution courts http://bit.ly/13TIHX7"
+
+    //MTV Tweets (https://twitter.com/mtv)
+    entertainmentSample += "I'm so ready for @FifthHarmony's album to be here: http://on.mtv.com/1I2moOp  \uD83D\uDC9C"
+    entertainmentSample += "Happy 15-year anniversary, #MalcomInTheMiddle: http://on.mtv.com/1sdiFcZ"
+    entertainmentSample += "Don't miss the premiere of @NICKIMINAJ: #MyTimeAGAIN on Sunday, Jan 18 at 10/9c on MTV."
+    entertainmentSample += "A new episode of the #FinalFinal #FantasyFactory season starts in 5 minutes! RT if you're watching with the cast \uD83D\uDE0E"
+    entertainmentSample += ".@JustinBieber is working on a new album and a new tour and I couldn't be more excited: http://on.mtv.com/1DqpMm9"
+    entertainmentSample += "Congrats, #Supernatural fans! #Destiel won Best TV Couple of 2014: http://on.mtv.com/14zDHrP"
+    entertainmentSample += "Our ATW Kickoff Concert presale starts in 30 minutes! You don't wanna miss it. Code: FIRST http://bit.ly/1s5lrRe"
+    entertainmentSample += ".@Zendaya looks absolutely stunning in her first @TeenVogue cover shoot: http://on.mtv.com/1xRJbuS"
+    entertainmentSample += "Hip Hop duo @RaeSremmurd has released their debut album #SremmLife and it's freakin' awesome #UnlockTheSwag #GetOnIt"
+    entertainmentSample += ".@Zendaya looks absolutely stunning in her first @TeenVogue cover shoot: http://on.mtv.com/1xRJbuS"
+
+    //Rolling Stone Tweets (https://twitter.com/rollingstone)
+    entertainmentSample += "End of an era: #MadMen sets final season premiere date http://rol.st/1xPlx0g" //https://twitter.com/RollingStone/status/553975979379793922
+    entertainmentSample += "Netflix reviving 'Wet Hot American Summer' as eight-episode series http://rol.st/1KvDfuW" //https://twitter.com/RollingStone/status/553921740179787777
+    entertainmentSample += "#ICYMI #GameOfThrones has set the premiere date for a bloody new season: http://rol.st/1BIn21n"
+    entertainmentSample += "Paul McCartney will release video game-inspired single \"Hope for the Future\" on vinyl with four remixes: http://rol.st/1Ktkp7P" //https://twitter.com/RollingStone/status/553646676477755392
+    entertainmentSample += "Courtney Love's opera debut is unsurprisingly awesome and slyly punk rock. Our full report from opening night: http://rol.st/1KsLTdU" //https://twitter.com/RollingStone/status/553608658228350976
+    entertainmentSample += "Watch Elvis Presley master the Nashville sound with Cochran hit \"Make the World Go Away\": http://rol.st/14weRsp" //https://twitter.com/RollingStone/status/553604925146796032
+    entertainmentSample += "Happy 68th birthday David Bowie! See photos of the Thin White Duke through the years: http://rol.st/1DpYU63" //https://twitter.com/RollingStone/status/553261887690125312
+    entertainmentSample += "Meet hip-hop's hottest duo Rae Sremmurd: http://rol.st/1AFx0AD"
+    entertainmentSample += "John Travolta has joined the cast of ‘American Crime Story: The People V. O.J. Simpson’: http://rol.st/1tPkuxJ" //https://twitter.com/RollingStone/status/552944110777401344
+    entertainmentSample += "See Shia LaBeouf face off with Sia’s “Chandelier” video star with interpretive dance in the video for “Elastic Heart” http://rol.st/14phA6T" //https://twitter.com/RollingStone/status/552905289100709888
+
+    //Today Show Tweets (https://twitter.com/todayshow) HELP ME PLEASE THIS IS TOO MUCH!!!
+    entertainmentSample += "Watch @GoldenGlobes hosts Tina Fey and Amy Poehler's comedic love story through the years. (Sponsored by @VW)"
+    entertainmentSample += "Emma Stone and Andrew Garfield catch fan taking sneaky photo http://on.today.com/1BUfRS2"
+    entertainmentSample += "'The Bachelorette' couple Andi Dorfman and Josh Murray call off engagement http://on.today.com/146ZMNh"
+    entertainmentSample += "\"I never thought I'd seen another one of these.\" -@garthbrooks presented with platinum album. #GarthBrooksTODAY"
+    entertainmentSample += "5 girls in 6 years! NBC's @CanningAndrea pregnant with (another) daughter! http://on.today.com/1tPoMoM"
+    entertainmentSample += "Awww... Bao Bao the panda had so much fun on her snow day! http://on.today.com/1DvraBf"
+    entertainmentSample += "How @JimmyFallon blew his chance to date Nicole Kidman: http://on.today.com/1xRfHds  #WhatsTrendingTODAY"
+    entertainmentSample += "Monaco's royal twins make their public debut: http://on.today.com/1wpGACe"
+    entertainmentSample += "Panda + snow = cuteness overload http://on.today.com/1DvraBf"
+    entertainmentSample += "Which diet is healthiest? New report ranks popular plans: http://on.today.com/1wSJxdy"
+
+    entertainmentSample.toList
+  }
+
+  /**
+   * This Method returns a sample of sports Tweets from the following accounts:
+   * - Yahoo Sports (https://twitter.com/yahoosports)
+   * - ESPN (https://twitter.com/espn)
+   * - Sports Illustrated (https://twitter.com/sinow)
+   * - BBC Sports (https://twitter.com/bbcsport)
+   * - CBC Sports (https://twitter.com/cbcsports)
+   *
+   * @return a sample of sports Tweets.
+   */
   def trainingSampleSports() : List[String] = {
     var sportsSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
 
@@ -55,6 +218,21 @@ object ScoringTrainingSample {
     sportsSample += "Tony Pulis wins his first Premier League match as West Brom manager. Match report: http://bbc.in/1AB5B41  #wba #hcafc"
     sportsSample += "Swansea fight back to earn a point against West Ham. Match report: http://bbc.in/14zVIWg  #whufc #swans"
     sportsSample += "Man City held to a draw at Everton as champions fall two points behind leaders Chelsea. http://bbc.in/1DsPZk8  #efc"
+    sportsSample += "Aberdeen re-establish 4-point lead at the top of the Premiership with victory over St Mirren: http://bbc.in/1wHbPJl"
+    sportsSample += "Gareth Bale scores a wonderful free-kick as Real Madrid comfortably beat Espanyol http://bbc.in/1xV0U2Y"
+    sportsSample += "Tony Pulis wins his first Premier League match as West Brom manager. Match report: http://bbc.in/1AB5B41  #wba #hcafc"
+
+    //CBC Sports Tweets (https://twitter.com/cbcsports)
+    sportsSample += "Canada's @MikaelKingsbury wins freeestyle World Cup event http://www.cbc.ca/1.2896443  #CBCSports"
+    sportsSample += "Derek Roy posts 3 points as Oilers down Blackhawks http://www.cbc.ca/1.2896423  #CBCSports"
+    sportsSample += "Leafs give Peter Horachek 1st win as Toronto head coach http://www.cbc.ca/sports-content/hockey/nhl/game/1443391/recap/ … #CBCSports"
+    sportsSample += "Dylan Armstrong to receive '08 Olympic bronze for shot put on Feb. 15, read here: http://cbc.ca/1.2896298  #CBCOlympics"
+    sportsSample += "Laviolette, Sutter named coaches for #NHL All-Star game, details here: http://cbc.ca/1.2895709  #NHLAllStar"
+    sportsSample += "Canadians Thompson, Simmerling win gold, silver in ski cross photo finish http://cbc.sh/GP6j9af"
+    sportsSample += "NYCFC admits to misleading fans with Lampard announcement http://cbc.sh/iFcJKrG"
+    sportsSample += "Canada's @BobsledKaillie lands bronze in 2-woman World Cup race http://cbc.sh/eJdmufe"
+    sportsSample += "Milos Raonic reaches semis at Aussie Open tuneup http://cbc.sh/2JPhjFY"
+    sportsSample += "\"Tonight we sucked,\" says Raptors' Kyle Lowry after team's 4th loss in a row http://cbc.sh/S7DfV9c"
 
     sportsSample.toList
   }
