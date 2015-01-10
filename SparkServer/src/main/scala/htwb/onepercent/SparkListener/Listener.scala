@@ -10,6 +10,7 @@ import akka.io.{IO, Tcp}
 import akka.io.Tcp._
 import java.net.InetSocketAddress
 
+import htwb.onepercent.SparkListener.Jobs.{ClassifyJob, LearnClassifierJob}
 import htwb.onepercent.SparkListener.utils.{Logging, Config, Settings}
 
 
@@ -50,6 +51,8 @@ object App {
   def main(args: Array[String]) {
     val system = ActorSystem()
     val listener = system.actorOf(Props[Listener])
+
+
   }
 
 }

@@ -1,16 +1,20 @@
 package htwb.onepercent.SparkListener.Jobs
 
 //Scala imports
+
 import scala.util.{Failure, Success, Try}
 
 //JAVA imports
+
 import java.text.SimpleDateFormat
 
 //Spark imports
+
 import org.apache.spark.sql.hive._
 import org.apache.spark.{SparkConf, SparkContext}
 
 //Own imports
+
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils._
 import htwb.onepercent.SparkListener.{JobResult, JobExecutor}
@@ -58,46 +62,33 @@ class TopHashtagJob extends JobExecutor with Logging {
 
         Try(TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
+            val topX = params(1).toInt
+            val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
+            val sc = new SparkContext(conf)
+            val hc = new HiveContext(sc)
+            val ta = new TweetAnalyser(sc, hc)
 
-            Try(params(1).toInt) match {
-              case Success(topX) =>
-                val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
-                val sc = new SparkContext(conf)
-                val hc = new HiveContext(sc)
-                val ta = new TweetAnalyser(sc, hc)
+            log("executeJob", "Starting Anaylsis with path: " + path.path + " and topX: " + topX)
 
-                log("executeJob", "Starting Anaylsis with path: " + path.path + " and topX: " + topX)
-
-                //Please notice the JSONFileReader which is used to create a schema for the topHashtagAnalyser
-                //method
-                Try(ta.topHashtagAnalyser(new TweetJSONFileReader(sc, hc).readFile(path.path), topX)) match {
-                  case Success(result) =>
-                    //stop the spark context, otherwise its stuck in this context...
-                    sc.stop()
-                    log("executeJob", "End Anaylsis with path: " + path.path + " and topX: " + topX)
-                    result
-                  case Failure(_) =>
-                    //stop the spark context, otherwise its stuck in this context...
-                    sc.stop()
-                    log("executeJob", "TopHashtag analyses failed! path[" + path.path + "] topX[" + topX + "]")
-                    ErrorMessage("TopHashtag analyses failed!", 101);
-                }
-
+            //Please notice the JSONFileReader which is used to create a schema for the topHashtagAnalyser
+            //method
+            Try(ta.topHashtagAnalyser(new TweetJSONFileReader(sc, hc).readFile(path.path), topX)) match {
+              case Success(result) =>
+                //stop the spark context, otherwise its stuck in this context...
+                sc.stop()
+                log("executeJob", "End Anaylsis with path: " + path.path + " and topX: " + topX)
+                result
               case Failure(_) =>
-                ErrorMessage("Parameter [" + params(1) + "] is not an Integer!", 100)
-
+                //stop the spark context, otherwise its stuck in this context...
+                sc.stop()
+                log("executeJob", "TopHashtag analyses failed! path[" + path.path + "] topX[" + topX + "]")
+                ErrorMessage("TopHashtag analyses failed!", 101);
             }
-
           case Failure(wrongPath) =>
             ErrorMessage("Parameter [" + wrongPath + "] i not a valid path!", 100)
-
         }
-
       case Failure(wrongDate) =>
         ErrorMessage("Parameter [" + wrongDate + "] is not a valid date!", 100)
-
     }
-
   }
-
 }

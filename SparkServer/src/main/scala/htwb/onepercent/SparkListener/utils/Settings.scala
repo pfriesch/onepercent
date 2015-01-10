@@ -6,7 +6,7 @@
 package htwb.onepercent.SparkListener.utils
 
 
-import scala.util.{Failure, Success}
+import scala.util.{Try, Failure, Success}
 import java.io.{File, PrintWriter}
 
 import scala.io.Source
@@ -24,7 +24,9 @@ case class Settings(configVersion: Int,
                     JobsPackageString: String,
                     tweetsPrefixPath: String,
                     scoringTrainingDataPath: String,
-                    scoringTrainedDataPath: String)
+                    scoringTrainedDataPath: String,
+                    classificationOtherCategoryName: String,
+                    classificationThreshold: Double)
 
 
 /**
@@ -35,14 +37,16 @@ case class Settings(configVersion: Int,
 object Config {
 
   // !!!!!!!!!! Count up every time you change the Settings case class !!!!!!!!!
-  val configVersion = 3
+  val configVersion = 5
   val settingsFileName = "config.cfg"
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
   val defaultPort = 5555
   val defaultJobsPackage = "htwb.onepercent.SparkListener.Jobs."
   val defaultTweetsPrefixPath = "hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/"
-  val defaultScoringTrainingDataPath: String = "scoring/trainingData/"
-  val defaultScoringTrainedDataPath: String = "scoring/trainedData/"
+  val defaultScoringTrainingDataPath: String = "scoring/trainingData"
+  val defaultScoringTrainedDataPath: String = "scoring/trainedData"
+  val defaultClassificationOtherCategoryName: String = "other"
+  val defaultClassificationThreshold: Double = 0.20
 
   var settings = Settings(configVersion,
     defaultHostname,
@@ -50,13 +54,15 @@ object Config {
     defaultJobsPackage,
     defaultTweetsPrefixPath,
     defaultScoringTrainingDataPath,
-    defaultScoringTrainedDataPath)
+    defaultScoringTrainedDataPath,
+    defaultClassificationOtherCategoryName,
+    defaultClassificationThreshold)
 
   // Constructor
   {
     val file = new File(settingsFileName)
     if (file.exists() && !file.isDirectory()) {
-      JsonTools.parseClass[Settings](Source.fromFile(settingsFileName).mkString) match {
+      Try(JsonTools.parseClass[Settings](Source.fromFile(settingsFileName).mkString)) match {
         case Success(settings) =>
           if (settings.configVersion != configVersion)
             setDefaultSettings
@@ -76,7 +82,10 @@ object Config {
       defaultJobsPackage,
       defaultTweetsPrefixPath,
       defaultScoringTrainingDataPath,
-      defaultScoringTrainedDataPath)))
+      defaultScoringTrainedDataPath,
+      defaultClassificationOtherCategoryName,
+      defaultClassificationThreshold
+    )))
     writer.close()
   }
 

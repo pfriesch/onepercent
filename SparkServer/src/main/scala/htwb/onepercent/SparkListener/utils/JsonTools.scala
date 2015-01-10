@@ -28,10 +28,10 @@ object JsonTools {
    * @tparam C the class to be parsed.
    * @return the parsed object.
    */
-  def parseClass[C: Manifest](jsonString: String): Try[C] = {
+  def parseClass[C: Manifest](jsonString: String): C = {
     import org.json4s.native.JsonMethods._
     implicit val formats = DefaultFormats
-    Try(org.json4s.native.JsonMethods.parse(jsonString).extract[C])
+    org.json4s.native.JsonMethods.parse(jsonString).extract[C]
   }
 
   /**
@@ -50,7 +50,11 @@ object JsonTools {
    * @param relativePath the path of the file to be written to.
    */
   def writeToFileAsJson(obj: AnyRef, relativePath: String) = {
-    val writer = new PrintWriter(new File(relativePath))
+    val file = new File(relativePath)
+    file.getParentFile.mkdirs()
+    file.createNewFile()
+    file.setWritable(true)
+    val writer = new PrintWriter(file)
     writer.write(JsonTools.toJsonString(obj))
     writer.close()
   }

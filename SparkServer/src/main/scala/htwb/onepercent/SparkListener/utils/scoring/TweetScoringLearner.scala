@@ -8,6 +8,8 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.SparkContext._
 
 
+case class TrainedData(categoryProb: Map[String, Double], termProb: Map[String, Map[String, Double]])
+
 /**
  * Produces probabilities of terms being in categories based on training data.
  * The given SparkContext is used to compute these.
@@ -24,7 +26,7 @@ class TweetScoringLearner(sc: SparkContext) {
    * @param tweets the training tweets divided in categories.
    * @return a pair of category probability and term probabilities of terms being in a given category.
    */
-  def learn(tweets: Map[Category, List[String]]): (Map[Category, Double], Map[String, Map[Category, Double]]) = {
+  def learn(tweets: Map[Category, List[String]]): TrainedData = {
 
     val distTweets = sc.parallelize(tweets.toSeq)
 
@@ -42,7 +44,7 @@ class TweetScoringLearner(sc: SparkContext) {
 
     val termProb = computeTermProb(termCount, categories.collect().toList)
 
-    (categoryProb.collect().toMap, termProb.map(X => (X._1, X._2.toMap)).collect().toMap)
+    TrainedData(categoryProb.collect().toMap, termProb.map(X => (X._1, X._2.toMap)).collect().toMap)
 
   }
 
