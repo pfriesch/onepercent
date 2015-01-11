@@ -1,15 +1,47 @@
 package htwb.onepercent.SparkListener.utils
 
-import scala.collection.mutable.MutableList
 import scala.collection.immutable.List
 
 /**
- * Created by flo on 10.01.15.
+ * This object represents various training samples and a training set
+ * composed of those samples for Twitter Tweet scoring.
+ *
+ * @author Florian Willich
  */
 object ScoringTrainingSample {
 
   /**
-   * This Method returns a sample of violence Tweets from the following accounts:
+   * This method returns a training set composed of the following Samples:
+   * - Violence
+   * - Entertainment
+   * - Technology
+   * - Sports
+   * - Economy
+   *
+   * For more detailed information of the samples:
+   * @see     trainingSampleViolence        Violence Training Sample
+   * @see     trainingSampleEntertainment   Entertainment Training Sample
+   * @see     trainingSampleTechnology      Technology Training Sample
+   * @see     trainingSampleSports          Sports Training Sample
+   * @see     trainingSampleEconomy         Economy Training Sample
+   *
+   * @return a training set.
+   * @author Florian Willich
+   */
+  def trainingSet() : Map[String, List[String]] = {
+    var trainingSet: Map[String, List[String]] = Map()
+
+    trainingSet += ("Violence" -> trainingSampleViolence())
+    trainingSet += ("Entertainment" -> trainingSampleEntertainment())
+    trainingSet += ("Technology" -> trainingSampleTechnology())
+    trainingSet += ("Sports" -> trainingSampleSports())
+    trainingSet += ("Economy" -> trainingSampleEconomy())
+
+    trainingSet
+  }
+
+  /**
+   * This method returns a sample of violence Tweets from the following accounts:
    * - BBC World (https://twitter.com/bbcworld)
    * - CNN (https://twitter.com/cnn)
    * - NYPD News
@@ -18,8 +50,9 @@ object ScoringTrainingSample {
    * Reading those was terrible disgusting sometimes...
    *
    * @return a sample of entertainment Tweets.
+   * @author Florian Willich
    */
-  def trainingSampleViolence() : List [String] = {
+  def trainingSampleViolence() : List[String] = {
     var violenceSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
 
     //BBC World Tweets (https://twitter.com/bbcworld)
@@ -94,6 +127,7 @@ object ScoringTrainingSample {
    * You maybe have to get a drink after reading those Tweets...
    *
    * @return a sample of entertainment Tweets.
+   * @author Florian Willich
    */
   def trainingSampleEntertainment() : List[String] = {
     var entertainmentSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
@@ -170,6 +204,7 @@ object ScoringTrainingSample {
    * - CBC Sports (https://twitter.com/cbcsports)
    *
    * @return a sample of sports Tweets.
+   * @author Florian Willich
    */
   def trainingSampleSports() : List[String] = {
     var sportsSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
@@ -246,6 +281,7 @@ object ScoringTrainingSample {
    * - CNN Money Tweets (https://twitter.com/cnnmoney)
    *
    * @return a sample of economy Tweets.
+   * @author Florian Willich
    */
   def trainingSampleEconomy() : List[String] = {
     var economySample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
@@ -322,6 +358,7 @@ object ScoringTrainingSample {
    * - NYTimes Bits (https://twitter.com/nytimesbits)
    *
    * @return a sample of technology Tweets.
+   * @author Florian Willich
    */
   def trainingSampleTechnology() : List[String] = {
     var techSample: scala.collection.mutable.MutableList[String] = scala.collection.mutable.MutableList()
