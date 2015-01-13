@@ -6,14 +6,15 @@
 package htwb.onepercent.SparkListener
 
 //Scala imports
+
 import akka.actor.{ActorRef, Props, Actor}
 import akka.io.Tcp.{Register, Write, PeerClosed, Received}
 import akka.util.ByteString
 import scala.util.Try
 
 //Own imports
-import htwb.onepercent.SparkListener.utils._
 
+import htwb.onepercent.SparkListener.utils._
 
 
 /**
@@ -26,11 +27,6 @@ class JobHandler extends Actor with Logging {
 
   var connection: ActorRef = null
 
-  private def evaluateJob(jsonString: String): Try[JobSignature] = {
-    //TODO check params
-    JsonConverter.parseJobJson(jsonString)
-  }
-
   /**
    * When data arrives at the connection and the data is parsable and fitting to a existing Job, a Job is started.
    * Otherwise it returns a ErrorMessage.
@@ -39,7 +35,7 @@ class JobHandler extends Actor with Logging {
    */
   def receive = {
     case Received(data) => {
-      evaluateJob(data.decodeString("UTF-8")) match {
+      Try(JsonTools.parseClass[JobSignature](data.decodeString("UTF-8"))) match {
         case util.Success(job) =>
           log("receive", "New Job: " + job)
           val fullJobName = Config.get.JobsPackageString + job.name
@@ -49,13 +45,11 @@ class JobHandler extends Actor with Logging {
               self ! Result(job.jobID, ErrorMessage("Job not known! Job name: " + job.name, 400))
           }
         case util.Failure(ex) =>
-          //TODO What to do if json read failed?
           self ! Result("", ErrorMessage("Unable to resolve request! Parse exception: " + ex.getMessage, 404))
       }
     }
     case r@Result(_, jobResult: AnyRef) =>
-      //TODO a "\n" is bad, alternative? (\n => end of Message)
-      connection ! Write(ByteString.apply(JsonConverter.toJsonString(r) + "\n"))
+      connection ! Write(ByteString.apply(JsonTools.toJsonString(r) + "\n"))
     case PeerClosed => context stop self
     case Register(connection: ActorRef, _, _) => this.connection = connection
     case _ => log("receive", "JobHanlder default case triggered")

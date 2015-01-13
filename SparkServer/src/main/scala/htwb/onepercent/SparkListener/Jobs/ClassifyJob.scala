@@ -48,7 +48,7 @@ class ClassifyJob extends JobExecutor with Logging {
                   case Success(trainedData) =>
                     val classifier = new TweetClassifier(trainedData)
                     schmaRDD.registerTempTable("tweets")
-                    val tweetText: SchemaRDD = hc.sql("SELECT text FROM tweets")
+                    val tweetText: SchemaRDD = hc.sql("SELECT text FROM tweets WHERE lang = 'en'")
                     val categoryFreqency = tweetText.map(
                       tweetText => classifier.classify(tweetText.toString()) match {
                         case x: (_, _) if x._2 < Config.get.classificationThreshold => (Config.get.classificationOtherCategoryName, x._2)
