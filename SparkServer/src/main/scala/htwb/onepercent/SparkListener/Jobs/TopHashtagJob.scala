@@ -17,7 +17,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils._
-import htwb.onepercent.SparkListener.{JobResult, JobExecutor}
+import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
 
 /**
  * This class is a job for calculating the TopHashtags.

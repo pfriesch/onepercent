@@ -4,8 +4,8 @@ For more detailed information, please read the licence.txt in the root directory
 package htwb.onepercent.SparkListener.utils.scoring
 
 import org.apache.spark.SparkContext
-import org.apache.spark.rdd.RDD
 import org.apache.spark.SparkContext._
+import org.apache.spark.rdd.RDD
 
 
 case class TrainedData(categoryProb: Map[String, Double], termProb: Map[String, Map[String, Double]])

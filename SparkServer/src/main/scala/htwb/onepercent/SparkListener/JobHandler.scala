@@ -7,9 +7,10 @@ package htwb.onepercent.SparkListener
 
 //Scala imports
 
-import akka.actor.{ActorRef, Props, Actor}
-import akka.io.Tcp.{Register, Write, PeerClosed, Received}
+import akka.actor.{Actor, ActorRef, Props}
+import akka.io.Tcp.{PeerClosed, Received, Register, Write}
 import akka.util.ByteString
+
 import scala.util.Try
 
 //Own imports

@@ -6,21 +6,15 @@
 package htwb.onepercent.SparkListener.utils
 
 //Spark imports
+import java.text.SimpleDateFormat
+import java.util.{Calendar, Date, TimeZone}
+
+import htwb.onepercent.SparkListener.JobResult
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.rdd._
 import org.apache.spark.sql._
 import org.apache.spark.sql.hive._
-
-
-
-import java.io.File
-import java.util.{TimeZone, Calendar, Date}
-import java.text.SimpleDateFormat
-
-import htwb.onepercent.SparkListener.JobResult
-
-import scala.util.Try
 
 
 //Make a trait out of this class

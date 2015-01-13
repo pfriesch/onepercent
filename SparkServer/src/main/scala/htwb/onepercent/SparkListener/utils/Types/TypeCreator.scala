@@ -11,7 +11,6 @@ import java.util.{Calendar, GregorianCalendar}
 
 //Scala imports
 import scala.collection.mutable.ListBuffer
-import scala.util.Try
 
 //Own Imports
 import htwb.onepercent.SparkListener.utils.T_Path

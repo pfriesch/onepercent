@@ -5,16 +5,10 @@
 
 package htwb.onepercent.SparkListener.utils
 
-import org.json4s.native.Serialization._
-import org.json4s.{DefaultFormats, NoTypeHints, native}
-import htwb.onepercent.SparkListener.JobSignature
-
-import scala.reflect.ClassTag
-import scala.util.Try
-
 import java.io.{File, PrintWriter}
 
-import scala.io.Source
+import org.json4s.native.Serialization._
+import org.json4s.{DefaultFormats, NoTypeHints, native}
 
 /**
  * Provides methods to parse Objects out of Json Strings and to make Json Strings out of Objects
@@ -29,7 +23,6 @@ object JsonTools {
    * @return the parsed object.
    */
   def parseClass[C: Manifest](jsonString: String): C = {
-    import org.json4s.native.JsonMethods._
     implicit val formats = DefaultFormats
     org.json4s.native.JsonMethods.parse(jsonString).extract[C]
   }

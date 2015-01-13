@@ -20,7 +20,7 @@ case class CategoryCount(category: String, count: Int)
 
 case class CategoryDistribution(distribution: List[CategoryCount], totalCount: Int) extends JobResult
 
-class ClassifyJob extends JobExecutor with Logging {
+class CategoryDistributionJob extends JobExecutor with Logging {
 
   //TODO docu
 

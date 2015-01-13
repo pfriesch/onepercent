@@ -5,13 +5,12 @@
 
 package htwb.onepercent.SparkListener
 
-import akka.actor.{ActorSystem, Actor, Props}
-import akka.io.{IO, Tcp}
-import akka.io.Tcp._
 import java.net.InetSocketAddress
 
-import htwb.onepercent.SparkListener.Jobs.{ClassifyJob, LearnClassifierJob}
-import htwb.onepercent.SparkListener.utils.{Logging, Config, Settings}
+import akka.actor.{Actor, ActorSystem, Props}
+import akka.io.Tcp._
+import akka.io.{IO, Tcp}
+import htwb.onepercent.SparkListener.utils.{Config, Logging}
 
 
 /**

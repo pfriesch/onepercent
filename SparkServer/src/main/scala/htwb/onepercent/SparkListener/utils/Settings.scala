@@ -6,10 +6,10 @@
 package htwb.onepercent.SparkListener.utils
 
 
-import scala.util.{Try, Failure, Success}
 import java.io.{File, PrintWriter}
 
 import scala.io.Source
+import scala.util.{Failure, Success, Try}
 
 /**
  * Holding configuration for the App

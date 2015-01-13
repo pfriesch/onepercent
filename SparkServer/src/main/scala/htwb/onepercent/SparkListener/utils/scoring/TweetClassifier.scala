@@ -3,8 +3,6 @@ For more detailed information, please read the licence.txt in the root directory
 
 package htwb.onepercent.SparkListener.utils.scoring
 
-import htwb.onepercent.SparkListener.utils.Config
-
 /**
  * Can classify a Tweet based on the given probabilities of terms being in categories.
  * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
