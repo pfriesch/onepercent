@@ -72,8 +72,5 @@ class CategoryDistributionJob extends JobExecutor with Logging {
       case Failure(wrongDate) =>
         ErrorMessage("Parameter [" + wrongDate + "] is not a valid date!", 100)
     }
-    CategoryDistribution(List(CategoryCount("others", 100)), 100)
   }
-
-
 }
