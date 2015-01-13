@@ -34,7 +34,7 @@ case class Settings(configVersion: Int,
  *
  * @author pFriesch
  */
-object Config {
+object Config extends Serializable{
 
   // !!!!!!!!!! Count up every time you change the Settings case class !!!!!!!!!
   val configVersion = 5

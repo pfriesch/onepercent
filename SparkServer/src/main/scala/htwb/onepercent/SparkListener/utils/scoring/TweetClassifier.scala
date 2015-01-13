@@ -8,7 +8,8 @@ package htwb.onepercent.SparkListener.utils.scoring
  * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
  * @param trainedData the base probabilities of each category and the term probabilities of each term in each category.
  */
-class TweetClassifier(trainedData: TrainedData) {
+//needs to be serializable to be distributed
+class TweetClassifier(trainedData: TrainedData) extends Serializable{
   type Category = String
 
   /**
