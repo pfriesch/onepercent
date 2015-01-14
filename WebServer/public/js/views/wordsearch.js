@@ -17,7 +17,7 @@ var WordSearchView = Backbone.View.extend({
 		this.template = _.template(tpl.get(options.template));
 		this.path = {
 			table: options.table,
-			searchWord: options.searchWord
+			searchWord: encodeURIComponent(options.searchWord)
 		};
 
 		if(typeof this.path.searchWord != 'undefined'){
@@ -39,14 +39,17 @@ var WordSearchView = Backbone.View.extend({
 	 * @param searchWord	the word to look for
 	 */
 	changeData: function(table, searchWord){
+		console.log(searchWord);
 		this.path = {
 			table: table,
-			searchWord: searchWord
+			searchWord: encodeURIComponent(searchWord)
 		};
 
 		if(typeof this.dataCollection != 'undefined'){
 			this.dataCollection.remove();
 		}
+
+		console.log(this.path.searchWord);
 
 		this.dataCollection = new WordSearchCollection(this.path.table, this.path.searchWord);
 		this.dataCollection.fetch({reset: true});

@@ -54,12 +54,13 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
   var time = moment();
   var date = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), -48);
   var nextDate = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), +1);
-  dataBaseHandler.select("SELECT * FROM ?? WHERE written >= ? AND written < ? AND name = ?", ['wordsearch',date,nextDate, req.params.searchWord], function(result){
+  var searchWord = decodeURIComponent(req.params.searchWord);
+  dataBaseHandler.select("SELECT * FROM ?? WHERE written >= ? AND written < ? AND name = ?", ['wordsearch',date,nextDate, searchWord], function(result){
     if(result.length > 0){
       res.send(result);
     } else {
       try {
-        var wordSearchJob = jobManager.createJob('WordSearchJob', [req.params.searchWord]);
+        var wordSearchJob = jobManager.createJob('WordSearchJob', [searchWord]);
         sparkClient.sendJobDataToServer(wordSearchJob, function (dataResponse) {
           var jobType = jobManager.getJobTypeByName(wordSearchJob.name);
           jobType.saveToDatabase(dataResponse, wordSearchJob, function () {

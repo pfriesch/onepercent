@@ -55,7 +55,7 @@ var SearchNavigationView = Backbone.View.extend({
 		this.path.searchWord = $('#searchword_field').val();
 
 		this.chartView.changeData(this.path.table, this.path.searchWord);
-		this.appRouter.navigate("live/" + this.path.table + "/" + this.path.searchWord, {trigger: false});
+		this.appRouter.navigate("live/" + this.path.table + "/" + encodeURIComponent(this.path.searchWord), {trigger: false});
 
 		this.showNavigation();
 	},
