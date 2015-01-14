@@ -27,6 +27,31 @@ USE `_s0540031__Twitter`;
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `categorydistribution`
+--
+
+CREATE TABLE IF NOT EXISTS `categorydistribution` (
+  `category` varchar(30) NOT NULL,
+  `count` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`category`,`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `countallcategorytweets`
+--
+
+CREATE TABLE IF NOT EXISTS `countallcategorytweets` (
+  `count` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `countalltags`
 --
 
