@@ -21,20 +21,20 @@ var restfulapi = require('./restfulapi.js'); //Restapi
 
 var jobCollection = []; //stores the Jobs
 
-//initJobInterval();
+initJobInterval();
 
 /* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval(){
-	//wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
-  wait(moment().endOf('seconds').add(5,'seconds') - moment(), function() {
+	wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
 		logData('5 Minutes after full Hour reached. Start jobs per interval.');
 		repeatJobPerInterval('TopHashtagJob', [10], 10000, -1); //1000*60*60
-    //repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
-    //repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
+        repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
+        repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
 	});
-  wait(moment().endOf('day').add(14,'hours') - moment(), function(){
-    repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60*24, -24);
-  });   
+
+    wait(moment().endOf('day').add(14,'hours').add(10,'minutes') - moment(), function(){
+        repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60*24, -24);
+    });
 }
 
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/
@@ -84,7 +84,7 @@ function checkIfJobsExecuted () {
         sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
       }
     }    
-  }
+
 }
 
 /* Logs Data*/
@@ -93,10 +93,3 @@ function logData(data) {
 	console.log(data);
 	console.log('------------------------------------------');
 }
-
-
-
-
-
-
-
