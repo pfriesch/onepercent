@@ -12,6 +12,7 @@ var OriginTweetsJob = require('./jobs/origintweetsjob.js');
 var LanguageDistributionJob = require('./jobs/languagedistributionjob.js');
 var TweetsAtDaytimeJob = require('./jobs/tweetsatdaytimejob.js');
 var WordSearchJob = require('./jobs/wordsearchjob.js');
+var CategoryDistributionJob = require('./jobs/categorydistributionjob.js');
 
 var jobTypeCollection = new Array();
 
@@ -32,6 +33,7 @@ function initJobTypes(){
   jobTypeCollection.push(new LanguageDistributionJob("LanguageDistributionJob", "languagedistribution", ["language","count", "timestamp"]));
   jobTypeCollection.push(new TweetsAtDaytimeJob("TweetsAtDaytimeJob", "tweetsatdaytime", ["timestamp","count"]));
   jobTypeCollection.push(new WordSearchJob("WordSearchJob", "wordsearch", ["name","timestamp","count", "written"]));
+  jobTypeCollection.push(new CategoryDistributionJob("CategoryDistributionJob", "categorydistribution", ["category","count", "timestamp"]));
 }
 
 /**
