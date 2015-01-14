@@ -40,10 +40,14 @@ function initJobInterval(){
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/
 function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
 	setInterval(function() {
-       var sparkJob = jobManager.createJob(jobName, params, offset);
-       jobCollection.push(sparkJob);
-       logData('Added Element with ID: ' + sparkJob.jobID);
-       sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
+        try {
+            var sparkJob = jobManager.createJob(jobName, params, offset);
+            jobCollection.push(sparkJob);
+            logData('Added Element with ID: ' + sparkJob.jobID);
+            sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
+        } catch (ex) {
+            console.log(new Date() + " " + ex);
+        }
     }, intervalInMilliseconds);	
 }
 
@@ -53,10 +57,14 @@ function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
  * into dthe database.
  */
 function getJobResponse(dataResponse) {
-    var job = findById(jobCollection, dataResponse.jobID);
-    var jobType = jobManager.getJobTypeByName(job.name);
-    jobType.saveToDatabase(dataResponse, job);
-    deleteElementFromCollection(job);
+    try {
+        var job = findById(jobCollection, dataResponse.jobID);
+        var jobType = jobManager.getJobTypeByName(job.name);
+        jobType.saveToDatabase(dataResponse, job);
+        deleteElementFromCollection(job);
+    }catch(ex) {
+        console.log(new Date() + " " + ex);
+    }
 }
 
 /* Delete the Job from the array (JobCollection).*/
@@ -73,7 +81,7 @@ function findById(source, id) {
       return source[i];
     }
   }
-  throw "Couldn't find object with id: " + id;
+  throw new Error("Couldn't find object with id: " + id);
 }
 
 /* checks if the send jobs are answered in a reasonable time, if not the will send again */

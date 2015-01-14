@@ -44,16 +44,20 @@ function findByName(name) {
       return source[i];
     }
   }
-  throw "Couldn't find object with name: " + name;
+  throw new Error("Couldn't find object with name: " + name);
 }
 
 /* create a Job with the given parameters and return it to OP_Webserver*/
 function createJob (jobName, params, timeOffset) {
-  var jobType = findByName(jobName)
+  try {
+    var jobType = findByName(jobName)
+  } catch (ex) {
+    console.log(new Date() + " " + ex);
+  }
   if(typeof jobType !== 'undefined') {
     return jobType.createJob(generateHash(), params, timeOffset);
   } else {
-    throw "JobName not known";
+    throw new Error("JobName not known");
   }
 }
 

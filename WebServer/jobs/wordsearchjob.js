@@ -32,6 +32,7 @@ WordSearchJob.prototype.saveToDatabase = function(rD, jD, callback){
 
 /**
  * Override the createJob function from jobPrototype.
+ * @Exception throws an Exception when the searchword is not valid
  */
 WordSearchJob.prototype.createJob = function(jobId, inputParams, offset){
     var params = inputParams.slice();
@@ -43,7 +44,7 @@ WordSearchJob.prototype.createJob = function(jobId, inputParams, offset){
             "time": this.generateTimestamp(0)
         };
     } else {
-        throw "SearchWord not valid";
+        throw new Error("SearchWord not valid");
     }
 };
 
