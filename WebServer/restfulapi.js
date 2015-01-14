@@ -49,6 +49,7 @@ app.get('/api/live/:table', function(req, res){
 /*
  * If the browserClient requests with URLparams (/api/:table)
  * this methode gets the needed data from database and responds it to the Browserclient.
+ * returns available data, if the the word was found, or null if the word wasn´t found or it is not valid
  */
 app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
   var time = moment();
@@ -58,19 +59,22 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
   dataBaseHandler.select("SELECT * FROM ?? WHERE written >= ? AND written < ? AND name = ?", ['wordsearch',date,nextDate, searchWord], function(result){
     if(result.length > 0){
       res.send(result);
-    } else {
+    } else if (req.params.secondTry != true) {
       try {
         var wordSearchJob = jobManager.createJob('WordSearchJob', [searchWord]);
         sparkClient.sendJobDataToServer(wordSearchJob, function (dataResponse) {
           var jobType = jobManager.getJobTypeByName(wordSearchJob.name);
           jobType.saveToDatabase(dataResponse, wordSearchJob, function () {
-            wordSearchREST(req, res);
+            req.params.secondTry = true;
+            wordSearchREST(req, res, true);
           });
         });
       } catch(ex){
         console.log(new Date() + " " + ex);
         res.send(null);
       }
+    } else {
+      res.send(null);
     }
   });
 });
