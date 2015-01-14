@@ -15,13 +15,14 @@ WordSearchJob.prototype = Object.create(job.prototype);
 WordSearchJob.prototype.constructor = WordSearchJob;
 
 WordSearchJob.prototype.saveToDatabase = function(rD, jD, callback){
-    for (var i=0; i< rD.jobResult.countedTweets.length; i++) {
+
+    for (var i=0; i < rD.jobResult.countedTweets.length; i++) {
         // to access data you must access the "jobResult" Field in rD
         dataBaseHandler.insert(this.getTable(), this.getColumnNames(), [rD.jobResult.searchWord, rD.jobResult.countedTweets[i].timestamp, rD.jobResult.countedTweets[i].count, jD.time]);
     }
-    for (var i=0; i< rD.jobResult.tweetIds.length; i++) {
+    for (var j=0; j< rD.jobResult.tweetIds.length; j++) {
         // to access data you must access the "jobResult" Field in rD
-        dataBaseHandler.insert("tweetids", ["name", "tweetid", "written"], [rD.jobResult.searchWord, rD.jobResult.tweetIds[i], jD.time]);
+        dataBaseHandler.insert("tweetids", ["name", "tweetid", "written"], [rD.jobResult.searchWord, rD.jobResult.tweetIds[j], jD.time]);
     }
 
     if(callback){
