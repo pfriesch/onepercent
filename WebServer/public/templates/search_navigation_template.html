@@ -14,7 +14,7 @@
 	<% if(typeof availableWords != 'undefined') { %>
 	<div class="row">
 		<% _.each(availableWords, function(word) { %>
-		<a href="?#live/wordsearch/<%= word %>"><%= word %></a>
+		<a href="?#live/wordsearch/<%= encodeURIComponent(word) %>"><%= word %></a>
 		<% }) %>
 	</div>
 	<% } %>
