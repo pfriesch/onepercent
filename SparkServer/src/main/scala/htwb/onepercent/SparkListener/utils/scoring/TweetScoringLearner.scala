@@ -8,7 +8,7 @@ import org.apache.spark.SparkContext._
 import org.apache.spark.rdd.RDD
 
 
-case class TrainedData(categoryProb: Map[String, Double], termProb: Map[String, Map[String, Double]])
+case class TrainedData(categoryProb: Map[String, Double], termProb: Map[String, Map[String, Double]], unknownWordProb: Map[String, Double])
 
 /**
  * Produces probabilities of terms being in categories based on training data.
@@ -44,11 +44,11 @@ class TweetScoringLearner(sc: SparkContext) {
 
     val termProb = computeTermProb(termCount, categories.collect().toList)
 
-    TrainedData(categoryProb.collect().toMap, termProb.map(X => (X._1, X._2.toMap)).collect().toMap)
+    TrainedData(categoryProb.collect().toMap, termProb._1.map(X => (X._1, X._2.toMap)).collect().toMap, termProb._2)
 
   }
 
-  private def computeTermProb(termCount: RDD[(String, Map[Category, Int])], categories: List[Category]): RDD[(String, List[(Category, Double)])] = {
+  private def computeTermProb(termCount: RDD[(String, Map[Category, Int])], categories: List[Category]): (RDD[(String, List[(Category, Double)])], Map[Category, Double]) = {
     //needs to be accessible on all workers, so no RDD
     val categoryTermCount = categories.map(C => (C, termCount.map(
       X => (X._1, X._2.getOrElse(C, 0) + 1)).map(X => X._2).reduce(_ + _))
@@ -59,14 +59,15 @@ class TweetScoringLearner(sc: SparkContext) {
         C => C -> termWithCount._2.getOrElse(C, 0))
         )
     )
-    filledTermCount.map(termsWithCount => (termsWithCount._1, termsWithCount._2.map {
+    (filledTermCount.map(termsWithCount => (termsWithCount._1, termsWithCount._2.map {
       case (category: Category, count: Int) =>
         (category,
           // condProbFun
           (count + 1).toDouble / (categoryTermCount(category) + 1).toDouble
           // \condProbFun
           )
-    }))
+        // probability for an unknown Word
+    })), categoryTermCount.map(X => (X._1, 1.toDouble / X._2.toDouble)))
   }
 
   private def computeTermCount(tokenizedTweets: RDD[(Category, List[String])], categories: RDD[Category]): RDD[(String, Map[Category, Int])] = {

@@ -23,10 +23,10 @@ case class Settings(configVersion: Int,
                     port: Int,
                     JobsPackageString: String,
                     tweetsPrefixPath: String,
-                    scoringTrainingDataPath: String,
-                    scoringTrainedDataPath: String,
-                    classificationOtherCategoryName: String,
-                    classificationThreshold: Double)
+                    scoring_TrainingDataPath: String,
+                    scoring_TrainedDataPath: String,
+                    scoring_OtherCategoryName: String,
+                    scoring_Threshold: Double)
 
 
 /**
@@ -37,7 +37,7 @@ case class Settings(configVersion: Int,
 object Config extends Serializable{
 
   // !!!!!!!!!! Count up every time you change the Settings case class !!!!!!!!!
-  val configVersion = 5
+  val configVersion = 6
   val settingsFileName = "config.cfg"
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
   val defaultPort = 5555
@@ -47,6 +47,7 @@ object Config extends Serializable{
   val defaultScoringTrainedDataPath: String = "scoring/trainedData"
   val defaultClassificationOtherCategoryName: String = "other"
   val defaultClassificationThreshold: Double = 0.20
+
 
   var settings = Settings(configVersion,
     defaultHostname,

@@ -26,10 +26,9 @@ object Tokenizer {
    * @return list of tokens.
    */
   def tokenize(string: String): List[String] = {
-    //TODO split and sanatize and delete stopwords
 
-    //replace all not a-z with " "
-    val tokenizedWords = string.toLowerCase().replaceAll("[^#a-z]+|#+\\s", " ").replaceAll("#+", "#").split(" ").toList
+    //replace all single chars & all [a-z#@] & @[a-z] (mentions) with " "
+    val tokenizedWords = string.toLowerCase().replaceAll("[^a-z]+", " ").split(" ").toList
 
     tokenizedWords.diff(stopwords)
 

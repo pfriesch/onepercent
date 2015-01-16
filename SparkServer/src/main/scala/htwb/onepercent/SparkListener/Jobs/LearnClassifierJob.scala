@@ -25,14 +25,14 @@ class LearnClassifierJob extends JobExecutor with Logging {
           val sc = new SparkContext(conf)
           val tweetScoringLearner = new TweetScoringLearner(sc)
           val trainedData: TrainedData = tweetScoringLearner.learn(data)
-          Try(JsonTools.writeToFileAsJson(trainedData, Config.get.scoringTrainedDataPath)) match {
+          Try(JsonTools.writeToFileAsJson(trainedData, Config.get.scoring_TrainedDataPath)) match {
             case Success(_) =>
               sc.stop()
               TrainResult("Trained and written Data successfully")
             case Failure(_) =>
               sc.stop()
-              log("executeJob", "Failed to write trained Data to: " + Config.get.scoringTrainedDataPath)
-              ErrorMessage("Failed to write trained Data to: " + Config.get.scoringTrainedDataPath, 101)
+              log("executeJob", "Failed to write trained Data to: " + Config.get.scoring_TrainedDataPath)
+              ErrorMessage("Failed to write trained Data to: " + Config.get.scoring_TrainedDataPath, 101)
           }
         }
         case Failure(ex) =>

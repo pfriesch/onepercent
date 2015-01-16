@@ -43,19 +43,20 @@ class CategoryDistributionJob extends JobExecutor with Logging {
 
             Try(new TweetJSONFileReader(sc, hc).readFile(path.path)) match {
               case Success(schmaRDD) =>
-                val file = new File(Config.get.scoringTrainedDataPath)
-                Try(JsonTools.parseClass[TrainedData](Source.fromFile(Config.get.scoringTrainedDataPath).mkString)) match {
+                val file = new File(Config.get.scoring_TrainedDataPath)
+                Try(JsonTools.parseClass[TrainedData](Source.fromFile(Config.get.scoring_TrainedDataPath).mkString)) match {
                   case Success(trainedData) =>
                     val classifier = new TweetClassifier(trainedData)
                     schmaRDD.registerTempTable("tweets")
                     val tweetText: SchemaRDD = hc.sql("SELECT text FROM tweets WHERE lang = 'en'")
-                    val categoryFreqency = tweetText.map(
+                    val categoryFreqency1 = tweetText.map(
                       tweetText => classifier.classify(tweetText.toString()) match {
-                        case x: (_, _) if x._2 < Config.get.classificationThreshold => (Config.get.classificationOtherCategoryName, x._2)
+                        case x: (_, _) if x._2 < Config.get.scoring_Threshold => (Config.get.scoring_OtherCategoryName, x._2)
                         case x => x
-                      }).groupByKey().map(X => (X._1, X._2.toList.length))
-                    val totalTweets: Int = categoryFreqency.reduce((X, Y) => (X._1, X._2 + Y._2))._2
-                    val result = CategoryDistribution(categoryFreqency.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
+                      })
+                    val categoryFreqency2 = categoryFreqency1.groupByKey().map(X => (X._1, X._2.toList.length))
+                    val totalTweets: Int = categoryFreqency2.reduce((X, Y) => (X._1, X._2 + Y._2))._2
+                    val result = CategoryDistribution(categoryFreqency2.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
                     sc.stop()
                     result
                   case Failure(ex) =>
