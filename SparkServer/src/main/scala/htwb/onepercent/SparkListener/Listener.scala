@@ -11,6 +11,9 @@ import akka.actor.{Actor, ActorSystem, Props}
 import akka.io.Tcp._
 import akka.io.{IO, Tcp}
 import htwb.onepercent.SparkListener.utils.{Config, Logging}
+import org.apache.log4j.Logger
+import org.apache.log4j.Level
+
 
 
 /**
@@ -48,6 +51,7 @@ class Listener extends Actor with Logging {
 object App {
 
   def main(args: Array[String]) {
+    Logger.getLogger("org").setLevel(Level.WARN)
     val system = ActorSystem()
     val listener = system.actorOf(Props[Listener])
 
