@@ -13,9 +13,15 @@ import scala.util.{Failure, Success, Try}
 
 /**
  * Holding configuration for the App
- * @param hostname
- * @param port
- * @param JobsPackageString
+ * @param configVersion The iteration of this class
+ * @param hostname the hostname of this app to bind a socket
+ * @param port the port of this app to bind a socket
+ * @param JobsPackageString absolute path to the Job classes
+ * @param tweetsPrefixPath the absolute path to the tweets on the hdfs
+ * @param scoring_TrainingDataPath the relative path where the scoring learner can find training files
+ * @param scoring_TrainedDataPath the relative path where the scoring learner saves its trained data
+ * @param scoring_OtherCategoryName the name of the category in scoring which is used when no category fits above the threshold
+ * @param scoring_Threshold the threshold percentage where no category is fitted and the other catesgory is used
  */
 // !!!!!!!! If signature is changed configVersion needs to be counted up !!!!!!!!!
 //The reason is that the json string is not checked if it has the right structure while parsing
