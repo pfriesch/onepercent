@@ -50,11 +50,12 @@ class CategoryDistributionJob extends JobExecutor with Logging {
                     schmaRDD.registerTempTable("tweets")
                     val tweetText: SchemaRDD = hc.sql("SELECT text FROM tweets WHERE lang = 'en'")
                     val categoryFreqency1 = tweetText.map(
-                      tweetText => classifier.classify(tweetText.toString()) match {
+                      tweetText => classifier.classifyVerbose(tweetText.toString()) /*match {
                         case x: (_, _) if x._2 < Config.get.scoring_Threshold => (Config.get.scoring_OtherCategoryName, x._2)
                         case x => x
-                      })
-                    val categoryFreqency2 = categoryFreqency1.groupByKey().map(X => (X._1, X._2.toList.length))
+                      }*/)
+                    categoryFreqency1.takeSample(true, 10).foreach(println)
+                    val categoryFreqency2 = categoryFreqency1.map(X => X._2.maxBy(_._2)).groupByKey().map(X => (X._1, X._2.toList.length))
                     val totalTweets: Int = categoryFreqency2.reduce((X, Y) => (X._1, X._2 + Y._2))._2
                     val result = CategoryDistribution(categoryFreqency2.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
                     sc.stop()

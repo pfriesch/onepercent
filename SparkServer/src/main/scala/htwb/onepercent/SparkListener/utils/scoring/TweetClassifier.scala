@@ -25,7 +25,7 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
     if (tokenizedTweet.length > 0) {
       val categories: List[Category] = trainedData.categoryProb.map(X => X._1).toList
       val score: Map[Category, Double] = categories.map { C =>
-        (C, Math.log10(trainedData.categoryProb(C) * tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).reduce(_*_)))
+        (C, Math.log10(trainedData.categoryProb(C)) + tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log10).reduce(_ + _))
       }.toMap
       //normalizes to 0..1
       def normalize(classifications: Map[Category, Double]): Map[Category, Double] = {
@@ -34,8 +34,25 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
       }
       normalize(score).maxBy(_._2)
     } else {
-      println("------> Empty Tweet")
       (Config.get.scoring_OtherCategoryName, 1)
+    }
+  }
+
+  def classifyVerbose(tweet: String): (String, Map[Category, Double]) = {
+    val tokenizedTweet = Tokenizer.tokenize(tweet)
+    if (tokenizedTweet.length > 0) {
+      val categories: List[Category] = trainedData.categoryProb.map(X => X._1).toList
+      val score: Map[Category, Double] = categories.map { C =>
+        (C, Math.log10(trainedData.categoryProb(C)) + tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log10).reduce(_ + _))
+      }.toMap
+      //normalizes to 0..1
+      def normalize(classifications: Map[Category, Double]): Map[Category, Double] = {
+        val sum: (Category, Double) = classifications.reduce((X, Y) => (X._1, X._2 + Y._2))
+        classifications.map(X => (X._1, X._2 / sum._2))
+      }
+      (tweet, normalize(score))
+    } else {
+      (tweet, Map(Config.get.scoring_OtherCategoryName -> 1))
     }
   }
 
