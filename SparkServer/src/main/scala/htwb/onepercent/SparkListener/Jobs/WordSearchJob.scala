@@ -58,13 +58,13 @@ class WordSearchJob extends JobExecutor with Logging {
     val endTime: String = timeFormatter.format(currentCalendar.getTime())
     val startTime: String = timeFormatter.format(startCalendar.getTime())
 
-    Try(TypeCreator.createGregorianCalendar(startTime, timeFormatter)) match {
+    Try(TypeCreator.gregorianCalendar(startTime, timeFormatter)) match {
       case Success(startGregCalendar) =>
 
-        Try(TypeCreator.createGregorianCalendar(endTime, timeFormatter)) match {
+        Try(TypeCreator.gregorianCalendar(endTime, timeFormatter)) match {
           case Success(endGregCalendar) =>
 
-            Try(TypeCreator.createMultipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
+            Try(TypeCreator.multipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
               case Success(path) =>
 
                 checkSearchWord(params(0)) match {

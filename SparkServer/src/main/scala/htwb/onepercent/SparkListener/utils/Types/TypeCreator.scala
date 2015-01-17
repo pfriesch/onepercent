@@ -36,8 +36,8 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createClusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): T_Path = {
-    T_Path(prefixPath + createTimePath(time) + dataName)
+  def clusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): T_Path = {
+    T_Path(prefixPath + timePath(time) + dataName)
   }
 
   /**
@@ -61,7 +61,7 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def createMultipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
+  def multipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
     //calculate hours between the dates
     //TODO: Maybe without any cast???
     val hours: Int = ((timeEnd.getTimeInMillis - timeBegin.getTimeInMillis) / 3600000).toInt
@@ -73,11 +73,11 @@ object TypeCreator {
 
       case x =>
         var pathList: ListBuffer[T_Path] = new ListBuffer[T_Path]()
-        pathList += T_Path(prefixPath + createTimePath(timeBegin) + dataName)
+        pathList += T_Path(prefixPath + timePath(timeBegin) + dataName)
 
         for (i <- 1 to x) {
           timeBegin.add(Calendar.HOUR, 1)
-          pathList += T_Path(prefixPath + createTimePath(timeBegin) + dataName)
+          pathList += T_Path(prefixPath + timePath(timeBegin) + dataName)
         }
 
         pathList.toList
@@ -95,7 +95,7 @@ object TypeCreator {
    *
    * @author        Florian Willich, Pius Friesch
    */
-  def createTimePath(time: GregorianCalendar) : String = {
+  def timePath(time: GregorianCalendar) : String = {
     time.get(Calendar.YEAR) + "/" + String.format("%02d", time.get(Calendar.MONTH)+1: Integer) + "/" + String.format("%02d", time.get(Calendar.DAY_OF_MONTH): Integer) + "/" + String.format("%02d", time.get(Calendar.HOUR_OF_DAY): Integer) + "/"
   }
 
@@ -111,7 +111,7 @@ object TypeCreator {
    *
    * @author          Florian Willich
    */
-  def createGregorianCalendar(time: String, format: SimpleDateFormat) : GregorianCalendar = {
+  def gregorianCalendar(time: String, format: SimpleDateFormat) : GregorianCalendar = {
 
     val calendar: GregorianCalendar = {
       new GregorianCalendar()

@@ -57,10 +57,10 @@ class TopHashtagJob extends JobExecutor with Logging {
   override def executeJob(params: List[String]): JobResult = {
 
 
-    Try(TypeCreator.createGregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))) match {
+    Try(TypeCreator.gregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))) match {
       case Success(gregCalendar) =>
 
-        Try(TypeCreator.createClusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
+        Try(TypeCreator.clusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
             val topX = params(1).toInt
             val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
