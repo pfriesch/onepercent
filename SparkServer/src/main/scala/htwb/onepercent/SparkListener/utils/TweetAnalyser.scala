@@ -36,7 +36,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    *
    * @return        the top X hashtags.
    */
-  def topHashtagAnalyser(scheme: SchemaRDD, topX: Int): TopHashtags = {
+  def topHashtag(scheme: SchemaRDD, topX: Int): TopHashtags = {
 
     scheme.registerTempTable("tweets")
 
@@ -65,7 +65,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    *
    * @return                  the searchWord, distribution of this word, example tweet ids
    */
-  def wordSearchAnalyser(scheme: SchemaRDD, inputSearchWord: String): WordSearch = {
+  def wordSearch(scheme: SchemaRDD, inputSearchWord: String): WordSearch = {
     val searchWord = inputSearchWord.toLowerCase
 
     // defines a SimpleDateFormat ignores minutes and seconds
@@ -94,7 +94,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param searchDateString  The timestamp that contains the date to filter.
    * @return                  the distribution of the search date
    */
-  def tweetsAtDaytimeAnalyser(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
+  def tweetsAtDaytime(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
 
     /**
      * Combines the timestamp and the offset from UTC to "normalize" the timestamps to there local time of creation
@@ -141,7 +141,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param timestamp Contains the time and date for which the calculations will be done.
    * @return          the timestamp, count of origin tweets and count of retweeted tweets
    */
-  def originTweetsAnalyser(scheme: SchemaRDD, timestamp: String): OriginTweets = {
+  def originTweets(scheme: SchemaRDD, timestamp: String): OriginTweets = {
 
     scheme.registerTempTable("tweets")
 
@@ -158,7 +158,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param timestamp Contains the time and date for which the calculations will be done.
    * @return          The language and there total appearance
    */
-  def languageDistributionAnalyser(scheme: SchemaRDD, timestamp: String): LanguageDistributionResult = {
+  def languageDistribution(scheme: SchemaRDD, timestamp: String): LanguageDistributionResult = {
 
     scheme.registerTempTable("tweets")
 

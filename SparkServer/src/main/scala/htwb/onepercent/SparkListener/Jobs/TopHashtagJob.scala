@@ -72,7 +72,7 @@ class TopHashtagJob extends JobExecutor with Logging {
 
             //Please notice the JSONFileReader which is used to create a schema for the topHashtagAnalyser
             //method
-            Try(ta.topHashtagAnalyser(new TweetJSONFileReader(sc, hc).readFile(path.path), topX)) match {
+            Try(ta.topHashtag(new TweetJSONFileReader(sc, hc).readFile(path.path), topX)) match {
               case Success(result) =>
                 //stop the spark context, otherwise its stuck in this context...
                 sc.stop()

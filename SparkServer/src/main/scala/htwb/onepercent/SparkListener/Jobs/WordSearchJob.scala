@@ -77,7 +77,7 @@ class WordSearchJob extends JobExecutor with Logging {
 
                     log("executeJob", "Starting Anaylsis with keyword: " + params(0))
 
-                    Try(ta.wordSearchAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
+                    Try(ta.wordSearch(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
                       case Success(result) =>
                         //stop the spark context, otherwise its stuck in this context...
                         sc.stop()

@@ -66,7 +66,7 @@ class LanguageDistributionJob extends JobExecutor with Logging {
             log("executeJob", "Starting Anaylsis with path: " + path.path)
 
             //method
-            Try(ta.languageDistributionAnalyser(new TweetJSONFileReader(sc, hc).readFile(path.path), params(0))) match {
+            Try(ta.languageDistribution(new TweetJSONFileReader(sc, hc).readFile(path.path), params(0))) match {
               case Success(result) =>
                 //stop the spark context, otherwise its stuck in this context...
                 sc.stop()

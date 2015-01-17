@@ -71,7 +71,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
                     val ta = new TweetAnalyser(sc, hc)
 
                     log("executeJob", "Starting Anaylsis for : " + params(0))
-                    Try(ta.tweetsAtDaytimeAnalyser(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
+                    Try(ta.tweetsAtDaytime(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
                     case Success(result) =>
                       //stop the spark context, otherwise its stuck in this context...
                       sc.stop()

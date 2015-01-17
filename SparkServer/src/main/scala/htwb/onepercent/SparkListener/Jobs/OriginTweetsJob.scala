@@ -67,7 +67,7 @@ class OriginTweetsJob extends JobExecutor with Logging {
 
             //Please notice the JSONFileReader which is used to create a schema for the topHashtagAnalyser
             //method
-            Try(ta.originTweetsAnalyser(new TweetJSONFileReader(sc, hc).readFile(path.path), params(0))) match {
+            Try(ta.originTweets(new TweetJSONFileReader(sc, hc).readFile(path.path), params(0))) match {
               case Success(result) =>
                 //stop the spark context, otherwise its stuck in this context...
                 sc.stop()
