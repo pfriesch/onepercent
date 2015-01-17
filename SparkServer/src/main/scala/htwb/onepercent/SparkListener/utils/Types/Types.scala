@@ -24,7 +24,7 @@ import java.util.GregorianCalendar
  *
  * @author      Florian Willich
  */
-case class T_Path(path: String) {
+case class Path(path: String) {
 
   /**
   if (!(new File(new File(path).getParent()).isDirectory())) {

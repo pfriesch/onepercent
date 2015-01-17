@@ -34,7 +34,7 @@ class TweetJSONFileReader(sc: SparkContext, hiveContext: HiveContext) {
 	 * @param pathListToJSONFile List of validate Paths
 	 * @return SchemaRDD that contains Data from all Paths
 	 */
-	def readFile(pathListToJSONFile: List[T_Path]) : SchemaRDD = {
+	def readFile(pathListToJSONFile: List[Path]) : SchemaRDD = {
 		var result: SchemaRDD = hiveContext.jsonFile(pathListToJSONFile.head.path)
 		// setting Schema at hiveContext.jsonFile improves performance by a lot
 		val dataSchema: StructType = result.schema

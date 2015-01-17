@@ -13,7 +13,7 @@ import java.util.{Calendar, GregorianCalendar}
 import scala.collection.mutable.ListBuffer
 
 //Own Imports
-import htwb.onepercent.SparkListener.utils.T_Path
+import htwb.onepercent.SparkListener.utils.Path
 
 
 /**
@@ -36,8 +36,8 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def clusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): T_Path = {
-    T_Path(prefixPath + timePath(time) + dataName)
+  def clusterPath(prefixPath: String, time: GregorianCalendar, dataName: String): Path = {
+    Path(prefixPath + timePath(time) + dataName)
   }
 
   /**
@@ -61,7 +61,7 @@ object TypeCreator {
    *
    * @author                Florian Willich
    */
-  def multipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[T_Path] = {
+  def multipleClusterPath(prefixPath: String, timeBegin: GregorianCalendar, timeEnd: GregorianCalendar, dataName: String): List[Path] = {
     //calculate hours between the dates
     //TODO: Maybe without any cast???
     val hours: Int = ((timeEnd.getTimeInMillis - timeBegin.getTimeInMillis) / 3600000).toInt
@@ -72,12 +72,12 @@ object TypeCreator {
         throw new IllegalArgumentException("The difference of the dates has to be 1 hour or bigger. Your dates differ the follows: " + toLess)
 
       case x =>
-        var pathList: ListBuffer[T_Path] = new ListBuffer[T_Path]()
-        pathList += T_Path(prefixPath + timePath(timeBegin) + dataName)
+        var pathList: ListBuffer[Path] = new ListBuffer[Path]()
+        pathList += Path(prefixPath + timePath(timeBegin) + dataName)
 
         for (i <- 1 to x) {
           timeBegin.add(Calendar.HOUR, 1)
-          pathList += T_Path(prefixPath + timePath(timeBegin) + dataName)
+          pathList += Path(prefixPath + timePath(timeBegin) + dataName)
         }
 
         pathList.toList
