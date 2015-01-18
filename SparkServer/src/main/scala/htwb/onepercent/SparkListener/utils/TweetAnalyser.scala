@@ -7,7 +7,7 @@ package htwb.onepercent.SparkListener.utils
 
 //Spark imports
 import java.text.SimpleDateFormat
-import java.util.{Calendar, Date, TimeZone}
+import java.util.{GregorianCalendar, Calendar, Date, TimeZone}
 
 import htwb.onepercent.SparkListener.JobResult
 import org.apache.spark.SparkContext
@@ -101,35 +101,35 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
      * https://stackoverflow.com/questions/23732999/avoid-task-not-serialisable-with-nested-method-in-a-class
      */
     val convertToLocalTime = (timestamp: Long, offset: Int) => {
-      val inputDate: Calendar = Calendar.getInstance()
-      inputDate.setTime(new Date(timestamp))
-      val offsetInHours: Int = offset / 3600
-      inputDate.set(Calendar.HOUR, inputDate.get(Calendar.HOUR) + offsetInHours)
-      inputDate.getTime
+      timestamp + (offset * 1000)
     }
 
     /**
      * Checks if two Date Objects contain the same date.
      */
-    val checkForSameDay = (date1: Date, date2: Date) => {
-      val cal1 = Calendar.getInstance()
-      val cal2 = Calendar.getInstance()
-      cal1.setTime(date1)
-      cal2.setTime(date2)
-      cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+    val checkForSameDay = (currentDate: Long, beginDate: Long) => {
+      (currentDate >= beginDate) && (currentDate <= (beginDate + 24*60*60*1000))
     }
 
-    val timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
-    timestampFormatter.setTimeZone(TimeZone.getTimeZone("GMT"))
-    val searchDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    var timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
+    timestampFormatter.setTimeZone(TimeZone.getTimeZone("UTC"))
+    var searchDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val searchDate: Date = searchDateFormatter.parse(searchDateString)
+    val searchCalendar: GregorianCalendar = new GregorianCalendar()
+    searchCalendar.setTime(searchDate)
+    searchCalendar.set(Calendar.HOUR_OF_DAY, 0)
+    searchCalendar.set(Calendar.MINUTE, 0)
+    searchCalendar.set(Calendar.SECOND, 0)
+    searchCalendar.set(Calendar.MILLISECOND, 0)
+    val beginInMs: Long = searchCalendar.getTimeInMillis
 
     scheme.registerTempTable("tweets")
 
     val table: SchemaRDD = hiveContext.sql("SELECT timestamp_ms, user.utc_offset FROM tweets WHERE user.utc_offset IS NOT NULL")
-    val mappedTable: RDD[(String, Int)] = table.map(row => (timestampFormatter.format(convertToLocalTime(row.getString(0).toLong, row.getInt(1))), 1))
-    val filteredTable: RDD[(String, Int)] = mappedTable.filter { case (a,b) => checkForSameDay(timestampFormatter.parse(a), searchDate) }
-    val reducedTable: RDD[(String, Int)] = filteredTable.reduceByKey(_ + _)
+    val mappedTable: RDD[(Long, Int)] = table.map(row => (convertToLocalTime(row.getString(0).toLong, row.getInt(1)), 1))
+    val filteredTable: RDD[(Long, Int)] = mappedTable.filter { case (a,b) => checkForSameDay(a, beginInMs) }
+    val convertedTable: RDD[(String, Int)] = filteredTable.map { case (a,b) => (timestampFormatter.format(a), b) }
+    val reducedTable: RDD[(String, Int)] = convertedTable.reduceByKey(_ + _)
     val tweetDistribution: Array[TweetDistribution] = reducedTable.collect.map{ case (a, b) => TweetDistribution(a, b) }
 
     new TweetsAtDaytime(tweetDistribution)
