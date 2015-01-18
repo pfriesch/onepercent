@@ -13,11 +13,18 @@ import scala.util.{Failure, Success, Try}
 
 /**
  * Holding configuration for the App
- * @param hostname
- * @param port
- * @param JobsPackageString
+ * @param configVersion The iteration of this class
+ * @param hostname the hostname of this app to bind a socket
+ * @param port the port of this app to bind a socket
+ * @param JobsPackageString absolute path to the Job classes
+ * @param tweetsPrefixPath the absolute path to the tweets on the hdfs
+ * @param scoring_TrainingDataPath the relative path where the scoring learner can find training files
+ * @param scoring_TrainedDataPath the relative path where the scoring learner saves its trained data
+ * @param scoring_OtherCategoryName the name of the category in scoring which is used when no category fits above the threshold
+ * @param scoring_Threshold the threshold percentage where no category is fitted and the other catesgory is used
  */
-// !!!!!!!! If changed configVersion needs to be counted up !!!!!!!!!
+// !!!!!!!! If signature is changed configVersion needs to be counted up !!!!!!!!!
+//The reason is that the json string is not checked if it has the right structure while parsing
 case class Settings(configVersion: Int,
                     hostname: String,
                     port: Int,
@@ -30,13 +37,16 @@ case class Settings(configVersion: Int,
 
 
 /**
- * Provides a Configuration Object based on a file. The files content is a UTF-8 Json String.
+ *
+ * Provides a serializable configuration class.
+ * Either creates a text file with a JSON string of default values as content or reads a config from the application
+ * path and creats a Settings object with its content.
  *
  * @author pFriesch
  */
-object Config extends Serializable{
+object Config extends Serializable {
 
-  // !!!!!!!!!! Count up every time you change the Settings case class !!!!!!!!!
+  // !!!!!!!!!! Count up every time you change the signature Settings case class !!!!!!!!!
   val configVersion = 6
   val settingsFileName = "config.cfg"
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
@@ -75,6 +85,7 @@ object Config extends Serializable{
     else setDefaultSettings
   }
 
+  //wirites the default values to the file
   private def setDefaultSettings = {
     val writer = new PrintWriter(new File(settingsFileName))
     writer.write(JsonTools.toJsonString(Settings(configVersion,
@@ -95,11 +106,5 @@ object Config extends Serializable{
    * @return
    */
   def get: Settings = settings
-
-  /**
-   * Retruns the absolut Path where the Config file is expected/saved.
-   * @return
-   */
-  def getAbsolutConfigFilePath: String = new File(settingsFileName).getAbsolutePath
 
 }
