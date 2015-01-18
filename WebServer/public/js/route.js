@@ -18,6 +18,7 @@ var Router = Backbone.Router.extend({
 	 * Shows the Home site.
 	 */
 	home: function() {
+		mainNavigationView.changeActive('home');
 		this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
 		this.navigationView = new HomeView({el: '#main-content-navigation', template: templates.home_template});
 	},
@@ -42,6 +43,7 @@ var Router = Backbone.Router.extend({
 	 * @param hour	The hour of the date from when the data is.
 	 */
 	hourly: function(table, date, hour) {
+		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'toptentags':
 				this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.tophashtag_template});
@@ -79,6 +81,7 @@ var Router = Backbone.Router.extend({
 	 * @param hour	The hour of the date from when the data is.
 	 */
 	daily: function(table, date) {
+		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'tweetsatdaytime':
 				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#main-content-chart', template: templates.single_chart_template});
@@ -91,6 +94,7 @@ var Router = Backbone.Router.extend({
 	},
 
 	wordSearch: function(table, searchWord){
+		mainNavigationView.changeActive(table);
 		if(typeof searchWord != 'string'){
 			this.chartView = new WordSearchView({table: table, el: '#main-content-chart', template: templates.single_chart_template});
 			this.navigationView = new SearchNavigationView({table: table, el: '#main-content-navigation',
@@ -102,3 +106,4 @@ var Router = Backbone.Router.extend({
 		}
 	}
 });
+
