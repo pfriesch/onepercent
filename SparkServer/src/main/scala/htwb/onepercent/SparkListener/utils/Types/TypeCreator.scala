@@ -93,7 +93,7 @@ object TypeCreator {
    *
    * @return
    *
-   * @author        Florian Willich, Pius Friesch
+   * @author        Pius Friesch, Florian Willich
    */
   private def timePath(time: GregorianCalendar) : String = {
     time.get(Calendar.YEAR) + "/" + String.format("%02d", time.get(Calendar.MONTH)+1: Integer) + "/" + String.format("%02d", time.get(Calendar.DAY_OF_MONTH): Integer) + "/" + String.format("%02d", time.get(Calendar.HOUR_OF_DAY): Integer) + "/"
