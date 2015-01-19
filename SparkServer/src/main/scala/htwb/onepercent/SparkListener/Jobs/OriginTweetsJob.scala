@@ -13,7 +13,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 //Own imports
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils._
-import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
+import htwb.onepercent.SparkListener.{Env, JobExecutor, JobResult}
 
 /**
  * This class is a job for calculating the TopHashtags.
@@ -58,24 +58,22 @@ class OriginTweetsJob extends JobExecutor with Logging {
         Try(TypeCreator.clusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
 
-            val conf = new SparkConf().setAppName("Twitter Origin Tweets").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
-            val sc = new SparkContext(conf)
-            val hc = new HiveContext(sc)
-            val ta = new TweetAnalyser(sc, hc)
+//            val conf = new SparkConf().setAppName("Twitter Origin Tweets").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
+//            val sc = new SparkContext(conf)
+            val hc = new HiveContext(Env.sc)
+            val ta = new TweetAnalyser(Env.sc, hc)
 
             log("executeJob", "Starting Anaylsis with path: " + path.path)
 
             //Please notice the JSONFileReader which is used to create a schema for the topHashtagAnalyser
             //method
-            Try(ta.originTweets(new TweetJSONFileReader(sc, hc).readFile(path.path), params(0))) match {
+            Try(ta.originTweets(new TweetJSONFileReader(Env.sc, hc).readFile(path.path), params(0))) match {
               case Success(result) =>
                 //stop the spark context, otherwise its stuck in this context...
-                sc.stop()
                 log("executeJob", "End Anaylsis with path: " + path.path)
                 result
               case Failure(_) =>
                 //stop the spark context, otherwise its stuck in this context...
-                sc.stop()
                 log("executeJob", "OriginTweets analyses failed! path[" + path.path + "]")
                 ErrorMessage("OriginTweets analyses failed!", 101);
             }

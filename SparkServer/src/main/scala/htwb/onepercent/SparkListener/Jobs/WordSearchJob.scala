@@ -1,7 +1,7 @@
 /**
-* The MIT License (MIT) Copyright (c) 2014 University of Applied Sciences, Berlin, Germany
-* For more detailed information, please read the licence.txt in the root directory.
-**/
+ * The MIT License (MIT) Copyright (c) 2014 University of Applied Sciences, Berlin, Germany
+ * For more detailed information, please read the licence.txt in the root directory.
+ **/
 
 package htwb.onepercent.SparkListener.Jobs
 
@@ -10,9 +10,8 @@ import java.util.Calendar
 
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils._
-import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
+import htwb.onepercent.SparkListener.{Env, JobExecutor, JobResult}
 import org.apache.spark.sql.hive.HiveContext
-import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.util.{Failure, Success, Try}
 
@@ -70,22 +69,20 @@ class WordSearchJob extends JobExecutor with Logging {
                 checkSearchWord(params(0)) match {
                   case true =>
 
-                    val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48")
-                    val sc = new SparkContext(conf)
-                    val hc = new HiveContext(sc)
-                    val ta = new TweetAnalyser(sc, hc)
+                    //                    val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48")
+                    //                    val sc = new SparkContext(conf)
+                    val hc = new HiveContext(Env.sc)
+                    val ta = new TweetAnalyser(Env.sc, hc)
 
                     log("executeJob", "Starting Anaylsis with keyword: " + params(0))
 
-                    Try(ta.wordSearch(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
+                    Try(ta.wordSearch(new TweetJSONFileReader(Env.sc, hc).readFile(path), params(0))) match {
                       case Success(result) =>
                         //stop the spark context, otherwise its stuck in this context...
-                        sc.stop()
                         log("executeJob", "End Anaylsis with word: " + params(0))
                         result
                       case Failure(_) =>
                         //stop the spark context, otherwise its stuck in this context...
-                        sc.stop()
                         log("executeJob", "WordSearch analyses failed! word[" + params(0) + "]")
                         ErrorMessage("WordSearch analyses failed!", 101);
                     }
@@ -121,7 +118,7 @@ class WordSearchJob extends JobExecutor with Logging {
    *
    * @return    true if the validation succeeded, else false.
    */
-  def checkSearchWord(word: String) : Boolean = {
+  def checkSearchWord(word: String): Boolean = {
     val regex: String = "^[#]?+[\\wäöü]{2,150}$"
     word.matches(regex)
   }
