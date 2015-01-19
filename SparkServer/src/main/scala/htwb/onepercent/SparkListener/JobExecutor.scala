@@ -36,6 +36,8 @@ trait JobResult
 /**
  * Each Job needs to implement this trait and the executeJob method.
  * When a ExecuteJob Message is received it the Job will be executed and the Result is Returned to the JobHandler.
+ *
+ * @author Pius Friesch, Florian Willich
  */
 trait JobExecutor extends Actor {
 
@@ -52,6 +54,6 @@ trait JobExecutor extends Actor {
    * @param params the params of the specified job.
    * @return the result as a case class.
    */
-  def executeJob(params: List[String]): JobResult
+  protected def executeJob(params: List[String]): JobResult
 
 }
