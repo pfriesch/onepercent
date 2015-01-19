@@ -1,9 +1,10 @@
 <ul class="nav navbar-nav">
-    <!-- active should be dynamic, whats this span class (current) ?? -->
-    <li <% if (active == 'Home') { %> class="active" <% } %>><a href="?#">Home<span class="sr-only">(current)</span></a></li>
+    <% if(typeof active != 'undefined') { %>
+    <li <% if (active == 'home') { %> class="active" <% } %>><a href="?#">Home<span class="sr-only">(current)</span></a></li>
     <li <% if (active == 'toptentags') { %> class="active" <% } %>><a href="?#hourly/toptentags">Top of the Pops</a></li>
     <li <% if (active == 'origintweets') { %> class="active" <% } %>><a href="?#hourly/origintweets">Origin Tweets</a></li>
     <li <% if (active == 'languagedistribution') { %> class="active" <% } %>><a href="?#hourly/languagedistribution">Language Distribution</a></li>
     <li <% if (active == 'tweetsatdaytime') { %> class="active" <% } %>><a href="?#daily/tweetsatdaytime">Tweets At Daytime</a></li>
     <li <% if (active == 'wordsearch') { %> class="active" <% } %>><a href="?#live/wordsearch">Word Search</a></li>
+    <% } %>
 </ul>

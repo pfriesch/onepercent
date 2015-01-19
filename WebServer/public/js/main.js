@@ -17,7 +17,7 @@ Backbone.View.prototype.close = function() {
 var appRouter;
 var mainNavigationView;
 tpl.loadTemplates([templates.navigation_template, templates.hourly_template, templates.home_template, templates.tophashtag_template, templates.empty_template, templates.single_chart_template, templates.daily_template, templates.search_template], function () {
-	mainNavigationView = new NavigationView({el: 'mainNavigation', template: templates.navigation_template});
+	mainNavigationView = new NavigationView({el: '#mainNavigation', template: templates.navigation_template});
 	appRouter = new Router();
 	Backbone.history.start();
 });
