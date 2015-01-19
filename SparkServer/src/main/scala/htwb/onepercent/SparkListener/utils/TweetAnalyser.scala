@@ -184,7 +184,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
  * @param hashtag   The twitter hashtag.
  * @param count     The count of this twitter hashtag.
  */
-case class HashtagFrequency(hashtag: String, count: Long) extends JobResult
+case class HashtagFrequency(hashtag: String, count: Long)
 
 /**
  * Type representing The Top twitter hashtags as an analysis result including
@@ -203,7 +203,7 @@ case class TopHashtags(topHashtags: Array[HashtagFrequency], countAllHashtags: L
  * @param timestamp The Tweet timestamp.
  * @param count     The Count of this tweet timestamp.
  */
-case class TweetDistribution(timestamp: String, count: Long) extends JobResult
+case class TweetDistribution(timestamp: String, count: Long)
 
 /**
  * Type representing the distribution of a word used in Tweet texts as an analysis result including
@@ -237,8 +237,7 @@ case class OriginTweets(timestamp: String, originTweetCount: Long, retweetCount:
  * @param language  The Tweet language.
  * @param count     The Count of this tweet timestamp.
  */
-case class LanguageDistribution(language: String, count: Long) extends JobResult
-
+case class LanguageDistribution(language: String, count: Long)
 /**
  * Type representing the distribution of languages in tweets over time.
  *
