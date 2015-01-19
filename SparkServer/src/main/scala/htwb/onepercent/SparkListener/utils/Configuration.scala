@@ -25,7 +25,7 @@ import scala.util.{Failure, Success, Try}
  */
 // !!!!!!!! If signature is changed configVersion needs to be counted up !!!!!!!!!
 //The reason is that the json string is not checked if it has the right structure while parsing
-case class Settings(configVersion: Int,
+case class Configuration(configVersion: Int,
                     hostname: String,
                     port: Int,
                     JobsPackageString: String,
@@ -40,15 +40,15 @@ case class Settings(configVersion: Int,
  *
  * Provides a serializable configuration class.
  * Either creates a text file with a JSON string of default values as content or reads a config from the application
- * path and creats a Settings object with its content.
+ * path and creats a Configuration object with its content.
  *
  * @author pFriesch
  */
 object Config extends Serializable {
 
-  // !!!!!!!!!! Count up every time you change the signature Settings case class !!!!!!!!!
+  // !!!!!!!!!! Count up every time you change the signature Configuration case class !!!!!!!!!
   val configVersion = 6
-  val settingsFileName = "config.cfg"
+  val configFileName = "config.cfg"
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
   val defaultPort = 5555
   val defaultJobsPackage = "htwb.onepercent.SparkListener.Jobs."
@@ -59,7 +59,7 @@ object Config extends Serializable {
   val defaultClassificationThreshold: Double = 0.20
 
 
-  var settings = Settings(configVersion,
+  var config = Configuration(configVersion,
     defaultHostname,
     defaultPort,
     defaultJobsPackage,
@@ -69,26 +69,27 @@ object Config extends Serializable {
     defaultClassificationOtherCategoryName,
     defaultClassificationThreshold)
 
-  // Constructor
   {
-    val file = new File(settingsFileName)
+    val file = new File(configFileName)
     if (file.exists() && !file.isDirectory()) {
-      Try(JsonTools.parseClass[Settings](Source.fromFile(settingsFileName).mkString)) match {
-        case Success(settings) =>
-          if (settings.configVersion != configVersion)
-            setDefaultSettings
+      Try(JsonTools.parseClass[Configuration](Source.fromFile(configFileName).mkString)) match {
+        case Success(config) =>
+          if (config.configVersion != configVersion)
+            setDefaultConfiguration
           else
-            this.settings = settings
-        case Failure(_) => setDefaultSettings
+            this.config = config
+        case Failure(_) => setDefaultConfiguration
       }
     }
-    else setDefaultSettings
+    else setDefaultConfiguration
   }
 
-  //wirites the default values to the file
-  private def setDefaultSettings = {
-    val writer = new PrintWriter(new File(settingsFileName))
-    writer.write(JsonTools.toJsonString(Settings(configVersion,
+  /**
+   * Writes the default values to the file
+   */
+  private def setDefaultConfiguration = {
+    val writer = new PrintWriter(new File(configFileName))
+    writer.write(JsonTools.toJsonString(Configuration(configVersion,
       defaultHostname,
       defaultPort,
       defaultJobsPackage,
@@ -102,9 +103,9 @@ object Config extends Serializable {
   }
 
   /**
-   * Returns the current Settings
-   * @return
+   * Returns the current Configuration
+   * @return the current Configuration
    */
-  def get: Settings = settings
+  def get: Configuration = config
 
 }
