@@ -69,7 +69,6 @@ object Config extends Serializable {
     defaultClassificationOtherCategoryName,
     defaultClassificationThreshold)
 
-  // Constructor
   {
     val file = new File(settingsFileName)
     if (file.exists() && !file.isDirectory()) {
@@ -85,7 +84,9 @@ object Config extends Serializable {
     else setDefaultSettings
   }
 
-  //wirites the default values to the file
+  /**
+   * Writes the default values to the file
+   */
   private def setDefaultSettings = {
     val writer = new PrintWriter(new File(settingsFileName))
     writer.write(JsonTools.toJsonString(Settings(configVersion,
