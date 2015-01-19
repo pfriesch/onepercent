@@ -158,7 +158,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param timestamp Contains the time and date for which the calculations will be done.
    * @return          The language and there total appearance
    */
-  def languageDistribution(scheme: SchemaRDD, timestamp: String): LanguageDistributionResult = {
+  def languageDistribution(scheme: SchemaRDD, timestamp: String): LanguageDistribution = {
 
     scheme.registerTempTable("tweets")
 
@@ -167,8 +167,8 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     val reducedTable: RDD[(String, Int)] = mappedTable.reduceByKey(_ + _)
     // filter if language appears more than 100 times
     val filteredTable: RDD[(String, Int)] = reducedTable.filter{ case (a,b) => b > 100 }
-    val languageDistribution: Array[LanguageDistribution] = filteredTable.collect.map{ case (a, b) => LanguageDistribution(a, b) }
-    new LanguageDistributionResult(languageDistribution)
+    val languageDistribution: Array[LanguageUsage] = filteredTable.collect.map{ case (a, b) => LanguageUsage(a, b) }
+    new LanguageDistribution(languageDistribution)
   }
 }
 
@@ -237,10 +237,10 @@ case class OriginTweets(timestamp: String, originTweetCount: Long, retweetCount:
  * @param language  The Tweet language.
  * @param count     The Count of this tweet timestamp.
  */
-case class LanguageDistribution(language: String, count: Long)
+case class LanguageUsage(language: String, count: Long)
 /**
  * Type representing the distribution of languages in tweets over time.
  *
  * @param languages All languages and the counts, that where used in tweets.
  */
-case class LanguageDistributionResult(languages: Array[LanguageDistribution]) extends JobResult
+case class LanguageDistribution(languages: Array[LanguageUsage]) extends JobResult
