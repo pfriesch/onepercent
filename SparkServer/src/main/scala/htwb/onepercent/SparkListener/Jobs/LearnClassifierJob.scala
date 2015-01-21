@@ -10,12 +10,21 @@ import scala.util.{Failure, Success, Try}
 case class TrainResult(msg: String) extends JobResult
 
 /**
- *
+ * Learns a given set of training data for scoring tweets.
+ * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
+ * @author pFriesch
  */
 class LearnClassifierJob extends JobExecutor with Logging {
 
   type Category = String
 
+  /**
+   * Fetches given training data, computes a category probability and a term probability of the training data.
+   * The trained data is saved as json to the scoring_TrainedDataPath as given in the config.
+   * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
+   * @param params the params of the specified job.
+   * @return a positive jobResult or an ErrorMessage if an error occurred while executing
+   */
   override def executeJob(params: List[String]): JobResult = {
     if (params.length > 0) ErrorMessage("Job does not accept parameters", 100)
     else {

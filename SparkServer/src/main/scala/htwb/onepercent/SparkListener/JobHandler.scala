@@ -36,10 +36,13 @@ class JobHandler extends Actor with Logging {
    */
   def receive = {
     case Received(data) => {
+      //tries to parse a JobSignature from received data
       Try(JsonTools.parseClass[JobSignature](data.decodeString("UTF-8"))) match {
         case util.Success(job) =>
           log("receive", "New Job: " + job)
+          //builds fully qualified class name of requested hob
           val fullJobName = Config.get.JobsPackageString + job.name
+          //tries to start a new Actor for the requested job
           Try(context.actorOf(Props(Class.forName(fullJobName).asInstanceOf[Class[JobExecutor]]))) match {
             case util.Success(jobActor) => jobActor ! ExecuteJob(job.jobID, job.params)
             case util.Failure(ex) =>
@@ -49,6 +52,7 @@ class JobHandler extends Actor with Logging {
           self ! Result("", ErrorMessage("Unable to resolve request! Parse exception: " + ex.getMessage, 404))
       }
     }
+    //sends jobresult back
     case r@Result(_, jobResult: AnyRef) =>
       connection ! Write(ByteString.apply(JsonTools.toJsonString(r) + "\n"))
     case PeerClosed => context stop self

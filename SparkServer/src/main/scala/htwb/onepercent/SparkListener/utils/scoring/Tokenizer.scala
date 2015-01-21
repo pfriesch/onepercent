@@ -5,6 +5,7 @@ package htwb.onepercent.SparkListener.utils.scoring
 
 /**
  * Provides tools to make tokens form full text.
+ * @author pFriesch
  */
 object Tokenizer {
 

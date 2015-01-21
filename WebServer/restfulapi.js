@@ -12,6 +12,7 @@ var config = require('./config.js'); //Configurationfile
 var dataBaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
 var sparkClient = require('./sparkClient.js'); //Socketconnection to SparkServer
 var jobManager = require('./jobManager.js'); //Jobs as Objects
+var dataLogger = require('./helper.js'); // helperfunctions
 
 var restfulapi = exports; // exports the Restapi
 
@@ -20,7 +21,7 @@ var app = express(); //create a new expressObject
 app.use(express.static(__dirname + '/public'));
 
 var server = app.listen(config.browserClientPort, function(){
-  console.log("Server is up and running");
+  dataLogger.logData("Server is up and running");
 });
 
 /*
@@ -70,7 +71,7 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
           });
         });
       } catch(ex){
-        console.log(new Date() + " " + ex);
+        dataLogger.logData(ex);
         res.send(null);
       }
     } else {
@@ -78,7 +79,6 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
     }
   });
 });
-
 
 /*
  * If the browserClient requests with URLparams (/api/daily/:table/:date)

@@ -7,7 +7,12 @@ import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.rdd.RDD
 
-
+/**
+ * Representation of trained Data
+ * @param categoryProb the category probability, the previous probability of a word to be in a specific class
+ * @param termProb the term probability, the probabilities of a term to be in categories
+ * @param unknownWordProb the probability of a in the trained data unknown term to be in the categories
+ */
 case class TrainedData(categoryProb: Map[String, Double], termProb: Map[String, Map[String, Double]], unknownWordProb: Map[String, Double])
 
 /**
@@ -15,6 +20,7 @@ case class TrainedData(categoryProb: Map[String, Double], termProb: Map[String, 
  * The given SparkContext is used to compute these.
  * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
  * @param sc SparkContext to compute the probabilities.
+ * @author pFriesch
  */
 class TweetScoringLearner(sc: SparkContext) {
 
@@ -66,7 +72,7 @@ class TweetScoringLearner(sc: SparkContext) {
           (count + 1).toDouble / (categoryTermCount(category) + 1).toDouble
           // \condProbFun
           )
-        // probability for an unknown Word
+      // probability for an unknown Word
     })), categoryTermCount.map(X => (X._1, 1.toDouble / X._2.toDouble)))
   }
 

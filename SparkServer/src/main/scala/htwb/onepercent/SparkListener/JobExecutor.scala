@@ -12,6 +12,7 @@ import akka.actor.Actor
  *
  * @param jobID the jobID given by the WebServer to uniquely identify a Job.
  * @param jobResult the result structure of the Job.
+ * @author pFriesch
  */
 case class Result(jobID: String, jobResult: JobResult)
 

@@ -9,6 +9,7 @@ import htwb.onepercent.SparkListener.utils.Config
  * Can classify a Tweet based on the given probabilities of terms being in categories.
  * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
  * @param trainedData the base probabilities of each category and the term probabilities of each term in each category.
+ * @author pFriesch
  */
 //needs to be serializable to be distributed
 class TweetClassifier(trainedData: TrainedData) extends Serializable {

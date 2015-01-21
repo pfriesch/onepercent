@@ -13,6 +13,7 @@ var LanguageDistributionJob = require('./jobs/languagedistributionjob.js');
 var TweetsAtDaytimeJob = require('./jobs/tweetsatdaytimejob.js');
 var WordSearchJob = require('./jobs/wordsearchjob.js');
 var CategoryDistributionJob = require('./jobs/categorydistributionjob.js');
+var dataLogger = require('./helper.js'); // helperfunctions
 
 var jobTypeCollection = new Array();
 
@@ -45,8 +46,10 @@ function findByName(name) {
     if (source[i].getName() == name) {
       return source[i];
     }
+    else {
+      dataLogger.logData('Job ' +name+ 'is not known!');
+    }
   }
-  throw new Error("Couldn't find object with name: " + name);
 }
 
 /* create a Job with the given parameters and return it to OP_Webserver*/
@@ -54,12 +57,12 @@ function createJob (jobName, params, timeOffset) {
   try {
     var jobType = findByName(jobName)
   } catch (ex) {
-    console.log(new Date() + " " + ex);
+    dataLogger.logData(ex);
   }
   if(typeof jobType !== 'undefined') {
     return jobType.createJob(generateHash(), params, timeOffset);
   } else {
-    throw new Error("JobName not known");
+    dataLogger.logData('Job ' +jobName+ 'is not known!');
   }
 }
 
