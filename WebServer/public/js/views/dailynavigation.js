@@ -16,6 +16,7 @@ var DailyNavigationView = Backbone.View.extend({
 	 * 					- chartView:a view object that contains the chart
 	 * 					- table:	the table to show
 	 * 					- date:		the date to show in selector
+	 * 					- description: description of the chart
 	 */
 	initialize: function(options) {
 		_.bindAll(this, 'render', 'showNavigation','getAvailableDates', 'changeChart');
@@ -26,6 +27,10 @@ var DailyNavigationView = Backbone.View.extend({
 		this.path = {
 			table: options.table,
 			date: options.date
+		};
+
+		this.params = {
+			description: options.description
 		};
 
 		this.timestampCollection = new TimestampCollection(this.path.table);
@@ -53,10 +58,8 @@ var DailyNavigationView = Backbone.View.extend({
 	dateSelected: function() {
 		this.path.date = $('#date_selector').val();
 
-		this.params = {
-			dates: this.availableDates,
-			selectedDate: this.path.date
-		};
+		this.params.dates = this.availableDates;
+		this.params.selectedDate = this.path.date;
 
 		this.render();
 	},
@@ -78,10 +81,8 @@ var DailyNavigationView = Backbone.View.extend({
 	 * Renders the navigation.
 	 */
 	showNavigation: function() {
-		this.params = {
-			dates: this.availableDates,
-			selectedDate: this.path.date
-		};
+		this.params.dates = this.availableDates;
+		this.params.selectedDate = this.path.date;
 
 		this.render();
 	}
