@@ -12,7 +12,7 @@ var config = require('./config.js'); //Configurationfile
 var dataBaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
 var sparkClient = require('./sparkClient.js'); //Socketconnection to SparkServer
 var jobManager = require('./jobManager.js'); //Jobs as Objects
-var dataLogger = require('./helper.js');
+var dataLogger = require('./helper.js'); // helperfunctions
 
 var restfulapi = exports; // exports the Restapi
 
@@ -79,7 +79,6 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
     }
   });
 });
-
 
 /*
  * If the browserClient requests with URLparams (/api/daily/:table/:date)

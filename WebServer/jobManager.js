@@ -13,7 +13,7 @@ var LanguageDistributionJob = require('./jobs/languagedistributionjob.js');
 var TweetsAtDaytimeJob = require('./jobs/tweetsatdaytimejob.js');
 var WordSearchJob = require('./jobs/wordsearchjob.js');
 var CategoryDistributionJob = require('./jobs/categorydistributionjob.js');
-var dataLogger = require('./helper.js');
+var dataLogger = require('./helper.js'); // helperfunctions
 
 var jobTypeCollection = new Array();
 
@@ -62,7 +62,7 @@ function createJob (jobName, params, timeOffset) {
   if(typeof jobType !== 'undefined') {
     return jobType.createJob(generateHash(), params, timeOffset);
   } else {
-    throw new Error("JobName not known");
+    dataLogger.logData('Job ' +jobName+ 'is not known!');
   }
 }
 

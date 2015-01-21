@@ -17,7 +17,7 @@ var jobManager = require('./jobManager.js'); //Jobs as Objects
 var config = require('./config.js'); //Configurationfile
 var databaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
 var restfulapi = require('./restfulapi.js'); //Restapi
-var dataLogger = require('./helper.js');
+var dataLogger = require('./helper.js'); // helperfunctions
 
 var jobCollection = []; //stores the Jobs
 
@@ -41,16 +41,15 @@ function initJobInterval(){
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/
 function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
 	setInterval(function() {
-        try {
-            var sparkJob = jobManager.createJob(jobName, params, offset);
-            jobCollection.push(sparkJob);
-            dataLogger.logData('Added Element with ID: ' + sparkJob.jobID);
-            sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
-        } catch (ex) {
-          dataLogger.logData(ex);
-          //console.log(new Date() + " " + ex);
-        }
-    }, intervalInMilliseconds);	
+    try {
+      var sparkJob = jobManager.createJob(jobName, params, offset);
+      jobCollection.push(sparkJob);
+      dataLogger.logData('Added Element with ID: ' + sparkJob.jobID);
+      sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
+    } catch (ex) {
+      dataLogger.logData(ex);
+    }
+  }, intervalInMilliseconds);	
 }
 
 /*
@@ -60,13 +59,12 @@ function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
  */
 function getJobResponse(dataResponse) {
     try {
-        var job = findById(jobCollection, dataResponse.jobID);
-        var jobType = jobManager.getJobTypeByName(job.name);
-        jobType.saveToDatabase(dataResponse, job);
-        deleteElementFromCollection(job);
-    }catch(ex) {
+      var job = findById(jobCollection, dataResponse.jobID);
+      var jobType = jobManager.getJobTypeByName(job.name);
+      jobType.saveToDatabase(dataResponse, job);
+      deleteElementFromCollection(job);
+    } catch(ex) {
       dataLogger.logData(ex);
-      //console.log(new Date() + " " + ex);
     }
 }
 
@@ -89,7 +87,7 @@ function findById(source, id) {
   }
 }
 
-/* checks if the send jobs are answered in a reasonable time, if not the will send again */
+/* checks if the send jobs are answered in a reasonable time, if not the job will send again */
 function checkIfJobsExecuted () {
   for (var i = 0; i < jobCollection.length; i++){
     if (jobCollection[i].time < moment().subtract(30,'minutes').format('YYYY-MM-DD HH:mm:ss')){

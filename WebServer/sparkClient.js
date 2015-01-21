@@ -6,7 +6,7 @@
 
 var net = require('net'); //Socketconnection
 var config = require('./config.js'); //Configurationfile
-var dataLogger = require('./helper.js');
+var dataLogger = require('./helper.js'); // helperfunctions
 var sparkClient = exports; // exports the sparkclientMethods
 
 var client = new net.Socket(); // Creates Socket
