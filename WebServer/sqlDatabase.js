@@ -61,11 +61,3 @@ databaseHandler.insert = function(table, columnNames, data){
         });
     });
 };
-
-/* Logs Data*/
-function logData(data) {
-  console.log('------------------------------------------');
-  console.log(data);
-  console.log('------------------------------------------');
-}
-

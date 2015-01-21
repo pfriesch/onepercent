@@ -17,25 +17,26 @@ var jobManager = require('./jobManager.js'); //Jobs as Objects
 var config = require('./config.js'); //Configurationfile
 var databaseHandler = require('./sqlDatabase.js'); //DatabaseHandler
 var restfulapi = require('./restfulapi.js'); //Restapi
-
+var dataLogger = require('./helper.js');
 
 var jobCollection = []; //stores the Jobs
 
 initJobInterval();
-
+dataLogger.logData('Hallo liebe Kinder');
+dataLogger.logData('2xkrasser');
 /* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval(){
 	wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
-		logData('5 Minutes after full Hour reached. Start jobs per interval.');
+		dataLogger.logData('5 Minutes after full Hour reached. Start jobs per interval.');
 		repeatJobPerInterval('TopHashtagJob', [10], 10000, -1); //1000*60*60
         repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
         repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
         repeatJobPerInterval('CategoryDistributionJob', [], 1000*60*60, -1);
 	});
 
-    wait(moment().endOf('day').add(14,'hours').add(10,'minutes') - moment(), function(){
-        repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60*24, -24);
-    });
+  wait(moment().endOf('day').add(14,'hours').add(10,'minutes') - moment(), function(){
+    repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000*60*60*24, -24);
+  });
 }
 
 /* Repeats the tophashtagjob every given time and save the job in an array (jobCollection).*/
@@ -44,10 +45,11 @@ function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
         try {
             var sparkJob = jobManager.createJob(jobName, params, offset);
             jobCollection.push(sparkJob);
-            logData('Added Element with ID: ' + sparkJob.jobID);
+            dataLogger.logData('Added Element with ID: ' + sparkJob.jobID);
             sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
         } catch (ex) {
-            console.log(new Date() + " " + ex);
+          dataLogger.logData(ex);
+          //console.log(new Date() + " " + ex);
         }
     }, intervalInMilliseconds);	
 }
@@ -64,7 +66,8 @@ function getJobResponse(dataResponse) {
         jobType.saveToDatabase(dataResponse, job);
         deleteElementFromCollection(job);
     }catch(ex) {
-        console.log(new Date() + " " + ex);
+      dataLogger.logData(ex);
+      //console.log(new Date() + " " + ex);
     }
 }
 
@@ -72,7 +75,7 @@ function getJobResponse(dataResponse) {
 function deleteElementFromCollection (itemToDelete) {
   var position = jobCollection.indexOf(itemToDelete);
 	jobCollection.splice(position,1);
-  logData('Deleted Element with ID: ' + itemToDelete.jobID);
+  dataLogger.logData('Deleted Element with ID: ' + itemToDelete.jobID);
 }
 
 //todo check if source fo i has field
@@ -81,24 +84,20 @@ function findById(source, id) {
     if (source[i].jobID == id) {
       return source[i];
     }
+    else {
+      dataLogger.logData('Element with id ' +id+ 'is not in JobCollection!');
+    }
   }
-  throw new Error("Couldn't find object with id: " + id);
 }
 
 /* checks if the send jobs are answered in a reasonable time, if not the will send again */
 function checkIfJobsExecuted () {
   for (var i = 0; i < jobCollection.length; i++){
-      if (jobCollection[i].time < moment().subtract(30,'minutes').format('YYYY-MM-DD HH:mm:ss')){
-        logData('Sending Job with id: ' + jobCollection[i].jobID + ' again.');
-        sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
-      }
-    }    
-
+    if (jobCollection[i].time < moment().subtract(30,'minutes').format('YYYY-MM-DD HH:mm:ss')){
+      dataLogger.logData('Sending Job with id: ' + jobCollection[i].jobID + ' again.');
+      sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
+    }
+  }    
 }
 
-/* Logs Data*/
-function logData(data) {
-	console.log('------------------------------------------');
-	console.log(data);
-	console.log('------------------------------------------');
-}
+
