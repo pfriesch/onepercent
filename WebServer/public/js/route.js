@@ -46,19 +46,22 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'toptentags':
+				this.description = "<h1>Top Ten Hashtags</h1>";
 				this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.tophashtag_template});
 				break;
 			case 'origintweets':
+				this.description = "<h1>OriginTweets</h1>";
 				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
 			case 'languagedistribution':
+				this.description = "<h2>Language Distribution</h2>";
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
 			default:
 				this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
 		}
 		this.navigationView = new HourlyNavigationView({table: table, date: date, hour: hour, el: '#main-content-navigation',
-			template: templates.hourly_template, router: this, chartView: this.chartView});
+			template: templates.hourly_template, router: this, chartView: this.chartView, description: this.description});
 	},
 
 	/**
@@ -84,25 +87,27 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'tweetsatdaytime':
+				this.description = "Tweets at Daytime";
 				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
 			default:
 				this.chartView = new HomeView({el: '#main-content-chart', template: templates.empty_template});
 		}
 		this.navigationView = new DailyNavigationView({table: table, date: date, el: '#main-content-navigation',
-			template: templates.daily_template, router: this, chartView: this.chartView});
+			template: templates.daily_template, router: this, chartView: this.chartView, description: this.description});
 	},
 
 	wordSearch: function(table, searchWord){
 		mainNavigationView.changeActive(table);
+		this.description = "Word Search";
 		if(typeof searchWord != 'string'){
 			this.chartView = new WordSearchView({table: table, el: '#main-content-chart', template: templates.single_chart_template});
 			this.navigationView = new SearchNavigationView({table: table, el: '#main-content-navigation',
-				template: templates.search_template, router: this, chartView: this.chartView});
+				template: templates.search_template, router: this, chartView: this.chartView, description: this.description});
 		} else {
 			this.chartView = new WordSearchView({table: table, searchWord: searchWord, el: '#main-content-chart', template: templates.single_chart_template});
 			this.navigationView = new SearchNavigationView({table: table, searchWord: searchWord, el: '#main-content-navigation',
-				template: templates.search_template, router: this, chartView: this.chartView});
+				template: templates.search_template, router: this, chartView: this.chartView, description: this.description});
 		}
 	}
 });

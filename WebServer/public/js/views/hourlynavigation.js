@@ -18,6 +18,7 @@ var HourlyNavigationView = Backbone.View.extend({
 	 * 					- table:	the table to show
 	 * 					- date:		the date to show in selector
 	 * 					- hour:		the hour to show in selector
+	 * 					- description: description of the chart
 	 */
 	initialize: function(options) {
 		_.bindAll(this, 'render', 'dateSelected', 'showNavigation','getAvailableDates', 'changeChart');
@@ -29,6 +30,10 @@ var HourlyNavigationView = Backbone.View.extend({
 			table: options.table,
 			date: options.date,
 			hour: options.hour
+		};
+
+		this.params = {
+			description: options.description
 		};
 
 		this.timestampCollection = new TimestampCollection(this.path.table);
@@ -58,12 +63,11 @@ var HourlyNavigationView = Backbone.View.extend({
 		var availableHours = this.timestampCollection.getHoursForDate(this.path.date);
 		this.path.hour = availableHours[0];
 
-		this.params = {
-			dates: this.availableDates,
-			hours: availableHours,
-			selectedDate: this.path.date,
-			selectedHour: this.path.hour
-		};
+
+		this.params.dates = this.availableDates;
+		this.params.hours = availableHours;
+		this.params.selectedDate = this.path.date;
+		this.params.selectedHour = this.path.hour;
 
 		this.render();
 	},
@@ -86,12 +90,10 @@ var HourlyNavigationView = Backbone.View.extend({
 	 */
 	showNavigation: function() {
 		var availableHours = this.timestampCollection.getHoursForDate(this.path.date);
-		this.params = {
-			dates: this.availableDates,
-			hours: availableHours,
-			selectedDate: this.path.date,
-			selectedHour: this.path.hour
-		};
+		this.params.dates = this.availableDates;
+		this.params.hours = availableHours;
+		this.params.selectedDate = this.path.date;
+		this.params.selectedHour = this.path.hour;
 
 		this.render();
 	}
