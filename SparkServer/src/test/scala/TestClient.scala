@@ -25,8 +25,8 @@ object TestClient {
     //    println("gesendet: {\"jobID\":\"superJobID123\",\"name\":\"TopHashtagJob\",\"params\":[\""+args(0)+"\",\""+args(1)+"\",\""+args(2)+"\"],\"time\":\"0000-00-00 00:00:00\"}")
     //    out.println("{\"jobID\":\"superJobID123\",\"name\":\"TopHashtagJob\",\"params\":[\""+args(0)+"\",\""+args(1)+"\",\""+args(2)+"\"],\"time\":\"0000-00-00 00:00:00\"}")
 
-    out.println("{\"jobID\":\"learnJobID123\",\"name\":\"LearnClassifierJob\",\"params\":[],\"time\":\"0000-00-00 00:00:00\"}")
-//    out.println("{\"jobID\":\"classifyJobID123\",\"name\":\"CategoryDistribution\",\"params\":[\"" + args(0) + "\"],\"time\":\"0000-00-00 00:00:00\"}")
+//    out.println("{\"jobID\":\"learnJobID123\",\"name\":\"LearnClassifierJob\",\"params\":[],\"time\":\"0000-00-00 00:00:00\"}")
+    out.println("{\"jobID\":\"classifyJobID123\",\"name\":\"CategoryDistributionJob\",\"params\":[\"" + args(0) + "\"],\"time\":\"0000-00-00 00:00:00\"}")
 
 
     //Thread.sleep(1)
