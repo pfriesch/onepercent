@@ -16,6 +16,7 @@ var SearchNavigationView = Backbone.View.extend({
 	 * 					- chartView:a view object that contains the chart
 	 * 					- table:	the table to show
 	 * 					- searchWord:the word to search for
+	 * 					- description: description of the chart
 	 */
 	initialize: function(options) {
 		_.bindAll(this, 'render', 'showNavigation','getAvailableWords', 'changeChart');
@@ -27,6 +28,10 @@ var SearchNavigationView = Backbone.View.extend({
 		this.path = {
 			table: options.table,
 			searchWord: options.searchWord
+		};
+
+		this.params = {
+			description: options.description
 		};
 
 		this.wordsCollection = new WordSearchCollection(this.path.table);
@@ -64,10 +69,8 @@ var SearchNavigationView = Backbone.View.extend({
 	 * Renders the navigation.
 	 */
 	showNavigation: function() {
-		this.params = {
-			availableWords: this.availableWords,
-			searchWord: this.path.searchWord
-		};
+		this.params.availableWords;
+		this.params.searchWord = this.path.searchWord;
 		this.render();
 	}
 });
