@@ -15,20 +15,34 @@ import org.apache.spark.{SparkConf, SparkContext}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
-
+/**
+ * A single representation of a frequency of a singe category in the tweet set.
+ * @param category
+ * @param count
+ */
 case class CategoryCount(category: String, count: Int)
 
+/**
+ * List of the frequency of all categories and the total number of counted tweets.
+ * @param distribution the category distribution.
+ * @param totalCount the total count of counted tweets.
+ */
 case class CategoryDistribution(distribution: List[CategoryCount], totalCount: Int) extends JobResult
 
+/**
+ * Reads all tweets saved in the given hour and extracts all flaged as english. Classifies each tweet based
+ * on the given trained data. Returns a List of frequencies for each categories and a number of total computed tweets.
+ * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
+ * @author pFriesch
+ */
 class CategoryDistributionJob extends JobExecutor with Logging {
 
-  //TODO docu
-
-  /*
-    val testString = "Lorem ipsum dolor sit amet consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore"
-
-*/
-
+  /**
+   * Reads all tweets saved in the given hour and extracts all flaged as english. Classifies each tweet based
+   * on the given trained data. Returns a List of frequencies for each categories and a number of total computed tweets.
+   * @param params the hour the tweets are classified in.
+   * @return a List of frequencies for each categories and a number of total computed tweets.
+   */
   override def executeJob(params: List[String]): JobResult = {
 
 
