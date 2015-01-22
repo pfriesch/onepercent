@@ -59,6 +59,10 @@ object App {
     val system = ActorSystem()
     val listener = system.actorOf(Props[Listener])
 
+    //TODO Delete
+    import Jobs.LearnClassifierJob
+    val job = new LearnClassifierJob
+    job.fetchTweetTrainingData()
 
   }
 

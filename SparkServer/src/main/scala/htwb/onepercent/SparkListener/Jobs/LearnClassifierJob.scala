@@ -1,9 +1,15 @@
 package htwb.onepercent.SparkListener.Jobs
 
+import java.text.SimpleDateFormat
+import java.util.Calendar
+
+import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils.scoring.{ScoringTrainingSample, TrainedData, TweetScoringLearner}
 import htwb.onepercent.SparkListener.utils.{Config, ErrorMessage, JsonTools, _}
 import htwb.onepercent.SparkListener.{Env, JobExecutor, JobResult}
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.SchemaRDD
+import org.apache.spark.sql.hive.HiveContext
 
 import scala.util.{Failure, Success, Try}
 
@@ -47,6 +53,58 @@ class LearnClassifierJob extends JobExecutor with Logging {
           ErrorMessage("Failed to fetch training Data: " + ex, 101)
       }
 
+    }
+  }
+
+  //TODO make private
+
+  def fetchTweetTrainingData(): Map[Category, List[String]] = {
+    val timeFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val currentCalendar: Calendar = Calendar.getInstance()
+    //set current time 10 mins ago
+    currentCalendar.add(Calendar.MINUTE, -10)
+    val pastCalendar: Calendar = Calendar.getInstance()
+    //get date 14 days ago
+    pastCalendar.add(Calendar.DAY_OF_MONTH, -14)
+    val startTime: String = timeFormatter.format(currentCalendar.getTime())
+    val endTime: String = timeFormatter.format(pastCalendar.getTime())
+
+
+    Try(TypeCreator.gregorianCalendar(startTime, timeFormatter)) match {
+      case Success(startGregCalendar) =>
+        Try(TypeCreator.gregorianCalendar(endTime, timeFormatter)) match {
+          case Success(endGregCalendar) =>
+            Try(TypeCreator.multipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
+              case Success(path) =>
+                val hc = new HiveContext(Env.sc)
+                val tweetData: SchemaRDD = new TweetJSONFileReader(Env.sc, hc).readFile(path)
+                tweetData.registerTempTable("tweets")
+                val tweetsHashtags: SchemaRDD = hc.sql("SELECT text, entities.hashtags FROM tweets ")
+                tweetsHashtags.printSchema()
+
+                Map("", List(""))
+
+              /*                //hashtags
+
+                              scheme.registerTempTable("tweets")
+
+                              val hashtagsScheme: SchemaRDD = hiveContext.sql("SELECT entities.hashtags FROM tweets")
+
+                              //Temp Table exists as long as the Spark/Hive Context
+                              hashtagsScheme.registerTempTable("hashtags")
+
+                              val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
+
+                              //hashtag*/
+
+              case Failure(wrongPath) =>
+                throw new IllegalArgumentException("No Data available between " + startTime + " and " + endTime)
+            }
+          case Failure(wrongEndTime) =>
+            throw new IllegalArgumentException("Can not create past Calender")
+        }
+      case Failure(wrongStartTime) =>
+        throw new IllegalArgumentException("Can not create current Calender")
     }
   }
 
