@@ -71,7 +71,7 @@ class CategoryDistributionJob extends JobExecutor with Logging {
                     val result = CategoryDistribution(categoryFreqency2.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
                     result
                   case Failure(ex) =>
-                    ErrorMessage("Failed to read trained Data.", 101)
+                    ErrorMessage("Failed to read trained Data, data might not be learned yet.", 101)
                 }
               case Failure(ex) =>
                 ErrorMessage("Failed to read Tweets.", 101)
