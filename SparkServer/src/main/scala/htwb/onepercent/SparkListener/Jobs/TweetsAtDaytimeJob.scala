@@ -5,9 +5,8 @@ import java.util.Calendar
 
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils._
-import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
+import htwb.onepercent.SparkListener.{Env, JobExecutor, JobResult}
 import org.apache.spark.sql.hive.HiveContext
-import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.util.{Failure, Success, Try}
 
@@ -64,24 +63,18 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
 
                 Try(TypeCreator.multipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
                   case Success(path) =>
-
-                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "66").set("spark.driver.allowMultipleContexts", "true")
-                    val sc = new SparkContext(conf)
-                    val hc = new HiveContext(sc)
-                    val ta = new TweetAnalyser(sc, hc)
-
+                    val hc = new HiveContext(Env.sc)
+                    val ta = new TweetAnalyser(Env.sc, hc)
                     log("executeJob", "Starting Anaylsis for : " + params(0))
-                    Try(ta.tweetsAtDaytime(new TweetJSONFileReader(sc, hc).readFile(path), params(0))) match {
-                    case Success(result) =>
-                      //stop the spark context, otherwise its stuck in this context...
-                      sc.stop()
-                      log("executeJob", "End Anaylsis for: " + params(0))
-                      result
-                    case Failure(_) =>
-                      //stop the spark context, otherwise its stuck in this context...
-                      sc.stop()
-                      log("executeJob", "TweetsAtDaytime analyses failed! timestamp[" + params(0) + "]")
-                      ErrorMessage("TweetsAtDaytime analyses failed!", 101)
+                    Try(ta.tweetsAtDaytime(new TweetJSONFileReader(Env.sc, hc).readFile(path), params(0))) match {
+                      case Success(result) =>
+                        //stop the spark context, otherwise its stuck in this context...
+                        log("executeJob", "End Anaylsis for: " + params(0))
+                        result
+                      case Failure(_) =>
+                        //stop the spark context, otherwise its stuck in this context...
+                        log("executeJob", "TweetsAtDaytime analyses failed! timestamp[" + params(0) + "]")
+                        ErrorMessage("TweetsAtDaytime analyses failed!", 101)
                     }
                   case Failure(wrongPath) =>
                     ErrorMessage("No Data available between " + startTime + " and " + endTime, 100)

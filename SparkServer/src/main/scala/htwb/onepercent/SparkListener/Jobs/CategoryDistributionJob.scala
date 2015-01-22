@@ -6,11 +6,10 @@ import java.text.SimpleDateFormat
 import htwb.onepercent.SparkListener.utils.Types.TypeCreator
 import htwb.onepercent.SparkListener.utils._
 import htwb.onepercent.SparkListener.utils.scoring._
-import htwb.onepercent.SparkListener.{JobExecutor, JobResult}
+import htwb.onepercent.SparkListener.{Env, JobExecutor, JobResult}
 import org.apache.spark.SparkContext._
 import org.apache.spark.sql.SchemaRDD
 import org.apache.spark.sql.hive.HiveContext
-import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
@@ -51,11 +50,8 @@ class CategoryDistributionJob extends JobExecutor with Logging {
 
         Try(TypeCreator.clusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
-            val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12").set("spark.driver.allowMultipleContexts", "true")
-            val sc = new SparkContext(conf)
-            val hc = new HiveContext(sc)
-
-            Try(new TweetJSONFileReader(sc, hc).readFile(path.path)) match {
+            val hc = new HiveContext(Env.sc)
+            Try(new TweetJSONFileReader(Env.sc, hc).readFile(path.path)) match {
               case Success(schmaRDD) =>
                 val file = new File(Config.get.scoring_TrainedDataPath)
                 Try(JsonTools.parseClass[TrainedData](Source.fromFile(Config.get.scoring_TrainedDataPath).mkString)) match {
@@ -72,14 +68,11 @@ class CategoryDistributionJob extends JobExecutor with Logging {
                     val categoryFreqency2 = categoryFreqency1.map(X => X._2.maxBy(_._2)).groupByKey().map(X => (X._1, X._2.toList.length))
                     val totalTweets: Int = categoryFreqency2.reduce((X, Y) => (X._1, X._2 + Y._2))._2
                     val result = CategoryDistribution(categoryFreqency2.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
-                    sc.stop()
                     result
                   case Failure(ex) =>
-                    sc.stop()
-                    ErrorMessage("Failed to read trained Data.", 101)
+                    ErrorMessage("Failed to read trained Data, data might not be learned yet.", 101)
                 }
               case Failure(ex) =>
-                sc.stop()
                 ErrorMessage("Failed to read Tweets.", 101)
             }
           case Failure(wrongPath) =>
