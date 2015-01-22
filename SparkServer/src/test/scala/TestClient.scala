@@ -21,13 +21,13 @@ object TestClient {
 
     //out.println(genJobString2("1", "TopHashtagJob", List("2015-01-15 10:00:00", "9")))
     //out.println(genJobString1("2", "TweetsAtDaytimeJob", List("2015-01-15 10:00:00")))
+    //    out.println(genJobString1("3", "WordSearchJob", List("twitter")))
 
+    out.println(genJobString2("1", "TopHashtagJob", List("2015-01-15 10:00:00", "9")))
+    Thread.sleep(1000)
+    out.println(genJobString1("42", "OriginTweetsJob", List("2015-01-15 11:00:00")))
+    Thread.sleep(1000)
 
-    out.println(genJobString1("31", "WordSearchJob", List("twitter")))
-    Thread.sleep(1)
-    out.println(genJobString1("32", "WordSearchJob", List("twitter")))
-    Thread.sleep(1)
-    out.println(genJobString1("33", "WordSearchJob", List("twitter")))
 
     //    out.println(genJobString1("4", "OriginTweetsJob", List("2015-01-15 10:00:00")))
     //    out.println(genJobString1("5", "LanguageDistributionJob", List("2015-01-15 10:00:00")))
