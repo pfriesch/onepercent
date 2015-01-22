@@ -51,7 +51,7 @@ class CategoryDistributionJob extends JobExecutor with Logging {
 
         Try(TypeCreator.clusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
-            val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
+            val conf = new SparkConf().setAppName("Twitter Hashtags Top 10").set("spark.executor.memory", "2G").set("spark.cores.max", "12").set("spark.driver.allowMultipleContexts", "true")
             val sc = new SparkContext(conf)
             val hc = new HiveContext(sc)
 

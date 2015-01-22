@@ -70,7 +70,7 @@ class WordSearchJob extends JobExecutor with Logging {
                 checkSearchWord(params(0)) match {
                   case true =>
 
-                    val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48")
+                    val conf = new SparkConf().setAppName("Twitter WordSearch").set("spark.executor.memory", "12G").set("spark.cores.max", "48").set("spark.driver.allowMultipleContexts", "true")
                     val sc = new SparkContext(conf)
                     val hc = new HiveContext(sc)
                     val ta = new TweetAnalyser(sc, hc)

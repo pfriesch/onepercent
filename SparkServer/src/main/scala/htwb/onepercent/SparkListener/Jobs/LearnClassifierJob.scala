@@ -30,7 +30,7 @@ class LearnClassifierJob extends JobExecutor with Logging {
     else {
       Try(fetchTrainingData()) match {
         case util.Success(data) => {
-          val conf = new SparkConf().setAppName("tweet scoring").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
+          val conf = new SparkConf().setAppName("tweet scoring").set("spark.executor.memory", "2G").set("spark.cores.max", "12").set("spark.driver.allowMultipleContexts", "true")
           val sc = new SparkContext(conf)
           val tweetScoringLearner = new TweetScoringLearner(sc)
           val trainedData: TrainedData = tweetScoringLearner.learn(data)

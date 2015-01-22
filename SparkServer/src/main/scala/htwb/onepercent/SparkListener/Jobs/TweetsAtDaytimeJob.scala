@@ -65,7 +65,7 @@ class TweetsAtDaytimeJob extends JobExecutor with Logging {
                 Try(TypeCreator.multipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
                   case Success(path) =>
 
-                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "66")
+                    val conf = new SparkConf().setAppName("Twitter TweetsAtDaytime").set("spark.executor.memory", "16G").set("spark.cores.max", "66").set("spark.driver.allowMultipleContexts", "true")
                     val sc = new SparkContext(conf)
                     val hc = new HiveContext(sc)
                     val ta = new TweetAnalyser(sc, hc)
