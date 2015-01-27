@@ -23,6 +23,10 @@ object ScoringTrainingSample {
    * @see     trainingSampleSports          Sports Training Sample
    * @see     trainingSampleEconomy         Economy Training Sample
    *
+   *
+   * Update: Now with additional words relating each topic for testing if this might get 
+   * a better result for scoring tweets.
+   *
    * @return a training set.
    * @author Florian Willich
    */
@@ -46,6 +50,9 @@ object ScoringTrainingSample {
    *
    * Those tweets maybe overfitted to the recent events in France (including 52 Tweets)
    * Reading those was terrible disgusting sometimes...
+   *
+   * Update: Now with additional violence related words for testing if this might get 
+   * a better result for scoring tweets.
    *
    * @return a sample of entertainment Tweets.
    * @author Florian Willich
@@ -111,6 +118,28 @@ object ScoringTrainingSample {
     violenceSample += "WANTED: F/H for sexual abuse of F/81 on 12/26 at 10:45pm in the #Bronx. Call #800577TIPS "
     violenceSample += "WANTED: M/B 18, for armed robbery of cab driver at Van Pelt Ave/Forest Ave, noon 12/24 #StatenIsland Call #800577TIPS"
 
+    //Own word collection for violence
+    violenceSample += "assault assault assault assault assault assault assault assault assault assault"
+    violenceSample += "attack attack attack attack attack attack attack attack attack attack"
+    violenceSample += "bloodshed bloodshed bloodshed bloodshed bloodshed bloodshed bloodshed bloodshed bloodshed bloodshed"
+    violenceSample += "brutality brutality brutality brutality brutality brutality brutality brutality brutality brutality"
+    violenceSample += "cruelty cruelty cruelty cruelty cruelty cruelty cruelty cruelty cruelty cruelty"
+    violenceSample += "disorder disorder disorder disorder disorder disorder disorder disorder disorder disorder"
+    violenceSample += "fighting fighting fighting fighting fighting fighting fighting fighting fighting fighting"
+    violenceSample += "struggle struggle struggle struggle struggle struggle struggle struggle struggle struggle"
+    violenceSample += "terrorism terrorism terrorism terrorism terrorism terrorism terrorism terrorism terrorism terrorism"
+    violenceSample += "bestiality bestiality bestiality bestiality bestiality bestiality bestiality bestiality bestiality bestiality"
+    violenceSample += "fury fury fury fury fury fury fury fury fury fury"
+    violenceSample += "fuss fuss fuss fuss fuss fuss fuss fuss fuss fuss"
+    violenceSample += "harshness harshness harshness harshness harshness harshness harshness harshness harshness harshness"
+    violenceSample += "murder murder murder murder murder murder murder murder murder murder"
+    violenceSample += "rough rough rough rough rough rough rough rough rough rough"
+    violenceSample += "riot riot riot riot riot riot riot riot riot riot"
+    violenceSample += "anger anger anger anger anger anger anger anger anger anger"
+    violenceSample += "rage rage rage rage rage rage rage rage rage rage"
+    violenceSample += "displeasure displeasure displeasure displeasure displeasure displeasure displeasure displeasure displeasure displeasure"
+    violenceSample += "mad mad mad mad mad mad mad mad mad mad"
+
     violenceSample.toList
   }
 
@@ -123,6 +152,9 @@ object ScoringTrainingSample {
    * - Today Show (https://twitter.com/todayshow)
    *
    * You maybe have to get a drink after reading those Tweets...
+   *
+   * Update: Now with additional entertainment related words for testing if this might get 
+   * a better result for scoring tweets.
    *
    * @return a sample of entertainment Tweets.
    * @author Florian Willich
@@ -190,6 +222,28 @@ object ScoringTrainingSample {
     entertainmentSample += "Panda + snow = cuteness overload http://on.today.com/1DvraBf"
     entertainmentSample += "Which diet is healthiest? New report ranks popular plans: http://on.today.com/1wSJxdy"
 
+    //Own word collection for entertainment
+    entertainmentSample += "fun fun fun fun fun fun fun fun fun fun"
+    entertainmentSample += "viodeogame viodeogame viodeogame viodeogame viodeogame viodeogame viodeogame viodeogame viodeogame viodeogame"
+    entertainmentSample += "laughs laughs laughs laughs laughs laughs laughs laughs laughs laughs"
+    entertainmentSample += "relax relax relax relax relax relax relax relax relax relax"
+    entertainmentSample += "amusment amusment amusment amusment amusment amusment amusment amusment amusment amusment"
+    entertainmentSample += "stunt stunt stunt stunt stunt stunt stunt stunt stunt stunt"
+    entertainmentSample += "scene scene scene scene scene scene scene scene scene scene"
+    entertainmentSample += "cheer cheer cheer cheer cheer cheer cheer cheer cheer cheer"
+    entertainmentSample += "enjoy enjoy enjoy enjoy enjoy enjoy enjoy enjoy enjoy enjoy"
+    entertainmentSample += "pleasure pleasure pleasure pleasure pleasure pleasure pleasure pleasure pleasure pleasure"
+    entertainmentSample += "pleasing pleasing pleasing pleasing pleasing pleasing pleasing pleasing pleasing pleasing"
+    entertainmentSample += "hight time hight time hight time hight time hight time hight time hight time hight time hight time hight time"
+    entertainmentSample += "prank prank prank prank prank prank prank prank prank prank"
+    entertainmentSample += "joke joke joke joke joke joke joke joke joke joke"
+    entertainmentSample += "distraction distraction distraction distraction distraction distraction distraction distraction distraction distraction"
+    entertainmentSample += "dramatics dramatics dramatics dramatics dramatics dramatics dramatics dramatics dramatics dramatics"
+    entertainmentSample += "melodrama melodrama melodrama melodrama melodrama melodrama melodrama melodrama melodrama melodrama"
+    entertainmentSample += "music music music music music music music music music music"
+    entertainmentSample += "movie movie movie movie movie movie movie movie movie movie"
+    entertainmentSample += "song song song song song song song song song song"
+
     entertainmentSample.toList
   }
 
@@ -200,6 +254,9 @@ object ScoringTrainingSample {
    * - Sports Illustrated (https://twitter.com/sinow)
    * - BBC Sports (https://twitter.com/bbcsport)
    * - CBC Sports (https://twitter.com/cbcsports)
+   *
+   * Update: Now with additional sports related words for testing if this might get 
+   * a better result for scoring tweets.
    *
    * @return a sample of sports Tweets.
    * @author Florian Willich
@@ -267,6 +324,28 @@ object ScoringTrainingSample {
     sportsSample += "Milos Raonic reaches semis at Aussie Open tuneup http://cbc.sh/2JPhjFY"
     sportsSample += "\"Tonight we sucked,\" says Raptors' Kyle Lowry after team's 4th loss in a row http://cbc.sh/S7DfV9c"
 
+    //Own word collection for sports
+    sportsSample += "ball ball ball ball ball ball ball ball ball ball"
+    sportsSample += "game game game game game game game game game game"
+    sportsSample += "challenge challenge challenge challenge challenge challenge challenge challenge challenge challenge"
+    sportsSample += "contest contest contest contest contest contest contest contest contest contest"
+    sportsSample += "sport sport sport sport sport sport sport sport sport sport"
+    sportsSample += "player player player player player player player player player player"
+    sportsSample += "football football football football football football football football football football"
+    sportsSample += "basketball basketball basketball basketball basketball basketball basketball basketball basketball basketball"
+    sportsSample += "hockey hockey hockey hockey hockey hockey hockey hockey hockey hockey"
+    sportsSample += "soccer soccer soccer soccer soccer soccer soccer soccer soccer soccer"
+    sportsSample += "runner runner runner runner runner runner runner runner runner runner"
+    sportsSample += "snowboard snowboard snowboard snowboard snowboard snowboard snowboard snowboard snowboard snowboard"
+    sportsSample += "ski ski ski ski ski ski ski ski ski ski"
+    sportsSample += "match match match match match match match match match match"
+    sportsSample += "score score score score score score score score score score"
+    sportsSample += "fan fan fan fan fan fan fan fan fan fan"
+    sportsSample += "stadion stadion stadion stadion stadion stadion stadion stadion stadion stadion"
+    sportsSample += "olympics olympics olympics olympics olympics olympics olympics olympics olympics olympics"
+    sportsSample += "worldcup worldcup worldcup worldcup worldcup worldcup worldcup worldcup worldcup worldcup"
+    sportsSample += "cup cup cup cup cup cup cup cup cup cup"
+
     sportsSample.toList
   }
 
@@ -277,6 +356,10 @@ object ScoringTrainingSample {
    * - Bloomberg Business Tweets (https://twitter.com/business)
    * - BBC Business Tweets (https://twitter.com/bbcbusiness)
    * - CNN Money Tweets (https://twitter.com/cnnmoney)
+   *
+   *
+   * Update: Now with additional economy related words for testing if this might get 
+   * a better result for scoring tweets.
    *
    * @return a sample of economy Tweets.
    * @author Florian Willich
@@ -344,6 +427,28 @@ object ScoringTrainingSample {
     economySample += "Blackout averted: India's coal workers call off massive strike http://cnnmon.ie/1tOBbnt"
     economySample += "Whew. After their worst start since 2008, stocks are back on an upward swing http://cnnmon.ie/1x0jMIg"
 
+    //Own word collection for economy
+    economySample += "economy economy economy economy economy economy economy economy economy economy"
+    economySample += "cutback cutback cutback cutback cutback cutback cutback cutback cutback cutback"
+    economySample += "regulation regulation regulation regulation regulation regulation regulation regulation regulation regulation"
+    economySample += "stock stock stock stock stock stock stock stock stock stock"
+    economySample += "loan loan loan loan loan loan loan loan loan loan"
+    economySample += "growth growth growth growth growth growth growth growth growth growth"  
+    economySample += "real estate real estate real estate real estate real estate real estate real estate real estate real estate real estate"
+    economySample += "banking banking banking banking banking banking banking banking banking banking"
+    economySample += "oil oil oil oil oil oil oil oil oil oil"
+    economySample += "bank bank bank bank bank bank bank bank bank bank"
+    economySample += "fee fee fee fee fee fee fee fee fee fee"
+    economySample += "earning earning earning earning earning earning earning earning earning earning"
+    economySample += "national output national output national output national output national output national output national output national output national output national output"
+    economySample += "money money money money money money money money money money"
+    economySample += "euro euro euro euro euro euro euro euro euro euro"
+    economySample += "dollar dollar dollar dollar dollar dollar dollar dollar dollar dollar"
+    economySample += "taxes taxes taxes taxes taxes taxes taxes taxes taxes"
+    economySample += "decrease decrease decrease decrease decrease decrease decrease decrease decrease decrease"
+    economySample += "inflation inflation inflation inflation inflation inflation inflation inflation inflation inflation"
+    economySample += "recission recission recission recission recission recission recission recission recission recission"
+
     economySample.toList
   }
 
@@ -354,6 +459,9 @@ object ScoringTrainingSample {
    * - ARSTechnica (https://twitter.com/arstechnica)
    * - GIGA OM (https://twitter.com/gigaom)
    * - NYTimes Bits (https://twitter.com/nytimesbits)
+   *
+   * Update: Now with additional technology related words for testing if this might get 
+   * a better result for scoring tweets.
    *
    * @return a sample of technology Tweets.
    * @author Florian Willich
@@ -419,6 +527,28 @@ object ScoringTrainingSample {
     techSample += "Gadgetwise: A Review of Digital Technology for Children http://nyti.ms/1x3F7GK" //Gadgetwise: A Review of Digital Technology for Children http://nyti.ms/1x3F7GK
     techSample += "Apple and IBM Introduce First Offerings in Line of Mobile Apps for Business http://nyti.ms/1sirQ6r" //https://twitter.com/nytimesbits/status/542673452659146752
     techSample += "Copenhagen Lighting the Way to Greener, More Efficient Cities http://nyti.ms/1x1ABbM" //https://twitter.com/nytimesbits/status/542674581774139392
+
+    //Own word collection for technology
+    techSample += "iphone iphone iphone iphone iphone iphone iphone iphone iphone iphone"
+    techSample += "smartphone smartphone smartphone smartphone smartphone smartphone smartphone smartphone smartphone smartphone"
+    techSample += "internet internet internet internet internet internet internet internet internet"
+    techSample += "google google google google google google google google google google"
+    techSample += "network network network network network network network network network network"
+    techSample += "data data data data data data data data data data"
+    techSample += "computer computer computer computer computer computer computer computer computer computer"
+    techSample += "hardware hardware hardware hardware hardware hardware hardware hardware hardware hardware"
+    techSample += "software software software software software software software software software software"
+    techSample += "app app app app app app app app app app"
+    techSample += "application application application application application application application application application application "
+    techSample += "android android android android android android android android android android"
+    techSample += "windows windows windows windows windows windows windows windows windows windows"
+    techSample += "linux linux linux linux linux linux linux linux linux linux"
+    techSample += "mac mac mac mac mac mac mac mac mac mac"
+    techSample += "web web web web web web web web web web"
+    techSample += "programming programming programming programming programming programming programming programming programming programming"
+    techSample += "code code code code code code code code code code"
+    techSample += "machine machine machine machine machine machine machine machine machine machine"
+    techSample += "automatic automatic automatic automatic automatic automatic automatic automatic automatic automatic"
 
     techSample.toList
   }
