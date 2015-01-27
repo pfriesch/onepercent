@@ -1,6 +1,6 @@
 package htwb.onepercent.SparkListener.Jobs
 
-import htwb.onepercent.SparkListener.utils.scoring.{TrainedData, TweetScoringLearner}
+import htwb.onepercent.SparkListener.utils.scoring.{ScoringTrainingSample, TrainedData, TweetScoringLearner}
 import htwb.onepercent.SparkListener.utils.{Config, ErrorMessage, JsonTools, _}
 import htwb.onepercent.SparkListener.{Env, JobExecutor, JobResult}
 import org.apache.spark.SparkConf
