@@ -27,7 +27,7 @@ initJobInterval();
 function initJobInterval(){
 	wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
 		dataLogger.logData('5 Minutes after full Hour reached. Start jobs per interval.');
-		repeatJobPerInterval('TopHashtagJob', [10], 10000, -1); //1000*60*60
+	repeatJobPerInterval('TopHashtagJob', [10], 1000*60*60, -1); //1000*60*60
         repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
         repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
         repeatJobPerInterval('CategoryDistributionJob', [], 1000*60*60, -1);
