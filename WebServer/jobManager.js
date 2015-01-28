@@ -46,9 +46,6 @@ function findByName(name) {
     if (source[i].getName() == name) {
       return source[i];
     }
-    else {
-      dataLogger.logData('Job ' +name+ 'is not known!');
-    }
   }
 }
 
