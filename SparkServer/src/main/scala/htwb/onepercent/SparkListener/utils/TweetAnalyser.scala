@@ -101,7 +101,8 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
      * https://stackoverflow.com/questions/23732999/avoid-task-not-serialisable-with-nested-method-in-a-class
      */
     val convertToLocalTime = (timestamp: Long, offset: Int) => {
-      timestamp + (offset * 1000)
+      //offset * X => offset is in seconds we need to get milliseconds
+      timestamp + (offset * 0x1000)
     }
 
     /**
