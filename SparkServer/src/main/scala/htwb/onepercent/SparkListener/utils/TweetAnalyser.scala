@@ -108,7 +108,8 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
      * Checks if two Date Objects contain the same date.
      */
     val checkForSameDay = (currentDate: Long, beginDate: Long) => {
-      (currentDate >= beginDate) && (currentDate <= (beginDate + 24*60*60*1000))
+      //beginDate + X => X is on day in milliseconds hex (24h * 60min * 60sec * 1000msec)
+      (currentDate >= beginDate) && (currentDate <= (beginDate + 0x5265C00))
     }
 
     var timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
