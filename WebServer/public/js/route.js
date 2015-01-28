@@ -46,15 +46,15 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'toptentags':
-				this.description = "<h1>Top Ten Hashtags</h1>";
+				this.description = "<h1>TOP TEN HASHTAGS</h1><br/><p>What is the most used hashtag on twitter?<br/>The following chart will give you an overview relating this question.<br/>Please note that we included all tweets no matter in which language the hashtag was tweeted.</p>";
 				this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.tophashtag_template});
 				break;
 			case 'origintweets':
-				this.description = "<h1>OriginTweets</h1>";
+				this.description = "<h1>ORIGIN TWEETS</h1><br/><p>How many tweets are origins and how many are answers to those origin tweets?<br/>The following chart will give you an overview relating this question.<br/></p>";
 				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
 			case 'languagedistribution':
-				this.description = "<h2>Language Distribution</h2>";
+				this.description = "<h1>LANGUAGE DISTRIBUTION</h1><br/><p>In which language do users tweet the most?<br7>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
 			default:
@@ -87,7 +87,7 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'tweetsatdaytime':
-				this.description = "Tweets at Daytime";
+				this.description = "<h1>TWEETS AT DAYTIME</h1><p>At what daytime do people tweet the most or the least?<br/>The following chart will give you an overview relating this question.<br/>To answer this question correctly we annualised each local time (GMT X) to one global time (GMT 0).</p>";
 				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#main-content-chart', template: templates.single_chart_template});
 				break;
 			default:
@@ -99,7 +99,7 @@ var Router = Backbone.Router.extend({
 
 	wordSearch: function(table, searchWord){
 		mainNavigationView.changeActive(table);
-		this.description = "Word Search";
+		this.description = "<h1>WORD SEARCH</h1><p>Whas the word \"X\" used when tweeting and if yes, when and how often?<br/>The following chart will give you an overview relating this question.<br/>Please note that we do not give you any message when the computing for your request is done. So please refresh your browser once in a minute to see the result.</p>";
 		if(typeof searchWord != 'string'){
 			this.chartView = new WordSearchView({table: table, el: '#main-content-chart', template: templates.single_chart_template});
 			this.navigationView = new SearchNavigationView({table: table, el: '#main-content-navigation',
