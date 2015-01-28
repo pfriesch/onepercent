@@ -93,6 +93,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
    * @param scheme            The scheme on which the analysis is processed.
    * @param searchDateString  The timestamp that contains the date to filter.
    * @return                  the distribution of the search date
+   * @author Patrick Mariot, Florian Willich
    */
   def tweetsAtDaytime(scheme: SchemaRDD, searchDateString: String): TweetsAtDaytime = {
 
