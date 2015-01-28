@@ -30,7 +30,7 @@ function initJobInterval(){
 	repeatJobPerInterval('TopHashtagJob', [10], 1000*60*60, -1); //1000*60*60
         repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
         repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
-        repeatJobPerInterval('CategoryDistributionJob', [], 1000*60*60, -1);
+        //repeatJobPerInterval('CategoryDistributionJob', [], 1000*60*60, -1);
 	});
 
   wait(moment().endOf('day').add(14,'hours').add(10,'minutes') - moment(), function(){
