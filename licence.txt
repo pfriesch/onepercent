@@ -3,7 +3,7 @@ The MIT License (MIT)
 Copyright (c) 2014 University of Applied Sciences, Berlin, Germany
 Bachelor Degree Course: Applied Computer Science
 Project Study: Analysis of Social Networks
-Participants: Pius Friesch, Patrick Mariot, Florian Pfeiffer, Anett Raak, Florian Willich
+Participants: Pius Friesch, Patrick Mariot, Florian Pfeiffer, Florian Willich
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
