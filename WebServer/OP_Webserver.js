@@ -45,6 +45,7 @@ function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
       var sparkJob = jobManager.createJob(jobName, params, offset);
       jobCollection.push(sparkJob);
       dataLogger.logData('Added Element with ID: ' + sparkJob.jobID);
+      dataLogger.logData(sparkJob);
       sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
     } catch (ex) {
       dataLogger.logData(ex);
