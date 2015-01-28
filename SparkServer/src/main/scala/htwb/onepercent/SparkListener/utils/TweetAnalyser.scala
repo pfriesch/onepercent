@@ -116,6 +116,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
     var timestampFormatter = new SimpleDateFormat("yyyy-MM-dd HH:00:00")
     timestampFormatter.setTimeZone(TimeZone.getTimeZone("UTC"))
     var searchDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    searchDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"))
     val searchDate: Date = searchDateFormatter.parse(searchDateString)
     val searchCalendar: GregorianCalendar = new GregorianCalendar()
     searchCalendar.setTime(searchDate)
