@@ -57,11 +57,18 @@ function createJob (jobName, params, timeOffset) {
     dataLogger.logData(ex);
   }
   if(typeof jobType !== 'undefined') {
-    return jobType.createJob(generateHash(), params, timeOffset);
+    return jobType.createJob(computeRandomSHA1(), params, timeOffset);
   } else {
     dataLogger.logData('Job ' +jobName+ 'is not known!');
   }
 }
 
-/* Generates jobid as hashvalue of the actual time */
-function generateHash() { return sha1(new Date().getTime() + Math.random().toString()); }
+/**
+ * This function generates random hashes with the SHA1.
+ *
+ * @returns a random generated hash.
+ */
+function computeRandomSHA1() {
+  //the use of String is needed to get the full character set into the sha1
+  return sha1(new Date().getTime() + Math.random().toString());
+}
