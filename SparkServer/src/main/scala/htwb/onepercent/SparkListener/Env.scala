@@ -8,7 +8,7 @@ import org.apache.spark.{SparkConf, SparkContext}
  */
 object Env {
 
-  val conf = new SparkConf().setAppName("onepercent").set("spark.executor.memory", "2G").set("spark.cores.max", "12")
+  val conf = new SparkConf().setAppName("onepercent")
   val sc = new SparkContext(conf)
 
 
