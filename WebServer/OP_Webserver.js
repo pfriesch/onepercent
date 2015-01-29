@@ -27,7 +27,7 @@ initJobInterval();
 function initJobInterval(){
 	wait(moment().endOf('hour').add(5,'minutes') - moment(), function() {
 		dataLogger.logData('5 Minutes after full Hour reached. Start jobs per interval.');
-	repeatJobPerInterval('TopHashtagJob', [10], 1000*60*60, -1); //1000*60*60
+	   repeatJobPerInterval('TopHashtagJob', [10], 1000*60*60, -1); //1000*60*60
         repeatJobPerInterval('LanguageDistributionJob', [], 1000*60*60, -1);
         repeatJobPerInterval('OriginTweetsJob', [], 1000*60*60, -1);
         //repeatJobPerInterval('CategoryDistributionJob', [], 1000*60*60, -1);
@@ -45,7 +45,6 @@ function repeatJobPerInterval(jobName, params, intervalInMilliseconds, offset) {
       var sparkJob = jobManager.createJob(jobName, params, offset);
       jobCollection.push(sparkJob);
       dataLogger.logData('Added Element with ID: ' + sparkJob.jobID);
-      dataLogger.logData(sparkJob);
       sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
     } catch (ex) {
       dataLogger.logData(ex);
@@ -76,15 +75,17 @@ function deleteElementFromCollection (itemToDelete) {
   dataLogger.logData('Deleted Element with ID: ' + itemToDelete.jobID);
 }
 
-//todo check if source fo i has field
+/* search in JobCollection for the needed job*/
 function findById(source, id) {
+  var elementIsIn = false;
   for (var i = 0; i < source.length; i++) {
     if (source[i].jobID == id) {
+      elementIsIn = true;
       return source[i];
     }
-    else {
-      dataLogger.logData('Element with id ' +id+ 'is not in JobCollection!');
-    }
+  }
+  if (elementIsIn == false) {
+    dataLogger.logData('Element with id ' +id+ ' is not in JobCollection!');
   }
 }
 
