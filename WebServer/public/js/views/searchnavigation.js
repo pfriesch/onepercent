@@ -69,7 +69,7 @@ var SearchNavigationView = Backbone.View.extend({
 	 * Renders the navigation.
 	 */
 	showNavigation: function() {
-		this.params.availableWords;
+		this.params.availableWords = this.availableWords;
 		this.params.searchWord = this.path.searchWord;
 		this.render();
 	}
