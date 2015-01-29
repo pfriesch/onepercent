@@ -64,8 +64,4 @@ function createJob (jobName, params, timeOffset) {
 }
 
 /* Generates jobid as hashvalue of the actual time */
-function generateHash(){
-  var time = new Date();
-  var hashCode = sha1(time.getTime());
-  return hashCode;
-}
+function generateHash() { return sha1(new Date().getTime() + Math.random().toString()); }
