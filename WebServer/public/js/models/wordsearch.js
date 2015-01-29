@@ -1,73 +1,74 @@
 /**
- *	Model that contains the attributes name,count, timestamp and written.
+ *    Model that contains the attributes name,count, timestamp and written.
  * @author Patrick Mariot
  */
 var WordSearchModel = Backbone.Model.extend({
-	url: "api/live",
+    url: "api/live",
 
-	initialize: function(table, searchWord) {
-		if(typeof searchWord != 'undefined'){
-			this.url = this.url + "/" + table + "/" + searchWord;
-		} else {
-			this.url = this.url + "/" + table;
-		}
-	},
 
-	/**
-	 * Get the year from the timestamp in UTC.
-	 * @returns {number}
-	 */
-	getYear: function() {
-		return this.getJavascriptDate().getUTCFullYear();
-	},
+    initialize: function (table, searchWord) {
+        if (typeof searchWord != 'undefined') {
+            this.url = this.url + "/" + table + "/" + searchWord;
+        } else {
+            this.url = this.url + "/" + table;
+        }
+    },
 
-	/**
-	 * Get the month from the timestamp in UTC.
-	 * @returns {number}
-	 */
-	getMonth: function() {
-		var month = this.getJavascriptDate().getUTCMonth() + 1;
-		if(month < 10){
-			month = '0' + month;
-		}
-		return month;
-	},
+    /**
+     * Get the year from the timestamp in UTC.
+     * @returns {number}
+     */
+    getYear: function () {
+        return this.getJavascriptDate().getUTCFullYear();
+    },
 
-	/**
-	 * Get the day of month from the timestamp in UTC.
-	 * @returns {number}
-	 */
-	getDay: function() {
-		var day = this.getJavascriptDate().getUTCDate();
-		if(day < 10){
-			day = '0' + day;
-		}
-		return day;
-	},
+    /**
+     * Get the month from the timestamp in UTC.
+     * @returns {number}
+     */
+    getMonth: function () {
+        var month = this.getJavascriptDate().getUTCMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
+        return month;
+    },
 
-	/**
-	 * Creates a date string.-
-	 * @returns {string}	date in form 'yyyy-MM-dd'
-	 */
-	getDate: function() {
-		return (this.getYear() + "-" + this.getMonth() + "-" + this.getDay());
-	},
+    /**
+     * Get the day of month from the timestamp in UTC.
+     * @returns {number}
+     */
+    getDay: function () {
+        var day = this.getJavascriptDate().getUTCDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        return day;
+    },
 
-	/**
-	 * Get the hour of the day from the timestamp in UTC.
-	 * @returns {number}
-	 */
-	getHour: function() {
-		return this.getJavascriptDate().getUTCHours();
-	},
+    /**
+     * Creates a date string.-
+     * @returns {string}    date in form 'yyyy-MM-dd'
+     */
+    getDate: function () {
+        return (this.getYear() + "-" + this.getMonth() + "-" + this.getDay());
+    },
 
-	/**
-	 * Converts the timestamp attribute into a Javascript Date object.
-	 * @returns {Date}
-	 */
-	getJavascriptDate: function() {
-		return new Date(this.get('timestamp'));
-	}
+    /**
+     * Get the hour of the day from the timestamp in UTC.
+     * @returns {number}
+     */
+    getHour: function () {
+        return this.getJavascriptDate().getUTCHours();
+    },
+
+    /**
+     * Converts the timestamp attribute into a Javascript Date object.
+     * @returns {Date}
+     */
+    getJavascriptDate: function () {
+        return new Date(this.get('timestamp'));
+    }
 });
 
 /**
@@ -75,63 +76,76 @@ var WordSearchModel = Backbone.Model.extend({
  * @author Patrick Mariot
  */
 var WordSearchCollection = Backbone.Collection.extend({
-	model: WordSearchModel,
-	url: "api/live",
+    model: WordSearchModel,
+    url: "api/live",
 
-	initialize: function(table, searchWord) {
-		if (typeof searchWord != 'undefined') {
-			this.url = this.url + "/" + table + "/" + searchWord;
-		} else {
-			this.url = this.url + "/" + table;
-		}
-	},
+    initialize: function (table, searchWord) {
+        if (typeof searchWord != 'undefined') {
+            this.url = this.url + "/" + table + "/" + searchWord;
+        } else {
+            this.url = this.url + "/" + table;
+        }
+    },
 
-	/**
-	 * Creates an array that contain all name Attributes from the models.
-	 * @returns {Array}	of Strings containing all names from the models.
-	 */
-	getNames: function(){
-		var names = new Array();
-		this.each(function(data){
-			names.push(data.get('name'));
-		}, this);
-		return names;
-	},
+    /**
+     * Creates an array that contain all name Attributes from the models.
+     * @returns {Array}    of Strings containing all names from the models.
+     */
+    getNames: function () {
 
-	/**
-	 * Creates an array that contain all unique name Attributes from the models.
-	 * @returns {Array}	of Strings containing all unique names from the models.
-	 */
-	getUniqNames: function(){
-		var names = new Array();
-		this.each(function(data){
-			names.push(data.get('name'));
-		}, this);
-		names = _.uniq(names);
-		return names;
-	},
 
-	/**
-	 * Creates an array that contain all count Attributes from the models.
-	 * @returns {Array}	of Strings containing all counts from the models.
-	 */
-	getValues: function() {
-		var values = new Array();
-		this.each(function(data){
-			values.push(data.get('count'));
-		}, this);
-		return values;
-	},
+        var names = new Array();
+        this.each(function (data) {
+            names.push(data.get('name'));
+        }, this);
+        return names;
+    },
 
-	/**
-	 * Creates an array that contains all timestamp Attributes from the models.
-	 * @returns {Array}	of Strings containing all timestamps from the models.
-	 */
-	getTimestamps: function() {
-		var timestamps = new Array();
-		this.each(function(data){
-			timestamps.push(data.getDate() + ' ' + data.getHour() + ':00');
-		}, this);
-		return timestamps;
-	}
+    /**
+     * Creates an array that contain all unique name Attributes from the models.
+     * @returns {Array}    of Strings containing all unique names from the models.
+     */
+    getUniqNames: function () {
+        var names = new Array();
+        this.each(function (data) {
+            names.push(data.get('name'));
+        }, this);
+        names = _.uniq(names);
+        if (names == null) {
+            console.log("names is null");
+        }
+        return names;
+    },
+
+    /**
+     * Creates an array that contain all count Attributes from the models.
+     * @returns {Array}    of Strings containing all counts from the models.
+     */
+    getValues: function () {
+        var values = new Array();
+        this.each(function (data) {
+            values.push(data.get('count'));
+        }, this);
+
+        if (values == null) {
+            console.log("values is null");
+        }
+        return values;
+    },
+
+    /**
+     * Creates an array that contains all timestamp Attributes from the models.
+     * @returns {Array}    of Strings containing all timestamps from the models.
+     */
+    getTimestamps: function () {
+
+        var timestamps = new Array();
+        this.each(function (data) {
+            timestamps.push(data.getDate() + ' ' + data.getHour() + ':00');
+        }, this);
+        if (timestamps == null) {
+            console.log("timestamps is null");
+        }
+        return timestamps;
+    }
 });
