@@ -11,7 +11,7 @@ var templates = {
 
 Backbone.View.prototype.close = function() {
 	this.unbind();
-	//this.remove();
+	this.remove();
 };
 
 var appRouter;
