@@ -53,6 +53,8 @@ app.get('/api/live/:table', function(req, res){
  * returns available data, if the the word was found, or null if the word wasn´t found or it is not valid
  */
 app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
+  res.send(null);
+  /*
   var time = moment();
   var date = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), -48);
   var nextDate = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), +1);
@@ -77,7 +79,7 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res){
     } else {
       res.send(null);
     }
-  });
+  });*/
 });
 
 /*
