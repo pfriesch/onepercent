@@ -65,9 +65,8 @@ class LearnClassifierJob extends JobExecutor with Logging {
     currentCalendar.add(Calendar.MINUTE, -10)
     val pastCalendar: Calendar = Calendar.getInstance()
     //get date 14 days ago
-    //TODO change to 14
-    //    pastCalendar.add(Calendar.DAY_OF_MONTH, -14)
-    pastCalendar.add(Calendar.MINUTE, -120)
+    pastCalendar.add(Calendar.DAY_OF_MONTH, -14)
+    //    pastCalendar.add(Calendar.MINUTE, -120)
 
     val startTime: String = timeFormatter.format(pastCalendar.getTime())
     val endTime: String = timeFormatter.format(currentCalendar.getTime())
