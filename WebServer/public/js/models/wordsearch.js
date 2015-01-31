@@ -12,62 +12,6 @@ var WordSearchModel = Backbone.Model.extend({
         } else {
             this.url = this.url + "/" + table;
         }
-    },
-
-    /**
-     * Get the year from the timestamp in UTC.
-     * @returns {number}
-     */
-    getYear: function () {
-        return this.getJavascriptDate().getUTCFullYear();
-    },
-
-    /**
-     * Get the month from the timestamp in UTC.
-     * @returns {number}
-     */
-    getMonth: function () {
-        var month = this.getJavascriptDate().getUTCMonth() + 1;
-        if (month < 10) {
-            month = '0' + month;
-        }
-        return month;
-    },
-
-    /**
-     * Get the day of month from the timestamp in UTC.
-     * @returns {number}
-     */
-    getDay: function () {
-        var day = this.getJavascriptDate().getUTCDate();
-        if (day < 10) {
-            day = '0' + day;
-        }
-        return day;
-    },
-
-    /**
-     * Creates a date string.-
-     * @returns {string}    date in form 'yyyy-MM-dd'
-     */
-    getDate: function () {
-        return (this.getYear() + "-" + this.getMonth() + "-" + this.getDay());
-    },
-
-    /**
-     * Get the hour of the day from the timestamp in UTC.
-     * @returns {number}
-     */
-    getHour: function () {
-        return this.getJavascriptDate().getUTCHours();
-    },
-
-    /**
-     * Converts the timestamp attribute into a Javascript Date object.
-     * @returns {Date}
-     */
-    getJavascriptDate: function () {
-        return new Date(this.get('timestamp'));
     }
 });
 
@@ -115,22 +59,6 @@ var WordSearchCollection = Backbone.Collection.extend({
             console.log("names is null");
         }
         return names;
-    },
-
-    /**
-     * Creates an array that contain all count Attributes from the models.
-     * @returns {Array}    of Strings containing all counts from the models.
-     */
-    getValues: function () {
-        var values = new Array();
-        this.each(function (data) {
-            values.push(data.get('count'));
-        }, this);
-
-        if (values == null) {
-            console.log("values is null");
-        }
-        return values;
     },
 
     /**

@@ -33,17 +33,5 @@ var NameCountCollection = Backbone.Collection.extend({
 			names.push(data.get('name'));
 		}, this);
 		return names;
-	},
-
-	/**
-	 * Creates an array that contain all count Attributes from the models.
-	 * @returns {Array}	of Strings containing all counts from the models.
-	 */
-	getValues: function() {
-		var values = new Array();
-		this.each(function(data){
-			values.push(data.get('count'));
-		}, this);
-		return values;
 	}
 });

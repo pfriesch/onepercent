@@ -33,17 +33,5 @@ var LanguageCountCollection = Backbone.Collection.extend({
 			languages.push(data.get('language'));
 		}, this);
 		return languages;
-	},
-
-	/**
-	 * Creates an array that contain all count Attributes from the models.
-	 * @returns {Array}	of Strings containing all counts from the models.
-	 */
-	getValues: function() {
-		var values = new Array();
-		this.each(function(data){
-			values.push(data.get('count'));
-		}, this);
-		return values;
 	}
 });
