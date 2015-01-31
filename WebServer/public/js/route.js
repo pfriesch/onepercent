@@ -116,7 +116,7 @@ var Router = Backbone.Router.extend({
 	},
 
 	/**
-	 * Closes and Unbinds the Views and creates the needed divs.
+	 * Closes and Unbinds the Views and recreates the needed divs.
 	 */
 	reinitalizeViews: function(){
 		if(typeof this.chartView != 'undefined'){
@@ -127,10 +127,10 @@ var Router = Backbone.Router.extend({
 		}
 		var navigationDiv = document.createElement("div");
 		navigationDiv.setAttribute("id", "content-navigation");
-		document.getElementById('main-content-navigation').appendChild(navigationDiv);
+		document.getElementById('main-content').appendChild(navigationDiv);
 		var chartDiv = document.createElement("div");
 		chartDiv.setAttribute("id", "content-chart");
-		document.getElementById('main-content-chart').appendChild(chartDiv);
+		document.getElementById('main-content').appendChild(chartDiv);
 	}
 });
 
