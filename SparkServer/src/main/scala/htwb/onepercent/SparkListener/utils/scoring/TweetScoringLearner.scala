@@ -55,9 +55,10 @@ class TweetScoringLearner(sc: SparkContext) {
   }
 
   private def computeTermProb(termCount: RDD[(String, Map[Category, Int])], categories: List[Category]): (RDD[(String, List[(Category, Double)])], Map[Category, Double]) = {
+    val smoothing = 1
     //needs to be accessible on all workers, so no RDD
     val categoryTermCount = categories.map(C => (C, termCount.map(
-      X => (X._1, X._2.getOrElse(C, 0) + 1)).map(X => X._2).reduce(_ + _))
+      X => (X._1, X._2.getOrElse(C, 0) + smoothing)).map(X => X._2).reduce(_ + _))
     ).toMap
     // fills empty categories in the termcount with 0
     val filledTermCount = termCount.map(
@@ -69,7 +70,7 @@ class TweetScoringLearner(sc: SparkContext) {
       case (category: Category, count: Int) =>
         (category,
           // condProbFun
-          (count + 1).toDouble / (categoryTermCount(category) + 1).toDouble
+          (count + smoothing).toDouble / categoryTermCount(category).toDouble
           // \condProbFun
           )
       // probability for an unknown Word
