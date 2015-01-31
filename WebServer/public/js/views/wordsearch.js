@@ -65,9 +65,7 @@ var WordSearchView = Backbone.View.extend({
      * Prepares the data for the chart.
      */
     showChart: function () {
-        console.log("test2")
-
-        var timestamps = this.dataCollection.getTimestamps()
+        var timestamps = this.dataCollection.getTimestamps();
         var values = this.dataCollection.getValues();
         var word = this.dataCollection.getUniqNames()[0];
 
