@@ -1,21 +1,22 @@
 <div class="container">
+    <div class="jumbotron">
+        <div id="content-description"><%= description %></div>
 
-	<div id="content-description"><%= description %></div>
+        <div class="row">
+            <form id="date_form">
+                <div class="col-md-4">
+                    <select class="form-control" id="date_selector">
+                    <% if(typeof dates != 'undefined') { %>
+                    <% _.each(dates, function(date) { %>
+                        <option value="<%= date %>" <% if (date == selectedDate) { %> selected <% } %>><%= date %></option>
+                    <% }) } %>
+                    </select>
+                </div>
 
-	<div class="row">
-		<form id="date_form">
-			<div class="col-md-4">
-				<select class="form-control" id="date_selector">
-				<% if(typeof dates != 'undefined') { %>
-				<% _.each(dates, function(date) { %>
-					<option value="<%= date %>" <% if (date == selectedDate) { %> selected <% } %>><%= date %></option>
-				<% }) } %>
-				</select>
-			</div>
-
-			<div id="load" class="col col-md-4" >
-				<button type="submit" class="btn btn-default">show</button>
-			</div>
-		</form>
-	</div>
+                <div id="load" class="col col-md-4" >
+                    <button type="submit" class="btn btn-default">show</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
