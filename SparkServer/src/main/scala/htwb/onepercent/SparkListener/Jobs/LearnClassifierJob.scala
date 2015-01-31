@@ -54,8 +54,6 @@ class LearnClassifierJob extends JobExecutor with Logging {
           log("executeJob", "Failed to fetch training Data: " + ex)
           ErrorMessage("Failed to fetch training Data: " + ex, 101)
       }
-
-      ErrorMessage("test", 200)
     }
   }
 
