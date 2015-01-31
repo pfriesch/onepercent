@@ -31,8 +31,8 @@ object TestClient {
 
     //    out.println(genJobString1("4", "OriginTweetsJob", List("2015-01-15 10:00:00")))
     //    out.println(genJobString1("5", "LanguageDistributionJob", List("2015-01-15 10:00:00")))
-        out.println(genJobString0("6", "LearnClassifierJob", List()))
-//    out.println(genJobString1("7", "CategoryDistributionJob", List("2015-01-15 10:00:00")))
+    out.println(genJobString0("6", "LearnClassifierJob", List()))
+    //    out.println(genJobString1("7", "CategoryDistributionJob", List("2015-01-15 10:00:00")))
 
 
     //out.println("{\"jobID\":\"superJobID1234\",\"name\":\"TestyJob\",\"params\":[\"TestInput\"],\"time\":\"0000-00-00 00:00:00\"}")

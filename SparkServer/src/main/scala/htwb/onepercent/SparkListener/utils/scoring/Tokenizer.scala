@@ -3,6 +3,7 @@ For more detailed information, please read the licence.txt in the root directory
 
 package htwb.onepercent.SparkListener.utils.scoring
 
+
 /**
  * Provides tools to make tokens form full text.
  * @author pFriesch
@@ -30,15 +31,7 @@ object Tokenizer {
 
     //replace all single chars & all [a-z#@] & @[a-z] (mentions) with " "
     val tokenizedWords = string.toLowerCase().replaceAll("[^a-z]+", " ").split(" ").toList
-    val stemmer = new Stemmer()
-
-    tokenizedWords.map(S => {
-      val term = S.toCharArray
-      stemmer.add(term, term.length)
-      stemmer.stem()
-      stemmer.toString
-    })
-
+    tokenizedWords.map(PorterStemmer.stem)
     tokenizedWords.diff(stopwords)
 
   }
