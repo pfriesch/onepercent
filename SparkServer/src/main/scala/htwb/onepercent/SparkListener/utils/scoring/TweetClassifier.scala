@@ -44,7 +44,8 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
     if (tokenizedTweet.length > 0) {
       val categories: List[Category] = trainedData.categoryProb.map(X => X._1).toList
       val score: Map[Category, Double] = categories.map { C =>
-        (C, Math.log10(trainedData.categoryProb(C)) + tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log10).reduce(_ + _))
+        (C, Math.log10(trainedData.categoryProb(C)) +
+          tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(X => Math.log10(X + 1)).reduce(_ + _))
       }.toMap
       //normalizes to 0..1
       def normalize(classifications: Map[Category, Double]): Map[Category, Double] = {

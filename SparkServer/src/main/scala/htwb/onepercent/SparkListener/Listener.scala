@@ -58,12 +58,6 @@ object App {
     Logger.getLogger("org").setLevel(Level.WARN)
     val system = ActorSystem()
     val listener = system.actorOf(Props[Listener])
-
-    //TODO Delete
-    import Jobs.LearnClassifierJob
-    val job = new LearnClassifierJob
-    job.fetchTweetTrainingData()
-
   }
 
 }
