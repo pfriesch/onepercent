@@ -57,7 +57,6 @@ class LearnClassifierJob extends JobExecutor with Logging {
     }
   }
 
-
   private def fetchTweetTrainingData(): Map[Category, List[String]] = {
     val timeFormatter: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val currentCalendar: Calendar = Calendar.getInstance()
@@ -66,11 +65,9 @@ class LearnClassifierJob extends JobExecutor with Logging {
     val pastCalendar: Calendar = Calendar.getInstance()
     //get date 14 days ago
     pastCalendar.add(Calendar.DAY_OF_MONTH, -14)
-    //    pastCalendar.add(Calendar.MINUTE, -120)
 
     val startTime: String = timeFormatter.format(pastCalendar.getTime())
     val endTime: String = timeFormatter.format(currentCalendar.getTime())
-
 
     Try(TypeCreator.gregorianCalendar(startTime, timeFormatter)) match {
       case Success(startGregCalendar) =>
@@ -78,54 +75,16 @@ class LearnClassifierJob extends JobExecutor with Logging {
           case Success(endGregCalendar) =>
             Try(TypeCreator.multipleClusterPath(Config.get.tweetsPrefixPath, startGregCalendar, endGregCalendar, "*.data")) match {
               case Success(path) =>
+
                 val hc = new HiveContext(Env.sc)
                 val tweetData: SchemaRDD = new TweetJSONFileReader(Env.sc, hc).readFile(path)
                 tweetData.registerTempTable("tweets")
                 val tweetsWithHashtags: SchemaRDD = hc.sql("SELECT text, entities.hashtags FROM tweets WHERE lang = 'en'")
-                //                tweetsHashtags.printSchema()
-
-                //                tweetsHashtags.registerTempTable("tweetsHashtag")
-
                 tweetsWithHashtags.map(row => row(0) -> row(1).asInstanceOf[ArrayBuffer[GenericMutableRow]].map(h => h.toList(1)).toList).map {
                   case tweetWithHashtag: (String, List[String]) => CategoryData.toCategoryTuple(tweetWithHashtag)
                   //does not match so its not used
                   case _ => ("ERROR", "ERROR IN FILTERING TWEETS BY CATEGORY")
                 }.filter(T => T._1 != "").groupBy(_._1).map(X => (X._1, X._2.map(_._2).toList)).collect().toMap
-
-
-              //                val sampleRDD = tweetsHashtags.sample(false, 0.1)
-              //                val sampleRDDmapped = sampleRDD.map(row => row(0) -> row(1).asInstanceOf[ArrayBuffer[GenericMutableRow]].map(h => h.toList(1)).toList)
-              //                val sample = sampleRDD.collect()
-              //                val mappedLocal = sample.map(row => row(0) -> row(1).asInstanceOf[ArrayBuffer[GenericMutableRow]].map(h => h.toList(1)).toList)
-
-              //                println(mappedLocal.getClass)
-              //                sampleRDDmapped.sample(false, 0.1).foreach(println)
-
-
-              //                println(mappedLocal.)
-              //                sample.foreach { r =>
-              //                  if (r(1).asInstanceOf[ArrayBuffer[Any]].length > 0) {
-              //
-              //                    println(r(0) + " : ")
-              //                    r(1).asInstanceOf[ArrayBuffer[org.apache.spark.sql.catalyst.expressions.GenericMutableRow]].foreach(h =>  print("  h: " + h.toList(1)))
-              //                  }
-              //
-              //                }
-
-              //                Map("none" -> List("none"))
-
-              /*                //hashtags
-
-                              scheme.registerTempTable("tweets")
-
-                              val hashtagsScheme: SchemaRDD = hiveContext.sql("SELECT entities.hashtags FROM tweets")
-
-                              //Temp Table exists as long as the Spark/Hive Context
-                              hashtagsScheme.registerTempTable("hashtags")
-
-                              val table: SchemaRDD = hiveContext.sql("SELECT hashtags.text FROM hashtags LATERAL VIEW EXPLODE(hashtags) t1 AS hashtags")
-
-                              //hashtag*/
 
               case Failure(wrongPath) =>
                 throw new IllegalArgumentException("No Data available between " + startTime + " and " + endTime)
@@ -138,24 +97,23 @@ class LearnClassifierJob extends JobExecutor with Logging {
     }
   }
 
-  //  private def fetchTrainingData(): Map[Category, List[String]] = {
-  //    ScoringTrainingSample.trainingSet()
-  //  }
-
-
 }
 
+/**
+ * Helper Object for fetchTweetTrainingData method
+ */
 object CategoryData extends Serializable {
-  val categories: List[String] = List("Religion", "Sport")
 
+  val categories: List[String] = List("Religion", "Sport")
   val categoryHashtags: Map[String, List[String]] = Map(categories(0) ->
-    List("christianity", "pope", "christ", "christian", "buddha", "buddhist", "buddhism", "mohammed", "islam", "moslem",
+    List("christianity", "pope", "jesus", "christ", "christian", "buddha", "buddhist", "buddhism", "mohammed", "islam", "moslem",
       "muslim", "hinduism", "hindu", "hindoo", "judaism", "jewry", "jew", "atheist", "agnostic"),
     categories(1) -> List("archery", "badminton", "volleyball", "tennis", "baseball", "cricket", "skateboarding", "surfing",
       "climbing", "cycling", "boxing", "taekwondo", "fencing", "billiards", "snooker", "ultimate", "football",
       "rugby", "golf", "handball", "curling", "hockey", "biathlon", "triathlon", "badminton", "squash", "running",
       "sailing", "skiing", "bobsleigh", "sled", "snowboarding", "swimming", "diving"))
 
+  //method needs to be serializable to be send to the nodes so i put it in here, seemed to be the best way since the list
   def toCategoryTuple(tweetWithHashtag: (String, List[String])): (String, String) = {
     //checks if the tweet has a hashtag which is also in the category hashtags list
     //Religion
@@ -168,7 +126,6 @@ object CategoryData extends Serializable {
     }
     else ("", "")
   }
-
 }
 
 

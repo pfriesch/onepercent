@@ -28,12 +28,8 @@ object Tokenizer {
    * @return list of tokens.
    */
   def tokenize(string: String): List[String] = {
-
     //replace all single chars & all [a-z#@] & @[a-z] (mentions) with " "
-    val tokenizedWords = string.toLowerCase().replaceAll("[^a-z]+", " ").split(" ").toList
-    tokenizedWords.map(PorterStemmer.stem)
-    tokenizedWords.diff(stopwords)
-
+    string.toLowerCase().replaceAll("[^a-z]+", " ").split(" ").toList.map(PorterStemmer.stem).diff(stopwords)
   }
 
 

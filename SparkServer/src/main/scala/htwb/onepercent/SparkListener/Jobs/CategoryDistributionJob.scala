@@ -29,6 +29,12 @@ case class CategoryCount(category: String, count: Int)
  */
 case class CategoryDistribution(distribution: List[CategoryCount], totalCount: Int) extends JobResult
 
+case class CategoryProb(category: String, prob: Double)
+
+case class TweetWithProb(text: String, categoryProb: List[CategoryProb])
+
+case class CategoryDistributionWithTweets(distribution: List[CategoryCount], totalCount: Int, tweets: Array[TweetWithProb]) extends JobResult
+
 /**
  * Reads all tweets saved in the given hour and extracts all flaged as english. Classifies each tweet based
  * on the given trained data. Returns a List of frequencies for each categories and a number of total computed tweets.
@@ -47,7 +53,6 @@ class CategoryDistributionJob extends JobExecutor with Logging {
 
     Try(TypeCreator.gregorianCalendar(params(0), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))) match {
       case Success(gregCalendar) =>
-
         Try(TypeCreator.clusterPath(Config.get.tweetsPrefixPath, gregCalendar, "*.data")) match {
           case Success(path) =>
             val hc = new HiveContext(Env.sc)
@@ -56,23 +61,34 @@ class CategoryDistributionJob extends JobExecutor with Logging {
                 val file = new File(Config.get.scoring_TrainedDataPath)
                 Try(JsonTools.parseClass[TrainedData](Source.fromFile(Config.get.scoring_TrainedDataPath).mkString)) match {
                   case Success(trainedData) =>
+
                     val classifier = new TweetClassifier(trainedData)
                     schmaRDD.registerTempTable("tweets")
                     val tweetText: SchemaRDD = hc.sql("SELECT text FROM tweets WHERE lang = 'en'")
-                    val categoryFreqency1 = tweetText.map(
+                    val TweetWithCondProb = tweetText.map(
                       tweetText => classifier.classifyVerbose(tweetText.toString()))
 
-                    val categoryFreqency2: RDD[(String, Map[String, Double])] = categoryFreqency1.map {
+                    val tweetsWithOtherCategory: RDD[(String, Map[String, Double])] = TweetWithCondProb.map {
                       //tests if a probability in the list is below the threshold
                       case x if (x._2.map(elem => Math.abs((1.0 / x._2.size.toDouble) - elem._2)).reduce(_ + _) / x._2.size) < Config.get.scoring_Threshold =>
                         (x._1, Map(Config.get.scoring_OtherCategoryName -> 1.0))
                       case x => x
                     }
-                    categoryFreqency2.filter(X => !X._2.contains(Config.get.scoring_OtherCategoryName)).takeSample(false, 50).foreach(println)
-                    val categoryFreqency3 = categoryFreqency2.map(_._2.maxBy(_._2)).groupByKey().map(X => (X._1, X._2.toList.length))
-                    val totalTweets: Int = categoryFreqency3.reduce((X, Y) => (X._1, X._2 + Y._2))._2
-                    val result = CategoryDistribution(categoryFreqency3.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
-                    result
+                    val categoryDistribution = tweetsWithOtherCategory.map(_._2.maxBy(_._2)).groupByKey().map(X => (X._1, X._2.toList.length))
+                    val totalTweets: Int = categoryDistribution.reduce((X, Y) => (X._1, X._2 + Y._2))._2
+                    //convert for to case class to be able to render as JSON
+                    val result = CategoryDistribution(categoryDistribution.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
+                    if (params.size >= 2) {
+                      //convert for to case class to be able to render as JSON
+                      Try(tweetsWithOtherCategory.filter(X => !X._2.contains(Config.get.scoring_OtherCategoryName)).takeSample(false, params(1).toInt).map(X => (X._1, X._2.toList))) match {
+                        case Success(tweetSample) => CategoryDistributionWithTweets(result.distribution, result.totalCount, tweetSample.map(X => TweetWithProb(X._1, X._2.map(X => CategoryProb(X._1, X._2)))))
+                        //no int parasble
+                        case Failure(_) => result
+                      }
+                    } else {
+                      result
+                    }
+
                   case Failure(ex) =>
                     ErrorMessage("Failed to read trained Data, data might not be learned yet.", 101)
                 }
