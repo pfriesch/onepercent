@@ -53,7 +53,7 @@ html body {
 }
 
 .navbar-nav > li > a {
-    min-width: 150px;
+    min-width: 100px;
     border: none;
 }
 
@@ -163,10 +163,20 @@ html body {
     background-image: linear-gradient(to bottom, #40667F 0px, #40667F 100%);
     background-repeat: repeat-x;
     color: #FFF;
+    min-height: 150px;
+}
+
+.jumbotron .container {
+    max-width: 100%;
+    min-height: 260px;
 }
 
 .jumbotron h1, .jumbotron .h1 {
     font-size: 42px;
+}
+
+.jumbotron p {
+    min-height: 115px;
 }
 
 /**

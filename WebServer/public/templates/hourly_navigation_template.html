@@ -1,24 +1,24 @@
-<div class="container">
-    <div class="jumbotron">
+<div class="jumbotron">
+    <div class="container">
         <div id="content-description"><%= description %></div>
 
         <div class="row">
             <form id="date_form">
                 <div class="col-md-4">
                     <select class="form-control" id="date_selector">
-                    <% if(typeof dates != 'undefined') { %>
-                    <% _.each(dates, function(date) { %>
+                        <% if(typeof dates != 'undefined') { %>
+                        <% _.each(dates, function(date) { %>
                         <option value="<%= date %>" <% if (date == selectedDate) { %> selected <% } %>><%= date %></option>
-                    <% }) } %>
+                        <% }) } %>
                     </select>
                 </div>
 
                 <div class="col-md-4">
                     <select class="form-control" id="hour_selector">
-                    <% if(typeof hours != 'undefined') { %>
-                    <% _.each(hours, function(hour) { %>
+                        <% if(typeof hours != 'undefined') { %>
+                        <% _.each(hours, function(hour) { %>
                         <option value="<%= hour %>" <% if (hour == selectedHour) { %> selected <% } %>><%= hour %></option>
-                    <% }) } %>
+                        <% }) } %>
                     </select>
                 </div>
 
