@@ -1,5 +1,5 @@
 *.class
-*.log
+
 
 #temp files
 *~
@@ -45,3 +45,7 @@ target/
 # Nodejs
 node_modules
 routes
+
+# Logfiles
+*.log
+logfile.*
