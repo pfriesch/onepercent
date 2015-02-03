@@ -56,7 +56,8 @@ object Config extends Serializable {
   val defaultScoringTrainingDataPath: String = "scoring/trainingData"
   val defaultScoringTrainedDataPath: String = "scoring/trainedData"
   val defaultClassificationOtherCategoryName: String = "other"
-  val defaultClassificationThreshold: Double = 0.02
+  //SmallTrainingSet 0.16
+  val defaultClassificationThreshold: Double = 0.16
 
 
   var config = Configuration(configVersion,
