@@ -245,17 +245,19 @@ html body {
 
 /**
 * Need that to overwrite bootstrap stuff.
-**/
+
 .btn-navi:hover {
     color: #FFF;
 }
+**/
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     color: #FFF;
-    background-color: #40667F;
-    border-color: #40667F;
+    background-color: #272727;
+    border-color: #6DA5CB;
 }
 
+/**
 .dropdown-toggle.btn-default {
     color: #FFF;
     background-color: #40667F;
@@ -273,6 +275,7 @@ html body {
     background-color: #40667F;
     border-color: #40667F;
 }
+**/
 
 .panel-primary > .panel-heading {
     color: #FFF;
