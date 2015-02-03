@@ -46,7 +46,7 @@ class TweetScoringLearner(sc: SparkContext) {
 
     val totalToken = termCountPerClass.map(X => X._2).reduce(_ + _)
 
-    val categoryProb = termCountPerClass.map(CatCount => (CatCount._1, CatCount._2.toDouble / totalToken.toDouble + 1))
+    val categoryProb = termCountPerClass.map(CatCount => (CatCount._1, CatCount._2.toDouble / totalToken.toDouble))
 
     val termProb = computeTermProb(termCount, categories.collect().toList)
 

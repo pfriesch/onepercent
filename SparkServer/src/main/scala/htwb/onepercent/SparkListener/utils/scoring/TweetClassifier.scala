@@ -26,8 +26,8 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
     if (tokenizedTweet.length > 0) {
       val categories: List[Category] = trainedData.categoryProb.map(X => X._1).toList
       val score: Map[Category, Double] = categories.map { C =>
-        (C, Math.log10(trainedData.categoryProb(C)) +
-          tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log10).reduce(_ + _))
+        (C, Math.log(trainedData.categoryProb(C)) +
+          tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log).reduce(_ + _))
       }.toMap
       normalize(score).maxBy(_._2)
     } else {
@@ -40,8 +40,8 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
     if (tokenizedTweet.length > 0) {
       val categories: List[Category] = trainedData.categoryProb.map(X => X._1).toList
       val score: Map[Category, Double] = categories.map { C =>
-        (C, Math.log10(trainedData.categoryProb(C)) +
-          tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log10).reduce(_ + _))
+        (C, Math.log(trainedData.categoryProb(C)) +
+          tokenizedTweet.map(S => trainedData.termProb.getOrElse(S, trainedData.unknownWordProb)(C)).map(Math.log).reduce(_ + _))
       }.toMap
       (tweet, normalize(score))
     } else {
@@ -51,9 +51,12 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
 
   //normalizes to 0..1
   private def normalize(classifications: Map[Category, Double]): Map[Category, Double] = {
-    val sum: Double = classifications.reduce((X, Y) => (X._1, X._2 + Y._2))._2
+    // due to the use of the logarithm all results are negative, but still the greates value is the highest probability
+    //so to make the highest probability the greatest value the function the exponential function is applied
+    val scoresInverted = classifications.map(X => (X._1, Math.exp(X._2)))
+    val sum: Double = scoresInverted.reduce((X, Y) => (X._1, X._2 + Y._2))._2
     //if its more likely to be in the category the value is lower, so it needs to be inverted
-    classifications.map(X => (X._1, 1 - (X._2 / sum)))
+    scoresInverted.map(X => (X._1, X._2 / sum))
   }
 
 }

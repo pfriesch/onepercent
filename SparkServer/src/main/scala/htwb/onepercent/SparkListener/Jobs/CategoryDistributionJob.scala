@@ -70,20 +70,28 @@ class CategoryDistributionJob extends JobExecutor with Logging {
 
                     val tweetsWithOtherCategory: RDD[(String, Map[String, Double])] = TweetWithCondProb.map {
                       //tests if a probability in the list is below the threshold
+                      // cumpute the average deviation
                       case x if (x._2.map(elem => Math.abs((1.0 / x._2.size.toDouble) - elem._2)).reduce(_ + _) / x._2.size) < Config.get.scoring_Threshold =>
                         (x._1, Map(Config.get.scoring_OtherCategoryName -> 1.0))
                       case x => x
                     }
+
                     val categoryDistribution = tweetsWithOtherCategory.map(_._2.maxBy(_._2)).groupByKey().map(X => (X._1, X._2.toList.length))
                     val totalTweets: Int = categoryDistribution.reduce((X, Y) => (X._1, X._2 + Y._2))._2
                     //convert for to case class to be able to render as JSON
                     val result = CategoryDistribution(categoryDistribution.collect().toList.map(X => CategoryCount(X._1, X._2)), totalTweets)
+
                     if (params.size >= 2) {
-                      //convert for to case class to be able to render as JSON
-                      Try(tweetsWithOtherCategory.filter(X => !X._2.contains(Config.get.scoring_OtherCategoryName)).takeSample(false, params(1).toInt).map(X => (X._1, X._2.toList))) match {
-                        case Success(tweetSample) => CategoryDistributionWithTweets(result.distribution, result.totalCount, tweetSample.map(X => TweetWithProb(X._1, X._2.map(X => CategoryProb(X._1, X._2)))))
-                        //no int parasble
-                        case Failure(_) => result
+                      Try(params(1).toInt) match {
+                        case Success(sampleSize) =>
+                          //convert for to case class to be able to render as JSON
+                          Try(tweetsWithOtherCategory.filter(X => !X._2.contains(Config.get.scoring_OtherCategoryName)).takeSample(false, sampleSize).map(X => (X._1, X._2.toList))) match {
+                            case Success(tweetSample) => CategoryDistributionWithTweets(result.distribution, result.totalCount, tweetSample.map(X => TweetWithProb(X._1, X._2.map(X => CategoryProb(X._1, X._2)))))
+                            //no int parasble
+                            case Failure(_) => ErrorMessage("Parameter [" + params(1) + "] is not a valid sampleSize!", 100)
+                          }
+
+                        case Failure(_) => ErrorMessage("Parameter [" + params(1) + "] is not a valid sampleSize!", 100)
                       }
                     } else {
                       result
