@@ -26,8 +26,8 @@ var TopHashtagView = Backbone.View.extend({
 			hour: options.hour
 		};
 		this.params = {
-			data_types: ['Absolut', 'Relativ'],
-			selectedDataType: 'Absolut'
+			data_types: ['absolut', 'relative'],
+			selectedDataType: 'absolut'
 		};
 
 		this.totalCountCollection = new NameCountCollection('countalltags', this.path.date, this.path.hour);
@@ -86,10 +86,10 @@ var TopHashtagView = Backbone.View.extend({
 		this.render();
 
 		switch(this.params.selectedDataType){
-			case 'Absolut':
-				onepercent.drawColumnChart(names, values, 'Tag Häufigkeit', 'Tags');
+			case 'absolut':
+				onepercent.drawColumnChart(names, values, 'count', 'hashtags');
 				break;
-			case 'Relativ':
+			case 'relative':
 				var totalCountArray = this.totalCountCollection.getValues();
 				var totalCount = 0;
 				for (var i = 0; i < totalCountArray.length; i++) {
@@ -100,7 +100,7 @@ var TopHashtagView = Backbone.View.extend({
 				for (var i = 0; i < values.length; i++) {
 					values[i] = (parseInt(values[i]) / parseInt(totalCount)) * 100;
 				}
-				onepercent.drawColumnChart(names, values, 'Tag Häufigkeit in Prozent', 'Tags');
+				onepercent.drawColumnChart(names, values, 'in percent in relation to all', 'hashtags');
 				break;
 		}
 	}

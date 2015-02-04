@@ -56,7 +56,7 @@ var Router = Backbone.Router.extend({
 				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			case 'languagedistribution':
-				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which language do users tweet the most?<br7>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
+				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which language do users tweet the most?<br/>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			default:
