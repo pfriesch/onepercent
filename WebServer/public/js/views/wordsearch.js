@@ -15,21 +15,8 @@ var WordSearchView = Backbone.View.extend({
         _.bindAll(this, 'render', 'changeData', 'showChart');
         this.setElement(options.el);
         this.template = _.template(tpl.get(options.template));
-        this.path = {
-            table: options.table,
-            searchWord: encodeURIComponent(options.searchWord)
-        };
 
-        if (typeof this.path.searchWord != 'undefined') {
-            this.dataCollection = new WordSearchCollection(this.path.table, this.path.searchWord);
-            this.dataCollection.fetch({
-                success: function (c, r, o) {
-                }, error: function (c, r, o) {
-                    alert("No data available, try again!");
-                }
-            });
-            this.dataCollection.on('sync', this.showChart);
-        }
+        this.changeData(options.table, options.searchWord);
 
         this.render();
     },
@@ -44,21 +31,24 @@ var WordSearchView = Backbone.View.extend({
      * @param searchWord    the word to look for
      */
     changeData: function (table, searchWord) {
-        console.log(searchWord);
         this.path = {
             table: table,
             searchWord: encodeURIComponent(searchWord)
         };
 
-        if (typeof this.dataCollection != 'undefined') {
-            this.dataCollection.remove();
+        if (this.path.searchWord != 'undefined' && parseInt(this.path.searchWord.length) != 0) {
+            if (typeof this.dataCollection != 'undefined') {
+                this.dataCollection.remove();
+            }
+            this.dataCollection = new WordSearchCollection(this.path.table, this.path.searchWord);
+            this.dataCollection.fetch({
+                reset: true,
+                error: function (c, r, o) {
+                    alert("No data available, try again!");
+                }
+            });
+            this.dataCollection.on('sync', this.showChart);
         }
-
-        console.log(this.path.searchWord);
-
-        this.dataCollection = new WordSearchCollection(this.path.table, this.path.searchWord);
-        this.dataCollection.fetch({reset: true});
-        this.dataCollection.on('sync', this.showChart);
     },
 
     /**
