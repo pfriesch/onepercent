@@ -103,7 +103,7 @@ class TweetAnalyser(sc: SparkContext, hiveContext: HiveContext) {
      */
     val convertToLocalTime = (timestamp: Long, offset: Int) => {
       //offset * X => offset is in seconds we need to get milliseconds
-      timestamp + (offset * 0x1000)
+      timestamp + (offset * 0x3E8)
     }
 
     /**
