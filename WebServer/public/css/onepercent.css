@@ -287,6 +287,11 @@ html body {
     border-color: #40667F;
 }
 
+.panel-info .panel-body {
+    padding: 15px;
+    color: #000;
+}
+
 /**
 * ========================================================================
 * CONTENT GROUPS
@@ -364,4 +369,11 @@ header {
 
 #content-navigation > .container {
     padding-top: 5px;
+}
+
+input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: #000;
 }
