@@ -12,7 +12,7 @@ var WordSearchView = Backbone.View.extend({
      *                    - searchWord:the word to search for
      */
     initialize: function (options) {
-        _.bindAll(this, 'render', 'changeData', 'showChart');
+        _.bindAll(this, 'render', 'renderError', 'changeData', 'showChart');
         this.setElement(options.el);
         this.template = _.template(tpl.get(options.template));
 
@@ -23,6 +23,19 @@ var WordSearchView = Backbone.View.extend({
 
     render: function () {
         this.$el.html(this.template());
+    },
+
+
+    /**
+     * Draws a Message on the site that contains a message.
+     * @param errorMessage  the message that will show on the page.
+     */
+    renderError: function(errorMessage){
+        if(typeof errorMessage != 'string'){
+            errorMessage = '<h1>No Data available!</h1>'
+        }
+        var errorTemplate = _.template(tpl.get(templates.error_template));
+        this.$el.html(errorTemplate({error_message: errorMessage}));
     },
 
     /**
@@ -42,12 +55,12 @@ var WordSearchView = Backbone.View.extend({
             }
             this.dataCollection = new WordSearchCollection(this.path.table, this.path.searchWord);
             this.dataCollection.fetch({
-                reset: true,
-                error: function (c, r, o) {
-                    alert("No data available, try again!");
-                }
+                reset: true
             });
             this.dataCollection.on('sync', this.showChart);
+            this.dataCollection.on('error', this.renderError)
+        } else {
+            this.renderError('<h1>Please enter a Word!</h1>')
         }
     },
 
