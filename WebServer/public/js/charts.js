@@ -81,7 +81,8 @@ onepercent = {
 
         var options = {
             vAxis: {title: ytitle},
-            hAxis: {title: xtitle}
+            hAxis: {title: xtitle},
+            curveType: 'function'
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart'));
