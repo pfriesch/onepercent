@@ -13,6 +13,7 @@ var client = new net.Socket(); // Creates Socket
 
 var callbackToTATWebserver; // Callbackfunction to send the responsedata back to the OP_Webserver.
 
+client.setMaxListeners(0);
 /* Connects to the Sparkserver with Configuationfile parameters per Websocket*/
 client.connect(config.sparkServerPORT, config.sparkServerHOST, function() {
     dataLogger.logData('CONNECTED TO: ' + config.sparkServerHOST + ':' + config.sparkServerPORT);
