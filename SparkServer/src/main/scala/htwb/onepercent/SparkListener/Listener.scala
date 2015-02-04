@@ -58,8 +58,6 @@ object App {
     Logger.getLogger("org").setLevel(Level.WARN)
     val system = ActorSystem()
     val listener = system.actorOf(Props[Listener])
-
-
   }
 
 }

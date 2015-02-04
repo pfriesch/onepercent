@@ -26,14 +26,14 @@ import scala.util.{Failure, Success, Try}
 // !!!!!!!! If signature is changed configVersion needs to be counted up !!!!!!!!!
 //The reason is that the json string is not checked if it has the right structure while parsing
 case class Configuration(configVersion: Int,
-                    hostname: String,
-                    port: Int,
-                    JobsPackageString: String,
-                    tweetsPrefixPath: String,
-                    scoring_TrainingDataPath: String,
-                    scoring_TrainedDataPath: String,
-                    scoring_OtherCategoryName: String,
-                    scoring_Threshold: Double)
+                         hostname: String,
+                         port: Int,
+                         JobsPackageString: String,
+                         tweetsPrefixPath: String,
+                         scoring_TrainingDataPath: String,
+                         scoring_TrainedDataPath: String,
+                         scoring_OtherCategoryName: String,
+                         scoring_Threshold: Double)
 
 
 /**
@@ -56,7 +56,8 @@ object Config extends Serializable {
   val defaultScoringTrainingDataPath: String = "scoring/trainingData"
   val defaultScoringTrainedDataPath: String = "scoring/trainedData"
   val defaultClassificationOtherCategoryName: String = "other"
-  val defaultClassificationThreshold: Double = 0.20
+  //SmallTrainingSet 0.16
+  val defaultClassificationThreshold: Double = 0.16
 
 
   var config = Configuration(configVersion,

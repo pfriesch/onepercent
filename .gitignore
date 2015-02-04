@@ -4,6 +4,10 @@
 #temp files
 *~
 
+#log
+*/logfile.txt
+*logfile.txt
+
 #Config
 config.cfg
 */config.cfg
