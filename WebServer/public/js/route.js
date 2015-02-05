@@ -48,15 +48,15 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'toptentags':
-				this.description = "<h2><b>TOP TEN HASHTAGS</b></b></h2><p>What is the most used hashtag on twitter?<br/>The following chart will give you an overview relating this question.<br/>Please note that we included all tweets no matter in which language the hashtag was tweeted.</p>";
+				this.description = "<h2><b>TOP TEN HASHTAGS</b></b></h2><p>Which are the ten (10) most used hashtags on twitter?<br/>The following chart will give you an overview relating this question.<br/>Please note that we included all tweets no matter in which language the hashtag was tweeted.</p>";
 				this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.tophashtag_template});
 				break;
 			case 'origintweets':
-				this.description = "<h2><b>ORIGIN TWEETS</b></h2><p>How many tweets are origins and how many are answers to those origin tweets?<br/>The following chart will give you an overview relating this question.<br/></p>";
+				this.description = "<h2><b>ORIGIN TWEETS</b></h2><p>How many tweets are origins and how many refer to those origin tweets?<br/>The following chart will give you an overview relating this question.<br/></p>";
 				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			case 'languagedistribution':
-				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which language do users tweet the most?<br/>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
+				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which languages do users tweet the most?<br/>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			default:
@@ -90,7 +90,7 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'tweetsatdaytime':
-				this.description = "<h2><b>TWEETS AT DAYTIME</b></h2><p>At what daytime do people tweet the most or the least?<br/>The following chart will give you an overview relating this question.<br/>To answer this question correctly we annualised each local time (GMT X) to one global time (GMT 0).</p>";
+				this.description = "<h2><b>TWEETS AT DAYTIME</b></h2><p>At what daytime do people tweet the most or the least?<br/>The following chart will give you an overview relating this question.<br/>To answer this question correctly we annualised each local time (GMT X) to one global time (GMT 0) with the given offset. For example: A Tweet at the 24th January 2015 at 1 pm in New York (GMT -5) and another Tweet in Berlin at the same date (GMT +1) will count to one global time (GMT 0).</p>";
 				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			default:
@@ -103,7 +103,7 @@ var Router = Backbone.Router.extend({
 	wordSearch: function(table, searchWord){
 		this.reinitalizeViews();
 		mainNavigationView.changeActive(table);
-		this.description = "<h2><b>WORD SEARCH</b></h2><p>Was the word \"X\" used when tweeting and if yes, when and how often?<br/>The following chart will give you an overview relating this question.<br/>Please note that we do not give you any message when the computing for your request is done. So please refresh your browser once in a minute to see the result.</p>";
+		this.description = "<h2><b>WORD SEARCH</b></h2><p>How many times was the word \"X\" tweeted during a day?<br/>The following chart will give you an overview relating this question.<br/>Please note that we do not give you any message when the computing for your request is done. So please refresh your browser once in a minute to see the result.</p>";
 		if(typeof searchWord != 'string'){
 			this.chartView = new WordSearchView({table: table, el: '#content-chart', template: templates.single_chart_template});
 			this.navigationView = new SearchNavigationView({table: table, el: '#content-navigation',
