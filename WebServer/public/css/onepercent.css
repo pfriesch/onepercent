@@ -157,9 +157,10 @@ html body {
 * ========================================================================
 **/
 .jumbotron {
+    padding: 12px 0px;
     margin-top: -26px;
     padding-top: 0px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     background-image: linear-gradient(to bottom, #40667F 0px, #40667F 100%);
     background-repeat: repeat-x;
     color: #FFF;
@@ -168,7 +169,7 @@ html body {
 
 .jumbotron .container {
     max-width: 100%;
-    min-height: 200px;
+    min-height: 100px;
 }
 
 .jumbotron h2, .jumbotron .h2 {
@@ -253,7 +254,7 @@ html body {
 
 .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     color: #FFF;
-    background-color: #272727;
+    background-color: #40667F;
     border-color: #6DA5CB;
 }
 
@@ -287,9 +288,21 @@ html body {
     border-color: #40667F;
 }
 
+.panel-info {
+    border-color: #40667F;
+}
+
 .panel-info .panel-body {
     padding: 15px;
     color: #000;
+}
+
+.panel-info > .panel-heading {
+    background-image: linear-gradient(to bottom, #40667F 0px, #40667F 100%);
+    background-repeat: repeat-x;
+    color: #fff;
+    background-color: #40667F;
+    border-color: #40667F;
 }
 
 /**
