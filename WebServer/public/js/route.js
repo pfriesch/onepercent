@@ -60,7 +60,7 @@ var Router = Backbone.Router.extend({
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
             case 'categorydistribution':
-                this.description = "TODO";
+                this.description = "<h2><b>CATEGORIY DISTRIBUTION</b></h2><p>We categorizised all Tweets with a scoring alogrithm.<br/>The following chart will give you an overview of the tweet category distribution.<br/>Available categories: Sports, Violence, Economy, Entertainment and Technology</p>";
                 this.chartView = new CategoryDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
                 break;
 			default:
