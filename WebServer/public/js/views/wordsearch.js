@@ -32,7 +32,7 @@ var WordSearchView = Backbone.View.extend({
      */
     renderError: function(errorMessage){
         if(typeof errorMessage != 'string'){
-            errorMessage = '<h1>No Data available!</h1>'
+            errorMessage = '<b>No Data available!</b>'
         }
         var errorTemplate = _.template(tpl.get(templates.error_template));
         this.$el.html(errorTemplate({error_message: errorMessage}));
@@ -60,7 +60,7 @@ var WordSearchView = Backbone.View.extend({
             this.dataCollection.on('sync', this.showChart);
             this.dataCollection.on('error', this.renderError)
         } else {
-            this.renderError('<h1>Please enter a Word!</h1>')
+            this.renderError('<b>Please enter a Word!</b>')
         }
     },
 
