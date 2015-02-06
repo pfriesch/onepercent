@@ -231,6 +231,12 @@ html body {
     background-image: none;
 }
 
+.btn-search {
+    margin-bottom: 4px;
+    padding-top: 0px;
+    padding-bottom: 3px;
+}
+
 /**
 * This is the search button for the navi.
 **/
@@ -293,7 +299,7 @@ html body {
 }
 
 .panel-info .panel-body {
-    padding: 15px;
+    padding: 6px;
     color: #000;
 }
 
@@ -389,4 +395,15 @@ input, button, select, textarea {
     font-size: inherit;
     line-height: inherit;
     color: #000;
+}
+
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    list-style: outside none none;
+    background-color: #272727;
+    border-radius: 4px;
+    color: #FFF;
 }

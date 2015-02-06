@@ -33,7 +33,8 @@ case class Configuration(configVersion: Int,
                          scoring_TrainingDataPath: String,
                          scoring_TrainedDataPath: String,
                          scoring_OtherCategoryName: String,
-                         scoring_Threshold: Double)
+                         scoring_Threshold: Double,
+                         scoring_MinProbForResult: Double)
 
 
 /**
@@ -47,7 +48,7 @@ case class Configuration(configVersion: Int,
 object Config extends Serializable {
 
   // !!!!!!!!!! Count up every time you change the signature Configuration case class !!!!!!!!!
-  val configVersion = 6
+  val configVersion = 7
   val configFileName = "config.cfg"
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
   val defaultPort = 5555
@@ -58,9 +59,8 @@ object Config extends Serializable {
   val defaultClassificationOtherCategoryName: String = "other"
   //SmallTrainingSet 0.16
   val defaultClassificationThreshold: Double = 0.16
-
-
-  var config = Configuration(configVersion,
+  val defaultScoringMinProbForResult: Double = 0.9
+  val defaultConfig = Configuration(configVersion,
     defaultHostname,
     defaultPort,
     defaultJobsPackage,
@@ -68,7 +68,11 @@ object Config extends Serializable {
     defaultScoringTrainingDataPath,
     defaultScoringTrainedDataPath,
     defaultClassificationOtherCategoryName,
-    defaultClassificationThreshold)
+    defaultClassificationThreshold,
+    defaultScoringMinProbForResult
+  )
+
+  var config = defaultConfig
 
   {
     val file = new File(configFileName)
@@ -90,16 +94,7 @@ object Config extends Serializable {
    */
   private def setDefaultConfiguration = {
     val writer = new PrintWriter(new File(configFileName))
-    writer.write(JsonTools.toJsonString(Configuration(configVersion,
-      defaultHostname,
-      defaultPort,
-      defaultJobsPackage,
-      defaultTweetsPrefixPath,
-      defaultScoringTrainingDataPath,
-      defaultScoringTrainedDataPath,
-      defaultClassificationOtherCategoryName,
-      defaultClassificationThreshold
-    )))
+    writer.write(JsonTools.toJsonString(defaultConfig))
     writer.close()
   }
 

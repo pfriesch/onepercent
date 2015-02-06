@@ -13,16 +13,10 @@
                         Searchword
                     </div>
                     <div class="panel-body">
-                        <input id="searchword_field" type="text" size="40" maxlength="40" <% if(typeof searchWord != 'undefined'){ %> value="<%= searchWord %>"<% } %> >
-                        <div id="load">
-                            <button type="submit" class="btn btn-default">show</button>
+                        <input id="searchword_field" type="text" maxlength="150" <% if(typeof searchWord != 'undefined'){ %> value="<%= searchWord %>"<% } %> >
+                        <div id="load" style="display:inline-block">
+                            <button type="submit" class="btn btn-default btn-search">search</button>
                         </div>
-                        <br/><br/>
-                           # is allowed once or not at all<br/>
-                            Every english word character and figure is allowed (a - z, A - Z, 0-9)<br/>
-                            The following special chars are allowd: &auml; &ouml; &uuml;<br/>
-                            The word length has to be a minimum of 2 characters and a maximum of 150<br/>
-
                     </div>
                 </div>
             </div>
@@ -35,7 +29,7 @@
                     </div>
                     <div class="panel-body">
                         <% _.each(availableWords, function(word) { %>
-                        <a href="?#live/wordsearch/<%= encodeURIComponent(word) %>" class="btn btn-default" role="button"><%= word %></a>
+                        <a href="?#live/wordsearch/<%= encodeURIComponent(word) %>" class="btn btn-default btn-search" role="button"><%= word %></a>
                         <% }) %>
                     </div>
                 </div>

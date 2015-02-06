@@ -1,3 +1,12 @@
 <div class="container">
-	<div id="error-message"><%= error_message %></div>
+	<div id="error-message">
+		<div class="alert alert-danger" role="alert">
+			<%= error_message %><br/><br/>
+			<p>Please note that:<br/>
+				# is allowed once at the beginning or not at all<br/>
+				Every english word character and figure is allowed (a - z, A - Z, 0-9).<br/>
+				The following special chars are allowed: ä ö ü<br/>
+				The word length has to be a minimum of 2 characters and a maximum of 150</p>
+		</div>
+	</div>
 </div>

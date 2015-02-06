@@ -85,7 +85,7 @@ class CategoryDistributionJob extends JobExecutor with Logging {
                       Try(params(1).toInt) match {
                         case Success(sampleSize) =>
                           //convert for to case class to be able to render as JSON
-                          Try(tweetsWithOtherCategory.filter(X => !X._2.contains(Config.get.scoring_OtherCategoryName)).takeSample(false, sampleSize).map(X => (X._1, X._2.toList))) match {
+                          Try(tweetsWithOtherCategory.filter(X => !X._2.contains(Config.get.scoring_OtherCategoryName)).filter(X => X._2.exists(Y => Y._2 > Config.get.scoring_MinProbForResult)).takeSample(false, sampleSize).map(X => (X._1, X._2.toList))) match {
                             case Success(tweetSample) => CategoryDistributionWithTweets(result.distribution, result.totalCount, tweetSample.map(X => TweetWithProb(X._1, X._2.map(X => CategoryProb(X._1, X._2)))))
                             //no int parasble
                             case Failure(_) => ErrorMessage("Parameter [" + params(1) + "] is not a valid sampleSize!", 100)

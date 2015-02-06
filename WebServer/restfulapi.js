@@ -73,11 +73,11 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res) {
                 });
             } catch (ex) {
                 dataLogger.logData(ex);
-                res.send("Job analysis failed");
+                res.send("error");
             }
         } else {
             //res.send({"errorMsg": "Cant find Job", "code": 404});
-            res.send("Cant find Job");
+            res.send("error");
         }
     });
 });
