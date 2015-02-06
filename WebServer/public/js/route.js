@@ -48,7 +48,7 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'toptentags':
-				this.description = "<h2><b>TOP TEN HASHTAGS</b></b></h2><p>Which are the ten (10) most used hashtags on twitter?<br/>The following chart will give you an overview relating this question.<br/>Please note that we included all tweets no matter in which language the hashtag was tweeted.</p>";
+				this.description = "<h2><b>TOP TEN HASHTAGS</b></b></h2><p>Which are the ten most used hashtags on twitter?<br/>The following chart will give you an overview relating this question.<br/>Please note that we included all tweets no matter in which language the hashtag was tweeted.</p>";
 				this.chartView = new TopHashtagView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.tophashtag_template});
 				break;
 			case 'origintweets':
@@ -56,11 +56,11 @@ var Router = Backbone.Router.extend({
 				this.chartView = new OriginTweetView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			case 'languagedistribution':
-				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which languages do users tweet the most?<br/>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
+				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which languages do users tweet the most?<br/>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine \"Undetermined\" in what language they were written.</p>";
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
             case 'categorydistribution':
-                this.description = "<h2><b>CATEGORIY DISTRIBUTION</b></h2><p>We categorizised all Tweets with a scoring alogrithm.<br/>The following chart will give you an overview of the tweet category distribution.<br/>Available categories: Sports, Violence, Economy, Entertainment and Technology</p>";
+                this.description = "<h2><b>CATEGORIY DISTRIBUTION</b></h2><p>We categorized all Tweets with a scoring alogrithm.<br/>The following chart will give you an overview of the tweet category distribution.<br/>Available categories: Sports, Violence, Economy, Entertainment and Technology.</p>";
                 this.chartView = new CategoryDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
                 break;
 			default:
@@ -94,7 +94,7 @@ var Router = Backbone.Router.extend({
 		mainNavigationView.changeActive(table);
 		switch(table){
 			case 'tweetsatdaytime':
-				this.description = "<h2><b>TWEETS AT DAYTIME</b></h2><p>At what daytime do people tweet the most or the least?<br/>The following chart will give you an overview relating this question.<br/>To answer this question correctly we annualised each local time (GMT X) to one global time (GMT 0) with the given offset. For example: A Tweet at the 24th January 2015 at 1 pm in New York (GMT -5) and another Tweet in Berlin at the same date (GMT +1) will count to one global time (GMT 0).</p>";
+				this.description = "<h2><b>TWEETS AT DAYTIME</b></h2><p>At what daytime do people tweet the most or the least?<br/>The following chart will give you an overview relating this question.<br/>To answer this question correctly we annualised each local time (GMT X) to one global time (GMT 0) with the given offset. For example: A tweet at the 24th January 2015 at 1 pm in New York (GMT -5) and another tweet in Berlin at the same date (GMT +1) will count to one global time (GMT 0).</p>";
 				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#content-chart', template: templates.single_chart_template});
 				break;
 			default:
@@ -107,7 +107,7 @@ var Router = Backbone.Router.extend({
 	wordSearch: function(table, searchWord){
 		this.reinitalizeViews();
 		mainNavigationView.changeActive(table);
-		this.description = "<h2><b>WORD SEARCH</b></h2><p>How many times was the word \"X\" tweeted during a day?<br/>The following chart will give you an overview relating this question.<br/>Please note that we do not give you any message when the computing for your request is done. So please refresh your browser once in a minute to see the result.</p>";
+		this.description = "<h2><b>WORD SEARCH</b></h2><p>How many times was the word \"X\" tweeted during the last 24 hours?<br/>The following chart will give you an overview relating this question.<br/>Please consider to wait a few minutes until the result is computed.</p>";
 		if(typeof searchWord != 'string'){
 			this.chartView = new WordSearchView({table: table, el: '#content-chart', template: templates.single_chart_template});
 			this.navigationView = new SearchNavigationView({table: table, el: '#content-navigation',
