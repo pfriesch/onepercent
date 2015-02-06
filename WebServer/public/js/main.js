@@ -7,7 +7,8 @@ var templates = {
 	empty_template: 'empty_template',
 	single_chart_template: 'single_chart_template',
 	navigation_template: 'navigation_template',
-    error_template: 'error_template'
+    error_template: 'error_template',
+    wordsearch_template: 'wordsearch_template'
 };
 
 Backbone.View.prototype.close = function() {
@@ -17,7 +18,7 @@ Backbone.View.prototype.close = function() {
 
 var appRouter;
 var mainNavigationView;
-tpl.loadTemplates([templates.error_template,templates.navigation_template, templates.hourly_template, templates.home_template, templates.tophashtag_template, templates.empty_template, templates.single_chart_template, templates.daily_template, templates.search_template], function () {
+tpl.loadTemplates([templates.wordsearch_template,templates.error_template,templates.navigation_template, templates.hourly_template, templates.home_template, templates.tophashtag_template, templates.empty_template, templates.single_chart_template, templates.daily_template, templates.search_template], function () {
 	mainNavigationView = new NavigationView({el: '#mainNavigation', template: templates.navigation_template});
 	appRouter = new Router();
 	Backbone.history.start();

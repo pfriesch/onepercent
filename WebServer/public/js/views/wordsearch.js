@@ -12,9 +12,13 @@ var WordSearchView = Backbone.View.extend({
      *                    - searchWord:the word to search for
      */
     initialize: function (options) {
-        _.bindAll(this, 'render', 'renderError', 'changeData', 'showChart');
+        _.bindAll(this, 'render', 'renderError', 'changeData', 'fetchTweetids', 'showChart');
         this.setElement(options.el);
         this.template = _.template(tpl.get(options.template));
+
+        this.params = {
+            tweetids: undefined
+        };
 
         this.changeData(options.table, options.searchWord);
 
@@ -22,7 +26,7 @@ var WordSearchView = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html(this.template());
+        this.$el.html(this.template(this.params));
     },
 
 
@@ -57,11 +61,24 @@ var WordSearchView = Backbone.View.extend({
             this.dataCollection.fetch({
                 reset: true
             });
-            this.dataCollection.on('sync', this.showChart);
+            this.dataCollection.on('sync', this.fetchTweetids);
             this.dataCollection.on('error', this.renderError)
         } else {
             this.renderError('<h1>Please enter a Word!</h1>')
         }
+    },
+
+    /**
+     * Fetches the tweetids.
+     */
+    fetchTweetids: function(){
+        if (typeof this.tweetidCollection != 'undefined') {
+            this.tweetidCollection.remove();
+        }
+
+        this.tweetidCollection = new TweetIDCollection(this.path.searchWord);
+        this.tweetidCollection.fetch({reset:true});
+        this.tweetidCollection.on('reset', this.showChart);
     },
 
     /**
@@ -71,6 +88,8 @@ var WordSearchView = Backbone.View.extend({
         var timestamps = this.dataCollection.getTimestamps();
         var values = this.dataCollection.getValues();
         var word = this.dataCollection.getUniqNames()[0];
+
+        this.params.tweetids = this.tweetidCollection.getTweetIds();
 
         this.render();
         onepercent.drawLineChart(timestamps, values, word, 'Count');
