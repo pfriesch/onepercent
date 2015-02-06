@@ -83,6 +83,21 @@ app.get('/api/live/wordsearch/:searchWord', function wordSearchREST(req, res) {
 });
 
 /*
+ * If the browserClient requests with URLparams (/api/:table)
+ * this methode gets the needed data from database and responds it to the Browserclient.
+ * returns available data, if the the word was found, or null if the word wasn´t found or it is not valid
+ */
+app.get('/api/live/tweetid/:searchWord', function wordSearchREST(req, res) {
+    var time = moment();
+    var date = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), -48);
+    var nextDate = createSQLDate(time.format('YYYY-MM-DD'), time.format('HH'), +1);
+    var searchWord = decodeURIComponent(req.params.searchWord);
+    dataBaseHandler.select("SELECT * FROM ?? WHERE written >= ? AND written < ? AND name = ?", ['tweetids', date, nextDate, searchWord], function (result) {
+        res.send(result);
+    });
+});
+
+/*
  * If the browserClient requests with URLparams (/api/daily/:table/:date)
  * this methode gets the needed data from database and responds it to the Browserclient.
  */
