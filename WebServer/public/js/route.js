@@ -59,6 +59,10 @@ var Router = Backbone.Router.extend({
 				this.description = "<h2><b>LANGUAGE DISTRIBUTION</b></h2><p>In which languages do users tweet the most?<br/>The following chart will give you an overview relating this question.<br/>Please note that there is always a small percentage of tweets which we could not determine in what language they were written.</p>";
 				this.chartView = new LanguageDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
 				break;
+            case 'categorydistribution':
+                this.description = "TODO";
+                this.chartView = new CategoryDistributionView({table: table, date: date, hour: hour, el: '#content-chart', template: templates.single_chart_template});
+                break;
 			default:
 				this.chartView = new HomeView({el: '#content-chart', template: templates.empty_template});
 		}

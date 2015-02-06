@@ -2,107 +2,116 @@
 <html lang="de">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Analyse von Twitternachrichten">
-	
-	<title>Home @ onepercent</title>
-	
-	<!-- Bootstrap -->
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Analyse von Twitternachrichten">
+
+    <title>Home @ onepercent</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="css/onepercent.css" rel="stylesheet" type="text/css" media="screen">
 </head>
 
 <body>
 
-	<nav class="navbar navbar-default navbar-fixed-top navbar-center">
+<nav class="navbar navbar-default navbar-fixed-top navbar-center">
 
-  		<div class="container-fluid">
-		    <div class="container">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-				<a class="navbar-brand">onpercent</a>
-		    </div>
-
-
-		    <!-- Collect the nav links, forms, and other content for toggling -->
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<div id="mainNavigation"></div>
-
-				<!--form class="navbar-form navbar-right" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control form-navi-search" placeholder="Word Search">
-					</div>
-					<button type="submit" class="btn btn-sm btn-navi">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					</button>
-				</form-->
-
-		    </div><!-- /.navbar-collapse -->
-
-			</div>
-		</div><!-- /.container-fluid -->
-	</nav>
-
-	<div id="main-content"></div> <!-- Ende chart_navigation_content -->
-	
-	<div class="container">
-		<footer class="row">
-			<ol class="breadcrumb">
-				<li class="active">
-					<a href="?#">Home</a>
-				</li>
-				<li>
-					<a href="mailto:gaertner@htw-berlin.de?subject=onepercent%20project%20study">Contact</a>
-				</li>
-				<li>
-					University of Applied Sciences, Berlin, Germany &copy; 2014 - 2015
-				</li>
-			</ol>
-		</footer>
-	</div>
-
-	<!-- jQuery für Bootstrap's JavaScrip plugins
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <div class="container-fluid">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">onepercent</a>
+            </div>
 
 
-  	<script language="JavaScript" src="js/template_loader.js"></script>
-	<script language="JavaScript" src="js/charts.js"></script>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div id="mainNavigation"></div>
 
-	<script language="JavaScript" src="js/views/home.js"></script>
-	<script language="JavaScript" src="js/views/navigation.js"></script>
-	<script language="JavaScript" src="js/views/hourlynavigation.js"></script>
-	<script language="JavaScript" src="js/views/dailynavigation.js"></script>
-	<script language="JavaScript" src="js/views/searchnavigation.js"></script>
-	<script language="JavaScript" src="js/views/tophashtag.js"></script>
-	<script language="JavaScript" src="js/views/origintweet.js"></script>
-	<script language="JavaScript" src="js/views/languagedistribution.js"></script>
-	<script language="JavaScript" src="js/views/tweetsatdaytime.js"></script>
-	<script language="JavaScript" src="js/views/wordsearch.js"></script>
+                <!--form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-navi-search" placeholder="Word Search">
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-navi">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </form-->
 
-    <script language="JavaScript" src="js/models/modelprototype.js"></script>
-	<script language="JavaScript" src="js/models/timestamp.js"></script>
-	<script language="JavaScript" src="js/models/namecount.js"></script>
-	<script language="JavaScript" src="js/models/languagecount.js"></script>
-	<script language="JavaScript" src="js/models/tweetsatdaytime.js"></script>
-	<script language="JavaScript" src="js/models/wordsearch.js"></script>
+            </div>
+            <!-- /.navbar-collapse -->
 
-	<script language="JavaScript" src="js/route.js"></script>
-	<script language="JavaScript" src="js/main.js"></script>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+<div id="main-content"></div>
+<!-- Ende chart_navigation_content -->
+
+<div class="container">
+    <footer class="row">
+        <ol class="breadcrumb">
+            <li class="active">
+                <a href="?#">Home</a>
+            </li>
+            <li>
+                <a href="mailto:gaertner@htw-berlin.de?subject=onepercent%20project%20study">Contact</a>
+            </li>
+            <li>
+                University of Applied Sciences, Berlin, Germany &copy; 2014 - 2015
+            </li>
+        </ol>
+    </footer>
+</div>
+
+<!-- jQuery für Bootstrap's JavaScrip plugins
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+<script language="JavaScript" src="js/template_loader.js"></script>
+<script language="JavaScript" src="js/charts.js"></script>
+
+<script language="JavaScript" src="js/views/home.js"></script>
+<script language="JavaScript" src="js/views/navigation.js"></script>
+<script language="JavaScript" src="js/views/hourlynavigation.js"></script>
+<script language="JavaScript" src="js/views/dailynavigation.js"></script>
+<script language="JavaScript" src="js/views/searchnavigation.js"></script>
+<script language="JavaScript" src="js/views/tophashtag.js"></script>
+<script language="JavaScript" src="js/views/origintweet.js"></script>
+<script language="JavaScript" src="js/views/languagedistribution.js"></script>
+<script language="JavaScript" src="js/views/tweetsatdaytime.js"></script>
+<script language="JavaScript" src="js/views/wordsearch.js"></script>
+<script language="JavaScript" src="js/views/categorydistribution.js"></script>
+
+
+<script language="JavaScript" src="js/models/modelprototype.js"></script>
+<script language="JavaScript" src="js/models/timestamp.js"></script>
+<script language="JavaScript" src="js/models/namecount.js"></script>
+<script language="JavaScript" src="js/models/languagecount.js"></script>
+<script language="JavaScript" src="js/models/tweetsatdaytime.js"></script>
+<script language="JavaScript" src="js/models/wordsearch.js"></script>
+<script language="JavaScript" src="js/models/categorydistribution.js"></script>
+
+
+<script language="JavaScript" src="js/route.js"></script>
+<script language="JavaScript" src="js/main.js"></script>
+>>>>>>> 148cb5b6a65e16a35c9cf8a8486a355e8c745dc6
 
 </body>
 
