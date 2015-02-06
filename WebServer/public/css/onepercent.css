@@ -396,3 +396,13 @@ input, button, select, textarea {
     line-height: inherit;
     color: #000;
 }
+
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: outside none none;
+    background-color: #272727;
+    border-radius: 4px;
+    color: #FFF;
+}
