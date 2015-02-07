@@ -16,12 +16,22 @@ CategoryDistributionJob.prototype.constructor = CategoryDistributionJob; // this
 
 // overrides the saveToDatabase methode
 CategoryDistributionJob.prototype.saveToDatabase = function(rD, jD){
-    for (var i=0; i< rD.jobResult.distribution.length; i++) {
+    for (var i=0; i< rD.jobResult.category.length; i++) {
         // to access data you must access the "jobResult" Field in rD
         dataBaseHandler.insert(this.getTable(), this.getColumnNames(), [rD.jobResult.distribution[i].category, rD.jobResult.distribution[i].count, jD.params[0]]);
+    }
+    for (var i=0; i< rD.jobResult.tweets.length; i++) {
+        for (var j=0; j < rD.jobResult.tweets.categoryProb.length; j++) {
+          databasehandler.insert("tweetcategorydistribution", ["timestamp", "category", "probability", "tweet"], [rD.JobrD.params[0], rD.jobResult.tweets[i].categoryProb[j].category, rD.jobResult.tweets[i].categoryProb[j].prob, rD.jobResult.tweets[i].text]);
+      }
     }
     // why is one cloumn called time, makes things extra complicated
     dataBaseHandler.insert("countallcategorytweets", ["count","timestamp"], [rD.jobResult.totalCount, jD.params[0]]);
 };
 
 module.exports = CategoryDistributionJob;
+
+/*
+for (var i=0; i< rD.jobresult)
+databasehandler.insert(this.;
+*/
