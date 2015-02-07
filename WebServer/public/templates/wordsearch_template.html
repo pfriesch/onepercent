@@ -1,19 +1,69 @@
 <div class="container">
-	<div id="chart" style="width:auto; height: 400px;"></div>
 
-    <% if(typeof tweetids != 'undefined') { %>
-        <button onclick='twitter.createTweets("<%= tweetids %>", "tweet")'>testst</button>
-    <% } %>
+    <div class="row">
+        <div id="chart" class="chart" style="width:auto; height: 400px;"></div>
+    </div>
 
-    <div id="tweet0"></div>
-    <div id="tweet1"></div>
-    <div id="tweet2"></div>
-    <div id="tweet3"></div>
-    <div id="tweet4"></div>
-    <div id="tweet5"></div>
-    <div id="tweet6"></div>
-    <div id="tweet7"></div>
-    <div id="tweet8"></div>
-    <div id="tweet9"></div>
-    <div id="tweet10"></div>
+    <div class="row text-center">
+
+        <% if(typeof tweetids != 'undefined') { %>
+        <button class="btn btn-default" onclick='twitter.createTweets("<%= tweetids %>", "tweet")'>Show example Tweets!</button>
+        <% } %>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div id="tweet1"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="tweet2"></div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div id="tweet3"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="tweet4"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="tweet5"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="tweet6"></div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="tweet7"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="tweet8"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="tweet9"></div>
+            </div>
+
+            <div class="col-md-4">
+                <div id="tweet0"></div>
+            </div>
+
+            <!--<div class="col-md-6">
+                <div id="tweet10"></div>
+            </div>-->
+        </div>
+
+    </div>
+
 </div>
