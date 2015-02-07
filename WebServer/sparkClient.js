@@ -61,7 +61,11 @@ client.on('close', function () {
 /* Sends the jobData to sparkserver */
 sparkClient.sendJobDataToServer = function sendJobRequestToSparkServer(jobData, callback) {
     callbackToTATWebserver = callback;
-    client.write(JSON.stringify(jobData) + '\n');
+    if (client.writable) {
+        client.write(JSON.stringify(jobData) + '\n');
+    } else {
+        throw "[ERROR] Connection to SparkServer not writable"
+    }
 }
 
 /* if there is a errormesage in the responseString this method logs the errorcode and errormessage*/
