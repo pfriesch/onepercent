@@ -59,7 +59,7 @@ object Config extends Serializable {
   val defaultClassificationOtherCategoryName: String = "other"
   //SmallTrainingSet 0.16
   val defaultClassificationThreshold: Double = 0.16
-  val defaultScoringMinProbForResult: Double = 0.9
+  val defaultScoringMinProbForResult: Double = 0.95
   val defaultConfig = Configuration(configVersion,
     defaultHostname,
     defaultPort,
