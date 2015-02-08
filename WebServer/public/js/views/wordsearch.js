@@ -54,6 +54,8 @@ var WordSearchView = Backbone.View.extend({
         };
 
         if (this.path.searchWord != 'undefined' && parseInt(this.path.searchWord.length) != 0) {
+            this.path.searchWord = this.path.searchWord.toLowerCase();
+
             if (typeof this.dataCollection != 'undefined') {
                 this.dataCollection.remove();
             }
