@@ -20,7 +20,6 @@
                     </div>
                 </div>
             </div>
-            <% if(typeof availableWords != 'undefined') { %>
             <div class="col-md-4">
 
                 <div class="panel panel-info">
@@ -28,15 +27,17 @@
                         Cached Data
                     </div>
                     <div class="panel-body">
+                        <% if(typeof availableWords != 'undefined') { %>
                         <% _.each(availableWords, function(word) { %>
                         <a href="?#live/wordsearch/<%= encodeURIComponent(word) %>" class="btn btn-default btn-search" role="button"><%= word %></a>
                         <% }) %>
+                        <% } %>
                     </div>
                 </div>
 
 
             </div>
-            <% } %>
+
         </form>
     </div>
 </div>
