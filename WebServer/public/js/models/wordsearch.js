@@ -69,7 +69,7 @@ var WordSearchCollection = Backbone.Collection.extend({
 
         var timestamps = new Array();
         this.each(function (data) {
-            timestamps.push(data.getDate() + ' ' + data.getHour() + ':00');
+            timestamps.push(data.getDay() + "/" + data.getMonth() + ' ' + data.getHour() + ':00');
         }, this);
         if (timestamps == null) {
             console.log("timestamps is null");
