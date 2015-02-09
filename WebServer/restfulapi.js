@@ -109,10 +109,20 @@ app.get('/api/daily/:table/:date', function (req, res) {
     });
 });
 
+
+///////////////////
 /*
- * If the browserClient requests with URLparams (/api/hourly/:table/:date/:hour) 
- * this methode gets the needed data from database and responds it to the Browserclient.
+ * wir brauchen hourly table date hour category  
  */
+app.get('/api/hourly/:table/:date/:hour/:category', function (req, res) {
+    var date = createSQLDate(req.params.date, req.params.hour);
+    var nextDate = createSQLDate(req.params.date, req.params.hour, +1);   
+    dataBaseHandler.select("SELECT * FROM ?? WHERE timestamp >= ? AND < ? WHERE category = ?", [req.params.table, date, nextDate, req.params.category], function (result) {
+        res.send(result);
+    });
+});
+//////////////////
+
 app.get('/api/hourly/:table/:date/:hour', function (req, res) {
     var date = createSQLDate(req.params.date, req.params.hour);
     var nextDate = createSQLDate(req.params.date, req.params.hour, +1);
