@@ -31,8 +31,3 @@ CategoryDistributionJob.prototype.saveToDatabase = function (rD, jD) {
 };
 
 module.exports = CategoryDistributionJob;
-
-/*
- for (var i=0; i< rD.jobresult)
- databasehandler.insert(this.;
- */

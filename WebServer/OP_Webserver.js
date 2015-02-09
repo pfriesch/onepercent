@@ -22,6 +22,7 @@ var dataLogger = require('./helper.js'); // helperfunctions
 var jobCollection = []; //stores the Jobs
 
 initJobInterval();
+checkIfJobsExecuted();
 
 /* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval() {
@@ -30,7 +31,7 @@ function initJobInterval() {
         repeatJobPerInterval('TopHashtagJob', [10], 1000 * 60 * 60, -1); //1000*60*60
         repeatJobPerInterval('LanguageDistributionJob', [], 1000 * 60 * 60, -1);
         repeatJobPerInterval('OriginTweetsJob', [], 1000 * 60 * 60, -1);
-        repeatJobPerInterval('CategoryDistributionJob', [], 1000 * 60 * 60, -1);
+        repeatJobPerInterval('CategoryDistributionJob', [5], 1000 * 60 * 60, -1);
     });
 
     wait(moment().endOf('day').add(14, 'hours').add(10, 'minutes') - moment(), function () {
@@ -91,12 +92,18 @@ function findById(source, id) {
 
 /* checks if the send jobs are answered in a reasonable time, if not the job will send again */
 function checkIfJobsExecuted() {
-    for (var i = 0; i < jobCollection.length; i++) {
-        if (jobCollection[i].time < moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')) {
-            dataLogger.logData('Sending Job with id: ' + jobCollection[i].jobID + ' again.');
-            sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
-        }
-    }
+    wait(moment().endOf('hour').add(35, 'minutes') - moment(), function () {
+        setInterval(function () {
+            console.log(jobCollection.length);
+            for (var i = 0; i < jobCollection.length; i++) {
+                console.log('execute');
+                if (jobCollection[i].time < moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')) {
+                    dataLogger.logData('Sending Job with id: ' + jobCollection[i].jobID + ' again.');
+                    sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
+                }
+            }
+        }, 1000*60*60);
+    });
 }
 
 
