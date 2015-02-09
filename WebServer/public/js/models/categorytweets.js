@@ -2,36 +2,57 @@
  * Model that contains the name,tweetid and written.
  * @author Florian Pfeiffer
  */
-var categoryTweets = Backbone.Model.extend({
-    url: "api/hourly",
+var CategoryTweets = Backbone.Model.extend({
+    url: "api",
 
 
-    initialize: function (searchWord) {
-        this.url = this.url + "/tweetid/" + searchWord;
+    initialize: function (date, hour) {
+        this.url = this.url + "/exampleTweets/" + date + "/" + hour;
     }
 });
 
 /**
  * Collection that contains the TweetIDModels.
- * @author Patrick Mariot
  */
-var categoryTweetsCollection = Backbone.Collection.extend({
-    model: categoryTweets,
-    url: "api/hourly",
+var CategoryTweetsCollection = Backbone.Collection.extend({
+    model: CategoryTweets,
+    url: "api",
 
-    initialize: function (searchWord) {
-        this.url = this.url + "/categoryTweets/" + searchWord;
+    initialize: function (date, hour) {
+        this.url = this.url + "/exampleTweets/" + date + "/" + hour;
     },
 
     /**
      * Creates an array that contain all tweetids Attributes from the models.
      * @returns {Array}    of Strings containing all tweetids from the models.
      */
-    getTweetIds: function () {
-        var tweetids = new Array();
+    getTweetTexts: function () {
+        var tweets = new Array();
         this.each(function (data) {
-            tweetids.push(data.get('tweetid'));
+            tweets.push(data.get('tweet'));
         }, this);
-        return tweetids;
+        return tweets;
+    },
+
+    getCategories: function () {
+        var categories = new Array();
+        this.each(function (data) {
+            categories.push(data.get('categories'));
+        }, this);
+        return categories;
     }
+
+    //tweetText
+    //    category
+    //        ...
+    //
+    //
+    //
+    //getTweetCategoryDistribution: function () {
+    //    var tweetCatDistri = new Array();
+    //    this.each(function(data)[{
+    //        tweetCatDistri.push(data.get('')))
+    //    }])
+    //
+    //}
 });

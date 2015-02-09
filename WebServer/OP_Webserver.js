@@ -94,9 +94,7 @@ function findById(source, id) {
 function checkIfJobsExecuted() {
     wait(moment().endOf('hour').add(35, 'minutes') - moment(), function () {
         setInterval(function () {
-            console.log(jobCollection.length);
             for (var i = 0; i < jobCollection.length; i++) {
-                console.log('execute');
                 if (jobCollection[i].time < moment().subtract(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')) {
                     dataLogger.logData('Sending Job with id: ' + jobCollection[i].jobID + ' again.');
                     sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);

@@ -26,7 +26,7 @@ client.on('connect', function () {
 /* Gets the responsedata from Sparkserver and send it back to OP_Webserver by callbackfunction */
 client.on('data', function (dataResponse) {
     var dataResponseJson = JSON.parse(dataResponse);
-    if ('errorMessage' in dataResponseJson) {
+    if ('errorMessage' in dataResponseJson || 'errorMessage' in dataResponseJson.jobResult) {
         sparkErrorMessageResponse(dataResponseJson);
     }
     else {
@@ -70,6 +70,6 @@ sparkClient.sendJobDataToServer = function sendJobRequestToSparkServer(jobData, 
 
 /* if there is a errormesage in the responseString this method logs the errorcode and errormessage*/
 function sparkErrorMessageResponse(sparkServerDataResponse) {
-    dataLogger.logData('Error-Message: ' + dataResponse.errormsg[0].errorMessage);
-    dataLogger.logData('Error-Message: ' + dataResponse.errormsg[0].errorCode);
+    dataLogger.logData('Error-Message: ' + sparkServerDataResponse.jobResult.errorMessage);
+    dataLogger.logData('Error-Message: ' + sparkServerDataResponse.jobResult.errorCode);
 }

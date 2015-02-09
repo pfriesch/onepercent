@@ -7,8 +7,9 @@
     <div class="row text-center">
 
         <% if(typeof tweetids != 'undefined') { %>
-        <button class="btn btn-default" onclick='twitter.createTweets("<%= tweetids %>", "tweet")'>Show example Tweets!</button>
+        <button class="btn btn-default" id="show-category-example-Tweets" onclick='twitter.createTweets("<%= tweetids %>", "tweet")'>Show example Tweets!</button>
         <% } %>
+
 
     </div>
 
