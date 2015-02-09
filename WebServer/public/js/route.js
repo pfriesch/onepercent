@@ -95,7 +95,7 @@ var Router = Backbone.Router.extend({
 		switch(table){
 			case 'tweetsatdaytime':
 				this.description = "<h2><b>TWEETS AT DAYTIME</b></h2><p>At what daytime do people tweet the most or the least?<br/>The following chart will give you an overview relating this question.<br/>To answer this question correctly we annualised each local time (GMT X) to one global time (GMT 0) with the given offset. For example: A tweet at the 24th January 2015 at 1 pm in New York (GMT -5) and another tweet in Berlin at the same date (GMT +1) will count to one global time (GMT 0).</p>";
-				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#content-chart', template: templates.single_chart_template});
+				this.chartView = new TweetsAtDaytimeView({table: table, date: date, el: '#content-chart', template: templates.tophashtag_template});
 				break;
 			default:
 				this.chartView = new HomeView({el: '#content-chart', template: templates.empty_template});
