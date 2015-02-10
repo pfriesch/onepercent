@@ -66,7 +66,7 @@ class CategoryDistributionJob extends JobExecutor with Logging {
                     schmaRDD.registerTempTable("tweets")
                     val tweetText: SchemaRDD = hc.sql("SELECT text FROM tweets WHERE lang = 'en'")
                     val TweetWithCondProb = tweetText.map(
-                      tweetText => classifier.classifyVerbose(tweetText.toString()))
+                      tweetText => classifier.classifyVerbose(tweetText.getString(0)))
 
                     val tweetsWithOtherCategory: RDD[(String, Map[String, Double])] = TweetWithCondProb.map {
                       //tests if a probability in the list is below the threshold
