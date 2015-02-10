@@ -5,31 +5,47 @@
     </div>
 
     <div class="row text-center">
-        <% if(typeof tweets != 'undefined') {
-            var c=0;
-            for (var i = 0; i < tweets.length; i++) { %>
-            <div class="row" id="message">
-                <% if(typeof tweets[i+c] !== 'undefined' && tweets[i+c] !== null) { %>
-                <div class="col-md-3" align="left"> <%= tweets[i+c] %></div>
-                <div class="col-md-3">
-                    <% for (var j = 0; j < categories[i+c].length; j++) { %>               
-                    <%= categories[i+c][j].category %> : <%= categories[i+c][j].probability %>
-                    <p></p>
-                    <% } console.log(c); c = c+1; console.log(c);}%>
-                </div>
-                <% if(typeof tweets[i+c] !== 'undefined' && tweets[i+c] !== null) { %>
-                <div id="message">
-                    <div class="col-md-3" align="left"> <%= tweets[i+c] %></div>
-                    <div class="col-md-3">
-                        <% for (var j = 0; j < categories[i+c].length; j++) { %>
-                    
-                        <%= categories[i+c][j].category %> : <%= categories[i+c][j].probability %>
-                        <p></p>
-                        <% } }%>
+
+        <div class="col-md-12">
+
+            <% if(typeof tweets != 'undefined') {
+                var c=0;
+                for (var i = 0; i < tweets.length; i++) { %>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <%= tweets[i] %>
+                    </div>
+                    <div class="panel-body">
+                        <%
+                        for (var j = 0; j < categories[i].length; j++) {
+                        var probability = Math.round(categories[i][j].probability * 100)
+                        var category = categories[i][j].category
+                        %>
+
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <span class="label label-default">
+                                        <%= category %>
+                                    </span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="<%= probability %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= probability %>%;">
+                                            <%= probability %>%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <% } %>
                     </div>
                 </div>
-            </div>
-        <% } } %>
+            <% } } %>
+
+        </div>
+
     </div>
 </div>
 

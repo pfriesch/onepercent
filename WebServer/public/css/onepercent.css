@@ -194,7 +194,9 @@ html body {
 }
 
 .progress-bar {
-    background-color: #367E7B;
+    background-image: linear-gradient(to bottom, #40667F 0px, #40667F 100%);
+    background-repeat: repeat-x;
+    background-color: #40667F;
 }
 
 .answer_text {
@@ -414,4 +416,8 @@ input, button, select, textarea {
 
 .chart {
     padding-bottom: 20px;
+}
+
+.label-default {
+    background-color: #40667F;
 }
