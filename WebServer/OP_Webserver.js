@@ -21,8 +21,24 @@ var dataLogger = require('./helper.js'); // helperfunctions
 
 var jobCollection = []; //stores the Jobs
 
-//initJobInterval();
+initJobInterval();
 checkIfJobsExecuted();
+
+
+//var i = 1;
+//
+//(function timer() {
+//    var sparkJob = jobManager.createJob('CategoryDistributionJob', [5], -1 * i);
+//    jobCollection.push(sparkJob);
+//    dataLogger.logData('Added Element with ID: ' + sparkJob.jobID);
+//    sparkClient.sendJobDataToServer(sparkJob, getJobResponse);
+//    i++;
+//    if (i < 72) {
+//        setTimeout(timer, 1000);
+//    }
+//})();
+
+
 
 /* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval() {
