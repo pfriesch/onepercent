@@ -107,7 +107,7 @@ var Router = Backbone.Router.extend({
 	wordSearch: function(table, searchWord){
 		this.reinitalizeViews();
 		mainNavigationView.changeActive(table);
-		this.description = "<h2><b>WORD SEARCH</b></h2><p>How many times was the word \"X\" tweeted during the last 24 hours?<br/>The following chart will give you an overview relating this question. Mind the button to display some example tweets.<br/>Please consider to wait a few minutes until the result is computed.</p>";
+		this.description = "<h2><b>WORD SEARCH</b></h2><p>How many times was the word \"X\" (related or unrelated) tweeted during the last 24 hours?<br/>The following chart will give you an overview relating this question.<br/>Please consider to wait a few minutes until the result is computed.</p>";
 		if(typeof searchWord != 'string'){
 			this.chartView = new WordSearchView({table: table, el: '#content-chart', template: templates.wordsearch_template});
 			this.navigationView = new SearchNavigationView({table: table, el: '#content-navigation',
