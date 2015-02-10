@@ -41,18 +41,4 @@ var CategoryTweetsCollection = Backbone.Collection.extend({
         }, this);
         return categories;
     }
-
-    //tweetText
-    //    category
-    //        ...
-    //
-    //
-    //
-    //getTweetCategoryDistribution: function () {
-    //    var tweetCatDistri = new Array();
-    //    this.each(function(data)[{
-    //        tweetCatDistri.push(data.get('')))
-    //    }])
-    //
-    //}
 });

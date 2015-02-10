@@ -21,7 +21,7 @@ var dataLogger = require('./helper.js'); // helperfunctions
 
 var jobCollection = []; //stores the Jobs
 
-initJobInterval();
+//initJobInterval();
 checkIfJobsExecuted();
 
 /* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
