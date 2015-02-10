@@ -111,29 +111,17 @@ app.get('/api/daily/:table/:date', function (req, res) {
     });
 });
 
-
-/////////////////////
-///*
-// * wir brauchen hourly table date hour category
-// */
-//app.get('/api/horuly/:table/:date/:hour/:category', function (req, res) {
-//    var date = createSQLDate(req.params.date, req.params.hour);
-//    var nextDate = createSQLDate(req.params.date, req.params.hour, +1);
-//    dataBaseHandler.select("SELECT * FROM ?? WHERE timestamp >= ? AND < ? WHERE category = ?", [req.params.table, date, nextDate, req.params.category], function (result) {
-//        res.send(result);
-//    });
-//});
-////////////////////
-
-
 app.get('/api/exampleTweets/:date/:hour', function wordSearchREST(req, res) {
-    dataBaseHandler.select("SELECT * FROM ?? WHERE timestamp >= ? AND < ?", ['tweetcategorydistribution', date, nextDate], function (result) {
+    var date = createSQLDate(req.params.date, req.params.hour);
+    var nextDate = createSQLDate(req.params.date, req.params.hour, +1);
+    dataBaseHandler.select("SELECT * FROM ?? WHERE timestamp >= ? AND timestamp < ?", ['tweetcategorydistribution', date, nextDate], function (result) {
         var groupedByTweetText = underscore._.groupBy(result, 'tweet');
         var tweets = new Array();
         var categories = new Array();
 
         for (tweet in groupedByTweetText) {
             tweets.push(tweet);
+
             for (var i = 0; i < groupedByTweetText[tweet].length; i++) {
 
                 delete groupedByTweetText[tweet][i]['id'];
@@ -145,7 +133,7 @@ app.get('/api/exampleTweets/:date/:hour', function wordSearchREST(req, res) {
         var resultTweets = new Array();
         for (var i = 0; i < tweets.length; i++) {
             resultTweets.push({tweet: tweets[i], categories: categories[i]})
-        }
+        }      
         res.send(resultTweets);
     });
 });

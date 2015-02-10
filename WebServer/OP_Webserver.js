@@ -21,21 +21,23 @@ var dataLogger = require('./helper.js'); // helperfunctions
 
 var jobCollection = []; //stores the Jobs
 
-initJobInterval();
+//initJobInterval();
 checkIfJobsExecuted();
 
 /* Inits the jobs that run every hour, wait till full hour then starts the repeatJobInterval*/
 function initJobInterval() {
     wait(moment().endOf('hour').add(5, 'minutes') - moment(), function () {
         dataLogger.logData('5 Minutes after full Hour reached. Start jobs per interval.');
-        repeatJobPerInterval('TopHashtagJob', [10], 1000 * 60 * 60, -1); //1000*60*60
-        repeatJobPerInterval('LanguageDistributionJob', [], 1000 * 60 * 60, -1);
-        repeatJobPerInterval('OriginTweetsJob', [], 1000 * 60 * 60, -1);
-        repeatJobPerInterval('CategoryDistributionJob', [5], 1000 * 60 * 60, -1);
+        // 1000 * 60 * 60 = 3600000 = 0x36EE80
+        repeatJobPerInterval('TopHashtagJob', [10], 0x36EE80, -1);
+        repeatJobPerInterval('LanguageDistributionJob', [], 0x36EE80, -1);
+        repeatJobPerInterval('OriginTweetsJob', [], 0x36EE80, -1);
+        repeatJobPerInterval('CategoryDistributionJob', [5], 0x36EE80, -1);
     });
 
     wait(moment().endOf('day').add(14, 'hours').add(10, 'minutes') - moment(), function () {
-        repeatJobPerInterval('TweetsAtDaytimeJob', [], 1000 * 60 * 60 * 24, -24);
+        // 1000 * 60 * 60 * 24 = 86400000 = 0x5265C00
+        repeatJobPerInterval('TweetsAtDaytimeJob', [], 0x5265C00, -24);
     });
 }
 
@@ -100,7 +102,7 @@ function checkIfJobsExecuted() {
                     sparkClient.sendJobDataToServer(jobCollection[i], getJobResponse);
                 }
             }
-        }, 1000*60*60);
+        }, 0x36EE80); //1000 * 60 * 60 = 3600000 = 0x36EE80
     });
 }
 
