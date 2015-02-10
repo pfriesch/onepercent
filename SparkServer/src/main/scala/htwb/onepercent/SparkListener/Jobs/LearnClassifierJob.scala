@@ -38,7 +38,7 @@ class LearnClassifierJob extends JobExecutor with Logging {
     if (params.length > 0) ErrorMessage("Job does not accept parameters", 100)
     else {
       //      println(fetchTweetTrainingData())
-      Try(fetchTweetTrainingData()) match {
+      Try(fetchTrainingData()) match {
         case util.Success(data) => {
           val tweetScoringLearner = new TweetScoringLearner(Env.sc)
           val trainedData: TrainedData = tweetScoringLearner.learn(data)
