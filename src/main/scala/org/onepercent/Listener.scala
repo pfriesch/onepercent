@@ -17,7 +17,8 @@ import org.apache.log4j.Level
 
 /**
  * Listens for connections and starts a JobHandler for every new connection.
- * @author pFriesch
+ *
+ * @author Pius Friesch
  */
 class Listener extends Actor with Logging {
 
