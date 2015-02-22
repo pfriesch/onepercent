@@ -37,6 +37,12 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
     }
   }
 
+  /**
+   * Computes the probablity of the tweet to be in the trained categories.
+   * @see http://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
+   * @param tweet The tweet to be classified.
+   * @return The tweet with a map of categories mapping to a probablitity.
+   */
   def classifyVerbose(tweet: String): (String, Map[Category, Double]) = {
     val tokenizedTweet = Tokenizer.tokenize(tweet)
     if (tokenizedTweet.length > 0) {
@@ -51,7 +57,7 @@ class TweetClassifier(trainedData: TrainedData) extends Serializable {
     }
   }
 
-  //normalizes to 0..1
+  //normalizes to a percentage 0..1
   private def normalize(classifications: Map[Category, Double]): Map[Category, Double] = {
     // due to the use of the logarithm all results are negative, but still the greates value is the highest probability
     //so to make the highest probability the greatest value the function the exponential function is applied

@@ -15,7 +15,13 @@ import java.util.GregorianCalendar
  */
 trait Logging {
 
+  /**
+   * The current time.
+   */
   val time: GregorianCalendar = new GregorianCalendar()
+  /**
+   * The format the time is logged in.
+   */
   val format: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
   /**

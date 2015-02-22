@@ -5,15 +5,21 @@
 
 package org.onepercent
 
-import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
- * Created by Pius on 19.01.2015.
+ * The Environment wich holds the SparkContext which is needed to make use of spark RDDs.
  */
 object Env {
 
+  /**
+   * The used spark configuration.
+   */
   val conf = new SparkConf().setAppName("onepercent").set("spark.executor.memory", "24G").set("spark.cores.max", "90")
+  /**
+   * The global spark context.
+   * @todo make a single spark context for every executed job.
+   */
   val sc = new SparkContext(conf)
 
 

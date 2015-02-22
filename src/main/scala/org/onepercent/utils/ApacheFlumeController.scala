@@ -10,7 +10,10 @@ import org.onepercent.JobResult
 
 import sys.process._
 
-
+/**
+ * Represents a message which is based on the initiated method.
+ * @param output Message based on the initiated method.
+ */
 case class ApacheFlumeResult(output: String) extends JobResult
 
 

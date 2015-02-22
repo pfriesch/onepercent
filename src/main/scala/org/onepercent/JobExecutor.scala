@@ -32,6 +32,9 @@ case class JobSignature(jobID: String, name: String, params: List[String], time:
  */
 case class ExecuteJob(jobID: String, params: List[String])
 
+/**
+ * A marking trait to mark results of jobs.
+ */
 trait JobResult
 
 /**

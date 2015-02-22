@@ -7,7 +7,6 @@ package org.onepercent.Jobs
 
 import java.io.File
 import java.text.SimpleDateFormat
-
 import org.onepercent.utils.Types.TypeCreator
 import org.onepercent.utils._
 import org.onepercent.utils.scoring._
@@ -21,23 +20,39 @@ import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 /**
- * A single representation of a frequency of a singe category in the tweet set.
- * @param category
- * @param count
+ * A representation of a frequency of a singe category in the tweet set.
+ * @param category Name of the category.
+ * @param count The count of tweets in this category.
  */
 case class CategoryCount(category: String, count: Int)
 
 /**
  * List of the frequency of all categories and the total number of counted tweets.
- * @param distribution the category distribution.
- * @param totalCount the total count of counted tweets.
+ * @param distribution The category distribution.
+ * @param totalCount The total count of counted tweets.
  */
 case class CategoryDistribution(distribution: List[CategoryCount], totalCount: Int) extends JobResult
 
+/**
+ *  A representation of a probability of a singe category
+ * @param category Name of the category.
+ * @param prob The probability of the category
+ */
 case class CategoryProb(category: String, prob: Double)
 
+/**
+ * A representation of a tweet with a list of categories with probabilities for this tweet.
+ * @param text The text of the tweet.
+ * @param categoryProb The list of categories with probabilities for this tweet.
+ */
 case class TweetWithProb(text: String, categoryProb: List[CategoryProb])
 
+/**
+ * A representation of a category distribution for one timeframe with sample tweets.
+ * @param distribution The distribution of categories with name and count.
+ * @param totalCount The total number of considered tweets.
+ * @param tweets The sample tweets with tweet text and a list of category name and probablitity.
+ */
 case class CategoryDistributionWithTweets(distribution: List[CategoryCount], totalCount: Int, tweets: Array[TweetWithProb]) extends JobResult
 
 /**

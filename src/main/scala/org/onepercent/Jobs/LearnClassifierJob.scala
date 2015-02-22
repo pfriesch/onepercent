@@ -8,19 +8,21 @@ package org.onepercent.Jobs
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
+import org.apache.spark.sql.SchemaRDD
+import org.apache.spark.sql.catalyst.expressions.GenericMutableRow
+import org.apache.spark.sql.hive.HiveContext
 import org.onepercent.utils.Types.TypeCreator
 import org.onepercent.utils.scoring.{ScoringTrainingSample, TrainedData, TweetScoringLearner}
 import org.onepercent.utils.{Config, ErrorMessage, JsonTools, _}
 import org.onepercent.{Env, JobExecutor, JobResult}
-import org.apache.spark.SparkConf
-import org.apache.spark.sql.SchemaRDD
-import org.apache.spark.sql.catalyst.expressions.{GenericMutableRow, EmptyRow}
-import org.apache.spark.sql.hive.HiveContext
 
 import scala.collection.mutable.ArrayBuffer
-import scala.reflect.internal.util.StringOps
 import scala.util.{Failure, Success, Try}
 
+/**
+ * Success message of the learn classifier job.
+ * @param msg Success message.
+ */
 case class TrainResult(msg: String) extends JobResult
 
 /**
@@ -30,6 +32,9 @@ case class TrainResult(msg: String) extends JobResult
  */
 class LearnClassifierJob extends JobExecutor with Logging {
 
+  /**
+   * Type category is a representation of a string to clearify the use in the source code.
+   */
   type Category = String
 
   /**
@@ -72,7 +77,7 @@ class LearnClassifierJob extends JobExecutor with Logging {
   }
 
   /**
-   *  Scrapes tweets with the given hashtags to make trained data
+   * Scrapes tweets with the given hashtags to make trained data
    * @return the training data
    */
   private def fetchTweetTrainingData(): Map[Category, List[String]] = {
@@ -122,7 +127,13 @@ class LearnClassifierJob extends JobExecutor with Logging {
  */
 object CategoryData extends Serializable {
 
+  /**
+   * Hard coded list of Categories
+   */
   val categories: List[String] = List("Religion", "Sport")
+  /**
+   *  Hard coded list of hashtags in the categories.
+   */
   val categoryHashtags: Map[String, List[String]] = Map(categories(0) ->
     List("christianity", "pope", "jesus", "christ", "christian", "buddha", "buddhist", "buddhism", "mohammed", "islam", "moslem",
       "muslim", "hinduism", "hindu", "hindoo", "judaism", "jewry", "jew", "atheist", "agnostic"),
@@ -131,6 +142,11 @@ object CategoryData extends Serializable {
       "rugby", "golf", "handball", "curling", "hockey", "biathlon", "triathlon", "badminton", "squash", "running",
       "sailing", "skiing", "bobsleigh", "sled", "snowboarding", "swimming", "diving"))
 
+  /**
+   * Matches a tweet with its hashtag to a category with the tweet text.
+   * @param tweetWithHashtag The tweet with its hashtags.
+   * @return A tuple of a Category with a tweet text which is matched to this category.
+   */
   //method needs to be serializable to be send to the nodes so i put it in here, seemed to be the best way since the list
   def toCategoryTuple(tweetWithHashtag: (String, List[String])): (String, String) = {
     //checks if the tweet has a hashtag which is also in the category hashtags list
