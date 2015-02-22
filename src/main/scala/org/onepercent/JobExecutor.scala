@@ -42,6 +42,9 @@ trait JobResult
  */
 trait JobExecutor extends Actor {
 
+  /**
+   * On receive of an ExecuteJob the Job will be executed and the result is send to the sender of the job request.
+   */
   def receive = {
 
     case ExecuteJob(jobID, params) =>

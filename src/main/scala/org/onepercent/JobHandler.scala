@@ -26,6 +26,9 @@ import org.onepercent.utils._
  */
 class JobHandler extends Actor with Logging {
 
+  /**
+   * The connection object, handled by this handler.
+   */
   var connection: ActorRef = null
 
   /**
