@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>Jobs - onepercent documentation - org.onepercent.Jobs</title>
+          <meta name="description" content="Jobs - onepercent documentation - org.onepercent.Jobs" />
+          <meta name="keywords" content="Jobs onepercent documentation org.onepercent.Jobs" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'org.onepercent.Jobs.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.onepercent">onepercent</a></p>
+        <h1>Jobs</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Jobs</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.onepercent.Jobs.ApacheFlumeJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ApacheFlumeJobextendsJobExecutor"></a>
+      <a id="ApacheFlumeJob:ApacheFlumeJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ApacheFlumeJob.html"><span class="name">ApacheFlumeJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Job to control the Apache Flume Service through the Scala Application.</p>
+    </li><li name="org.onepercent.Jobs.ApacheSparkJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ApacheSparkJobextendsJobExecutor"></a>
+      <a id="ApacheSparkJob:ApacheSparkJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ApacheSparkJob.html"><span class="name">ApacheSparkJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Job to control the Apache Spark Service through the Scala Application
+</p>
+    </li><li name="org.onepercent.Jobs.CategoryCount" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CategoryCountextendsProductwithSerializable"></a>
+      <a id="CategoryCount:CategoryCount"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CategoryCount.html"><span class="name">CategoryCount</span></a><span class="params">(<span name="category">category: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="count">count: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A representation of a frequency of a singe category in the tweet set.</p>
+    </li><li name="org.onepercent.Jobs.CategoryDistribution" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CategoryDistributionextendsJobResultwithProductwithSerializable"></a>
+      <a id="CategoryDistribution:CategoryDistribution"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CategoryDistribution.html"><span class="name">CategoryDistribution</span></a><span class="params">(<span name="distribution">distribution: <span class="extype" name="scala.List">List</span>[<a href="CategoryCount.html" class="extype" name="org.onepercent.Jobs.CategoryCount">CategoryCount</a>]</span>, <span name="totalCount">totalCount: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="../JobResult.html" class="extype" name="org.onepercent.JobResult">JobResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">List of the frequency of all categories and the total number of counted tweets.</p>
+    </li><li name="org.onepercent.Jobs.CategoryDistributionJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CategoryDistributionJobextendsJobExecutorwithLogging"></a>
+      <a id="CategoryDistributionJob:CategoryDistributionJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="CategoryDistributionJob.html"><span class="name">CategoryDistributionJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Reads all tweets saved in the given hour and extracts all flaged as english.</p>
+    </li><li name="org.onepercent.Jobs.CategoryDistributionWithTweets" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CategoryDistributionWithTweetsextendsJobResultwithProductwithSerializable"></a>
+      <a id="CategoryDistributionWithTweets:CategoryDistributionWithTweets"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CategoryDistributionWithTweets.html"><span class="name">CategoryDistributionWithTweets</span></a><span class="params">(<span name="distribution">distribution: <span class="extype" name="scala.List">List</span>[<a href="CategoryCount.html" class="extype" name="org.onepercent.Jobs.CategoryCount">CategoryCount</a>]</span>, <span name="totalCount">totalCount: <span class="extype" name="scala.Int">Int</span></span>, <span name="tweets">tweets: <span class="extype" name="scala.Array">Array</span>[<a href="TweetWithProb.html" class="extype" name="org.onepercent.Jobs.TweetWithProb">TweetWithProb</a>]</span>)</span><span class="result"> extends <a href="../JobResult.html" class="extype" name="org.onepercent.JobResult">JobResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A representation of a category distribution for one timeframe with sample tweets.</p>
+    </li><li name="org.onepercent.Jobs.CategoryProb" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CategoryProbextendsProductwithSerializable"></a>
+      <a id="CategoryProb:CategoryProb"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CategoryProb.html"><span class="name">CategoryProb</span></a><span class="params">(<span name="category">category: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="prob">prob: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt"> A representation of a probability of a singe category</p>
+    </li><li name="org.onepercent.Jobs.LanguageDistributionJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LanguageDistributionJobextendsJobExecutorwithLogging"></a>
+      <a id="LanguageDistributionJob:LanguageDistributionJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="LanguageDistributionJob.html"><span class="name">LanguageDistributionJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">This class is a job for calculating the TopHashtags.</p>
+    </li><li name="org.onepercent.Jobs.LearnClassifierJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LearnClassifierJobextendsJobExecutorwithLogging"></a>
+      <a id="LearnClassifierJob:LearnClassifierJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="LearnClassifierJob.html"><span class="name">LearnClassifierJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Learns a given set of training data for scoring tweets.</p>
+    </li><li name="org.onepercent.Jobs.OriginTweetsJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OriginTweetsJobextendsJobExecutorwithLogging"></a>
+      <a id="OriginTweetsJob:OriginTweetsJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="OriginTweetsJob.html"><span class="name">OriginTweetsJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">This class is a job for calculating the TopHashtags.</p>
+    </li><li name="org.onepercent.Jobs.TopHashtagJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TopHashtagJobextendsJobExecutorwithLogging"></a>
+      <a id="TopHashtagJob:TopHashtagJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TopHashtagJob.html"><span class="name">TopHashtagJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">This class is a job for calculating the TopHashtags.</p>
+    </li><li name="org.onepercent.Jobs.TrainResult" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TrainResultextendsJobResultwithProductwithSerializable"></a>
+      <a id="TrainResult:TrainResult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TrainResult.html"><span class="name">TrainResult</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="../JobResult.html" class="extype" name="org.onepercent.JobResult">JobResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Success message of the learn classifier job.</p>
+    </li><li name="org.onepercent.Jobs.TweetWithProb" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TweetWithProbextendsProductwithSerializable"></a>
+      <a id="TweetWithProb:TweetWithProb"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TweetWithProb.html"><span class="name">TweetWithProb</span></a><span class="params">(<span name="text">text: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="categoryProb">categoryProb: <span class="extype" name="scala.List">List</span>[<a href="CategoryProb.html" class="extype" name="org.onepercent.Jobs.CategoryProb">CategoryProb</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A representation of a tweet with a list of categories with probabilities for this tweet.</p>
+    </li><li name="org.onepercent.Jobs.TweetsAtDaytimeJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TweetsAtDaytimeJobextendsJobExecutorwithLogging"></a>
+      <a id="TweetsAtDaytimeJob:TweetsAtDaytimeJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="TweetsAtDaytimeJob.html"><span class="name">TweetsAtDaytimeJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Job to group tweets by there local time.</p>
+    </li><li name="org.onepercent.Jobs.WordSearchJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="WordSearchJobextendsJobExecutorwithLogging"></a>
+      <a id="WordSearchJob:WordSearchJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="WordSearchJob.html"><span class="name">WordSearchJob</span></a><span class="result"> extends <a href="../JobExecutor.html" class="extype" name="org.onepercent.JobExecutor">JobExecutor</a> with <a href="../utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Job to search for a specific word in the Tweet texts.</p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.onepercent.Jobs.CategoryData" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CategoryData"></a>
+      <a id="CategoryData:CategoryData"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CategoryData$.html"><span class="name">CategoryData</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Helper Object for fetchTweetTrainingData method, needed for serialization in the spark cluster.</p>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../lib/template.js"></script>
+    </body>
+      </html>

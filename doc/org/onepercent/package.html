@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>onepercent - onepercent documentation - org.onepercent</title>
+          <meta name="description" content="onepercent - onepercent documentation - org.onepercent" />
+          <meta name="keywords" content="onepercent onepercent documentation org.onepercent" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../index.html';
+            var hash = 'org.onepercent.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../lib/package_big.png" />
+        <p id="owner"><a href="../package.html" class="extype" name="org">org</a></p>
+        <h1>onepercent</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onepercent</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="org.onepercent.ExecuteJob" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExecuteJobextendsProductwithSerializable"></a>
+      <a id="ExecuteJob:ExecuteJob"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ExecuteJob.html"><span class="name">ExecuteJob</span></a><span class="params">(<span name="jobID">jobID: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="params">params: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li><li name="org.onepercent.JobExecutor" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JobExecutorextendsActor"></a>
+      <a id="JobExecutor:JobExecutor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JobExecutor.html"><span class="name">JobExecutor</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Each Job needs to implement this trait and the executeJob method.</p>
+    </li><li name="org.onepercent.JobHandler" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JobHandlerextendsActorwithLogging"></a>
+      <a id="JobHandler:JobHandler"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="JobHandler.html"><span class="name">JobHandler</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span> with <a href="utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Reads a single connection and handles the incomming data.</p>
+    </li><li name="org.onepercent.JobResult" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="JobResultextendsAnyRef"></a>
+      <a id="JobResult:JobResult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="JobResult.html"><span class="name">JobResult</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt">A marking trait to mark results of jobs.</p>
+    </li><li name="org.onepercent.JobSignature" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="JobSignatureextendsProductwithSerializable"></a>
+      <a id="JobSignature:JobSignature"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="JobSignature.html"><span class="name">JobSignature</span></a><span class="params">(<span name="jobID">jobID: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="params">params: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="time">time: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li><li name="org.onepercent.Listener" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ListenerextendsActorwithLogging"></a>
+      <a id="Listener:Listener"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Listener.html"><span class="name">Listener</span></a><span class="result"> extends <span class="extype" name="akka.actor.Actor">Actor</span> with <a href="utils/Logging.html" class="extype" name="org.onepercent.utils.Logging">Logging</a></span>
+      </span>
+      </h4>
+      <p class="comment cmt">Listens for connections and starts a JobHandler for every new connection.</p>
+    </li><li name="org.onepercent.Result" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ResultextendsProductwithSerializable"></a>
+      <a id="Result:Result"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Result.html"><span class="name">Result</span></a><span class="params">(<span name="jobID">jobID: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="jobResult">jobResult: <a href="JobResult.html" class="extype" name="org.onepercent.JobResult">JobResult</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="org.onepercent.App" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="App"></a>
+      <a id="App:App"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="App$.html"><span class="name">App</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt"></p>
+    </li><li name="org.onepercent.Env" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Env"></a>
+      <a id="Env:Env"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Env$.html"><span class="name">Env</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">The Environment wich holds the SparkContext which is needed to make use of spark RDDs.</p>
+    </li><li name="org.onepercent.Jobs" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Jobs"></a>
+      <a id="Jobs:Jobs"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="Jobs/package.html"><span class="name">Jobs</span></a>
+      </span>
+      </h4>
+      
+    </li><li name="org.onepercent.utils" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="utils"></a>
+      <a id="utils:utils"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="utils/package.html"><span class="name">utils</span></a>
+      </span>
+      </h4>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../lib/template.js"></script>
+    </body>
+      </html>
