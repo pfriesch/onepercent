@@ -18,7 +18,6 @@ import scala.util.{Failure, Success, Try}
  * @param port the port of this app to bind a socket
  * @param JobsPackageString absolute path to the Job classes
  * @param tweetsPrefixPath the absolute path to the tweets on the hdfs
- * @param scoring_TrainingDataPath the relative path where the scoring learner can find training files
  * @param scoring_TrainedDataPath the relative path where the scoring learner saves its trained data
  * @param scoring_OtherCategoryName the name of the category in scoring which is used when no category fits above the threshold
  * @param scoring_Threshold the threshold percentage where no category is fitted and the other catesgory is used
@@ -30,7 +29,6 @@ case class Configuration(configVersion: Int,
                          port: Int,
                          JobsPackageString: String,
                          tweetsPrefixPath: String,
-                         scoring_TrainingDataPath: String,
                          scoring_TrainedDataPath: String,
                          scoring_OtherCategoryName: String,
                          scoring_Threshold: Double,
@@ -43,46 +41,100 @@ case class Configuration(configVersion: Int,
  * Either creates a text file with a JSON string of default values as content or reads a config from the application
  * path and creats a Configuration object with its content.
  *
- * @author pFriesch
+ * @author Pius Friesch, Florian Willich
  */
 object Config extends Serializable {
 
   // !!!!!!!!!! Count up every time you change the signature Configuration case class !!!!!!!!!
-  val configVersion = 7
+
+  /**
+   * Version number making sure your using the current configuration when parsing from JSON.
+   * Default initialisation: 8
+   */
+  val configVersion = 8
+
+  /**
+   * Name of the config file.
+   * Default: config.cfg
+   */
   val configFileName = "config.cfg"
+
+  /**
+   * The hostname.
+   * Default: hadoop03.f4.htw-berlin.de
+   */
   val defaultHostname = "hadoop03.f4.htw-berlin.de"
+
+  /**
+   * The port.
+   * Default: 5555
+   */
   val defaultPort = 5555
+
+  /**
+   * The package where all the jobs are located in.
+   * Default: org.onepercent.Jobs.
+   */
   val defaultJobsPackage = "org.onepercent.Jobs."
-  val defaultTweetsPrefixPath = "hdfs://hadoop03.f4.htw-berlin.de:8020/studenten/s0540031/tweets/"
-  val defaultScoringTrainingDataPath: String = "scoring/trainingData"
+
+  /**
+   * The tweets prefix path.
+   */
+  val defaultTweetsPrefixPath = ""
+
+  /**
+   * Scoring trained data path:
+   * Default: scoring/trainedData
+   */
   val defaultScoringTrainedDataPath: String = "scoring/trainedData"
+
+  /**
+   * Name of the 'other' category for classification
+   * Default: other
+   */
   val defaultClassificationOtherCategoryName: String = "other"
-  //SmallTrainingSet 0.16
+
+  /**
+   * The classification threshold which represents the minimum score, which is needed to get into a specific category.
+   * Default: 0.16
+   */
   val defaultClassificationThreshold: Double = 0.16
-  val defaultScoringMinProbForResult: Double = 0.55
-  val defaultConfig = Configuration(configVersion,
+
+  /**
+   * The minimum threshold needed for an example tweet.
+   * Default: 0.55
+   */
+  val defaultScoringMinProbForSamples: Double = 0.55
+
+  /**
+   * This configuration object is equal to the JSON configuration object.
+   */
+  val defaultConfig = Configuration(
+    configVersion,
     defaultHostname,
     defaultPort,
     defaultJobsPackage,
     defaultTweetsPrefixPath,
-    defaultScoringTrainingDataPath,
     defaultScoringTrainedDataPath,
     defaultClassificationOtherCategoryName,
     defaultClassificationThreshold,
-    defaultScoringMinProbForResult
+    defaultScoringMinProbForSamples
   )
 
-  var config = defaultConfig
+  /**
+   * The default config.
+   */
+  var config: Configuration = defaultConfig
 
   {
     val file = new File(configFileName)
     if (file.exists() && !file.isDirectory()) {
       Try(JsonTools.parseClass[Configuration](Source.fromFile(configFileName).mkString)) match {
-        case Success(config) =>
-          if (config.configVersion != configVersion)
+        case Success(newConfig) =>
+          if (newConfig.configVersion != configVersion)
             setDefaultConfiguration
           else
-            this.config = config
+            this.config = newConfig
         case Failure(_) => setDefaultConfiguration
       }
     }
@@ -90,7 +142,7 @@ object Config extends Serializable {
   }
 
   /**
-   * Writes the default values to the file
+   * Writes the default values to the file.
    */
   private def setDefaultConfiguration = {
     val writer = new PrintWriter(new File(configFileName))
@@ -100,6 +152,7 @@ object Config extends Serializable {
 
   /**
    * Returns the current Configuration
+   *
    * @return the current Configuration
    */
   def get: Configuration = config
