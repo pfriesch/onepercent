@@ -32,6 +32,9 @@ case class JobSignature(jobID: String, name: String, params: List[String], time:
  */
 case class ExecuteJob(jobID: String, params: List[String])
 
+/**
+ * A marking trait to mark results of jobs.
+ */
 trait JobResult
 
 /**
@@ -42,6 +45,9 @@ trait JobResult
  */
 trait JobExecutor extends Actor {
 
+  /**
+   * On receive of an ExecuteJob the Job will be executed and the result is send to the sender of the job request.
+   */
   def receive = {
 
     case ExecuteJob(jobID, params) =>

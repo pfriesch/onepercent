@@ -5,18 +5,22 @@
 
 package org.onepercent.Jobs
 
-/**
- * Job to control the Apache Spark Service through the Scala Application
- */
-
 import org.onepercent.utils.ApacheSparkController
 import org.onepercent.{JobExecutor, JobResult}
 
+/**
+ * Job to control the Apache Spark Service through the Scala Application
+ */
 class ApacheSparkJob extends JobExecutor {
 
+  /**
+   * Executes the ApacheSparkController with the given parameters.
+   * @param params Expected parameters are: restart, status, log, debug, update
+   * @return Error or success message
+   */
   override def executeJob(params: List[String]): JobResult = {
     val asc = new ApacheSparkController()
     asc.execute(params(0))
   }
-  
+
 }
