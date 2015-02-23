@@ -34,7 +34,8 @@ case class Path(path: String) {
 }
 
 /**
- * Error Type
+ * This Type represents a Error Message, including the message itself and a error code.
+ *
  * @param     errorMessage    The message of this error.
  * @param     errorCode       The error Code.
  *
