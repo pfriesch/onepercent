@@ -148,8 +148,62 @@ class Listener extends Actor with Logging {
  *    "output":"?method output?"
  * }
  *
+ * TweetsAtDaytimeJob:
+ * At what daytime do people tweet the most or the least?
+ * This Job annualises each local time (GMT X) to one global time (GMT 0) with the given offset.
+ * For example: A tweet at the 24th January 2015 at 1 pm in New York (GMT -5) and another tweet in Berlin at the same
+ * date (GMT +1) will count to one global time (GMT 0).
+ * param1: "?daytime as timestamp?" -> Earliest possible = current time -13 hours
  *
+ * Result:
+ * {
+ *    "countedTweets":
+ *    [
+ *      {
+ *        "timestamp":"?time as timestamp?",
+ *        "count":?tweet count?,
+ *      },
+ *      { ... }
+ *    ]
+ * }
  *
+ * WordSearchJob
+ * How many times was the word X (related or unrelated) tweeted during the last 24 hours?
+ * This Job will calculate an overview relating this question.
+ * param1: "?word to look for?"
+ * The timestamp marks the start of the analysis.
+ *
+ * Result:
+ * {
+ *    "searchWord":"?word?",
+ *    "countedTweets":
+ *    [
+ *      {
+ *        "timestamp":"?timestamp?",
+ *        "count": "?tweetcount?"
+ *      },
+ *      {
+ *        "timestamp":"?timestamp?",
+ *        "count": "?tweetcount?"
+ *      },
+ *      { ... }
+ *    ],
+ *
+ *    "tweetIds":
+ *    [
+ *      "?id?",
+ *      "?id?",
+ *      ...
+ *    ]
+ * }
+ *
+ * We provide some tweetIDs so you can see an example of a tweet in which your searched word occured in.
+ *
+ * TODO: More docs for the other features OriginTweetsJob, LanguageDistributionJob, LearnClassifierJob,
+ * CategoryDistributionJob and CategoryDistributionJob
+ *
+ * @author Patrick Mariot, Pius Friesch, Florian Willich
+ * @version 1.0
  */
 object App {
 
