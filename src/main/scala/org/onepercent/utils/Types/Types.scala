@@ -20,7 +20,7 @@ import java.util.GregorianCalendar
  * This Type represents a path to the filesystem which directory is validated.
  *
  * @param       path                        The path including the data ending.
- *                                          
+ *
  * @author      Florian Willich
  */
 case class Path(path: String) {
